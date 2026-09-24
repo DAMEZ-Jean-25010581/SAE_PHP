@@ -151,6 +151,11 @@
             </div>
 
             <div class="form-group">
+                <label for="email">Adresse email :</label>
+                <input type="email" id="email" name="email" required autocomplete="email" placeholder="votre.email@exemple.fr" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+            </div>
+
+            <div class="form-group">
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" required minlength="4" autocomplete="new-password" placeholder="Choisissez un mot de passe">
             </div>
