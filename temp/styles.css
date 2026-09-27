@@ -1,3 +1,5 @@
+/* Version PC */
+
 html {
   scroll-behavior: smooth;
 }
@@ -5,6 +7,7 @@ html {
 body {
     background-color: #070811;
     margin: 0;
+    padding: 0;
 }
 
 a {
@@ -16,7 +19,7 @@ a:hover {
     color: #48C0D2;
 }
 
-/* Version PC */
+/* Header */
 
 header {
     position: sticky;
@@ -29,6 +32,13 @@ header {
     height: auto;
 }
 
+#mode-toggle {
+    all: unset;
+    margin: 1rem;
+    margin-right: 4rem;
+    margin-top: 1.25rem;
+}
+
 nav ul {
     display: flex;
     align-items: center;
@@ -38,10 +48,12 @@ nav ul {
 }
 
 .header-links ul {
-    display: flex;
-    color: inherit;
     font-family:'Chakra Petch', sans-serif;
     gap: 5rem;
+}
+
+.header-links li:last-child {
+    margin-right: 13rem;
 }
 
 ul:first-child {
@@ -52,24 +64,11 @@ ul:last-child {
     margin-right: 1.5rem;
 }
 
-.header-links li:last-child {
-    margin-right: 13.25rem;
-}
-
-#mode-toggle {
-    all: unset;
-    margin: 1rem;
-    margin-right: 4rem;
-    margin-top: 1.5rem;
-}
-
 .btn {
-    font-family:'Chakra Petch', sans-serif;
+    font-family:'Aldrich', sans-serif;
     font-weight: bold;
     background: linear-gradient(to right, #5FF6AD, #98D1F4);
     background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
     -webkit-text-fill-color: transparent;
     padding: 1rem;
     margin: 1rem;
@@ -78,7 +77,6 @@ ul:last-child {
     border: 2px solid #48C0D2;
     position: relative;
     overflow: hidden;
-    z-index: 1;
 }
 
 .btn::before {
