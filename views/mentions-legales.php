@@ -1,29 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="../_assets/images/CyberLab_logo.svg">
-    <link rel="stylesheet" href="styles.css">
-    <title>CyberLab - Mentions légales</title>
-    <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
-
-    <!-- FONTS -->
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Audiowide&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-</head>
-    <body class="legal-notice">
-        <main>
-            <h2>Éditeur du site</h2>
+<?php
+namespace SAE_PHP\views;
+class Homepage { 
+    public function show(): void { 
+        ob_start();
+        ?><h2>Éditeur du site</h2>
 
                 <p>Ce site a été conçu par une équipe d'étudiants dans le cadre d'un projet de formation en BUT Informatique, au titre de l'année scolaire 2026-2076.
                     Il n'a aucune vocation commerciale et est présenté à des fins purement pédagogiques.<br>
@@ -61,7 +41,8 @@
             
             <h2>Droit applicable</h2>
 
-                <p>Le présent site est soumis au droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
-        </main>
-    </body>
-</html>
+                <p>Le présent site est soumis au droit français. En cas de litige, les tribunaux français seront seuls compétents.</p><?php
+
+        (new \SAE_PHP\views\Layout('CyberLab - Mentions légales', ob_get_clean()))->show();
+    }
+}
