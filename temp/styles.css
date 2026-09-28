@@ -289,3 +289,15 @@ footer ul, footer a {
 footer a:hover {
     color: #48C0D2;
 }
+
+/* Mentions légales */
+
+.legal-notice {
+    color:white;
+}
+
+/* Sitemap */
+
+.sitemap {
+    color:white;
+}
