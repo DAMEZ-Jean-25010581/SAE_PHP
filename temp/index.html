@@ -40,8 +40,16 @@
                     </li>
 
                     <li><button id="mode-toggle"><img src="../_assets/images/icons/Light_mode_icon.svg"></button></li>
-                    <li><button class="btn">SE CONNECTER</a></button></li>
-                    <li><button class="btn">S'INSCRIRE</a></button></li>
+                    <li>
+                        <form action="authentification.php">
+                            <button class="btn">SE CONNECTER</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="inscription.php">
+                            <button class="btn">S'INSCRIRE</button>
+                        </form>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -71,7 +79,12 @@
                 </p>
             </h3>
                 
-            <button class="btn">NOUS REJOINDRE</button><br>
+            <li>
+                <form action="inscription.php">
+                    <button class="btn">NOUS REJOINDRE</button>
+                </form>
+            </li>
+            
         </section>
 
         <!-- STATS LIST -->
@@ -170,7 +183,7 @@
         <footer>
             <ul>
                 <li><span>© 2026 CyberLab</span></li>
-                <li><span><a href="">Plan du site</a></span></li>
+                <li><span><a href="plan_site.html">Plan du site</a></span></li>
                 <li><span><a href="mentions_legales.html">Mentions légales</a></span></li>
             </ul>
         </footer>
