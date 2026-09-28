@@ -7,6 +7,6 @@ class Homepage
     {
         $postRepository = new PostRepository(DatabaseConnection::getInstance());
         $posts = $postRepository->getPosts();
-        (new \SAE_PHP\views\Homepage())->show();
+        (new \SAE_PHP\views\Contact())->show();
     }
 }
