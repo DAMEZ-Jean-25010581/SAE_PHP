@@ -1,6 +1,6 @@
 <?php
 namespace SAE_PHP\views;
-class Homepage { 
+class Inscription { 
     public function show(): void { 
         ob_start();
         ?>

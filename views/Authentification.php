@@ -1,6 +1,6 @@
 <?php
 namespace SAE_PHP\views;
-class Homepage { 
+class Authentification { 
     public function show(): void { 
         ob_start();
         ?>
@@ -8,6 +8,6 @@ class Homepage {
         <!-- Ici HTML -->
 
         <?php
-        (new \SAE_PHP\views\Layout('CyberLab - Contact', ob_get_clean()))->show();
+        (new \SAE_PHP\views\Layout('CyberLab - Authentification', ob_get_clean()))->show();
     }
 }

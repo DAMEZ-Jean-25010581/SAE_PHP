@@ -1,6 +1,6 @@
 <?php
 namespace SAE_PHP\views;
-class Homepage { 
+class MentionsLegales { 
     public function show(): void { 
         ob_start();
         ?><h2>Éditeur du site</h2>
