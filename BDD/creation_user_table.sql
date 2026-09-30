@@ -23,9 +23,7 @@ CREATE TABLE User_(
    user_id INT,
    user_name VARCHAR(50) NOT NULL,
    email VARCHAR(50) NOT NULL,
-   password_hash VARCHAR(50) NOT NULL,
-   nb_points INT DEFAULT 0,
-   progression INT NUMERIC(3, 2) DEFAULT 0,
+   password_hash VARCHAR(255) NOT NULL,
    PRIMARY KEY(user_id),
    UNIQUE(user_name),
    UNIQUE(email)
@@ -40,6 +38,10 @@ CREATE TABLE Session_(
    UNIQUE(token),
    FOREIGN KEY(user_id) REFERENCES User_(user_id)
 );
+
+-- Insertion de l'utilisateur admin par défaut
+INSERT INTO User_ (user_id, user_name, email, password_hash)
+VALUES (1, 'wanis', 'wanis@univ-amu.fr', '$2y$10$OfMA8xv7SzCLO6E1FVB8u.SgKJGRVotmabJHYGLwZ8/Rigc4Vm5ba');
 
 -- Contraintes.
 
