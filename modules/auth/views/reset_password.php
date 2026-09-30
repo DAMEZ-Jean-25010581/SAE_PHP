@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - SAE PHP</title>
+    <title>Nouveau mot de passe - SAE PHP</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,7 +22,7 @@
             color: #1f2937;
         }
 
-        .register-container {
+        .reset-container {
             background-color: #ffffff;
             width: 100%;
             max-width: 420px;
@@ -31,19 +31,19 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
-        .register-header {
+        .reset-header {
             text-align: center;
             margin-bottom: 28px;
         }
 
-        .register-header h1 {
-            font-size: 26px;
+        .reset-header h1 {
+            font-size: 24px;
             font-weight: 700;
             color: #111827;
             margin-bottom: 8px;
         }
 
-        .register-header p {
+        .reset-header p {
             font-size: 14px;
             color: #6b7280;
         }
@@ -113,64 +113,62 @@
             transform: scale(0.99);
         }
 
-        .login-link {
+        .links {
             margin-top: 24px;
             text-align: center;
             font-size: 14px;
             color: #6b7280;
         }
 
-        .login-link a {
+        .links a {
             color: #2563eb;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .login-link a:hover {
+        .links a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="register-container">
-        <div class="register-header">
-            <h1>Inscription</h1>
-            <p>Créez votre compte pour vous connecter</p>
+    <div class="reset-container">
+        <div class="reset-header">
+            <h1>Nouveau mot de passe</h1>
+            <p>Définissez votre nouveau mot de passe sécurisé.</p>
         </div>
 
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger">
-                <?= htmlspecialchars($error) ?>
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
             </div>
         <?php endif; ?>
 
-        <form action="index.php?action=register" method="post">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
-            <div class="form-group">
-                <label for="login">Identifiant :</label>
-                <input type="text" id="login" name="login" required minlength="3" maxlength="30" pattern="^[a-zA-Z0-9_\-\.]{3,30}$" autocomplete="username" placeholder="Lettres, chiffres, tirets, underscores" value="<?= htmlspecialchars($_POST['login'] ?? '') ?>">
+        <?php if ($user !== null): ?>
+            <form action="index.php?action=reset_password" method="post">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
+                <input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES, 'UTF-8') ?>">
+
+                <div class="form-group">
+                    <label for="password">Nouveau mot de passe :</label>
+                    <input type="password" id="password" name="password" required minlength="12" maxlength="72" autocomplete="new-password" placeholder="12 caractères min. (Maj, min, chiffre, symbole)">
+                </div>
+
+                <div class="form-group">
+                    <label for="password_confirm">Confirmer le nouveau mot de passe :</label>
+                    <input type="password" id="password_confirm" name="password_confirm" required minlength="12" maxlength="72" autocomplete="new-password" placeholder="Répétez le nouveau mot de passe">
+                </div>
+
+                <button type="submit" class="btn-submit">Valider le changement</button>
+            </form>
+        <?php else: ?>
+            <div class="links">
+                <a href="index.php?action=forgot_password">Demander un nouveau lien</a>
             </div>
+        <?php endif; ?>
 
-            <div class="form-group">
-                <label for="email">Adresse email :</label>
-                <input type="email" id="email" name="email" required maxlength="100" autocomplete="email" placeholder="votre.email@exemple.fr" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required minlength="12" maxlength="72" autocomplete="new-password" placeholder="12 caractères min. (Maj, min, chiffre, symbole)">
-            </div>
-
-            <div class="form-group">
-                <label for="password_confirm">Confirmer le mot de passe :</label>
-                <input type="password" id="password_confirm" name="password_confirm" required minlength="12" maxlength="72" autocomplete="new-password" placeholder="Répétez le mot de passe">
-            </div>
-
-            <button type="submit" class="btn-submit">S'inscrire</button>
-        </form>
-
-        <div class="login-link">
-            Déjà inscrit ? <a href="index.php?action=login">Se connecter</a>
+        <div class="links">
+            <a href="index.php?action=login">Retour à la connexion</a>
         </div>
     </div>
 </body>

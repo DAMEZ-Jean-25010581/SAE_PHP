@@ -1,6 +1,7 @@
 <?php
 $logoutSuccess = isset($_GET['logout']) && $_GET['logout'] === 'success';
 $registeredSuccess = isset($_GET['registered']) && $_GET['registered'] === 'success';
+$resetSuccess = isset($_GET['reset']) && $_GET['reset'] === 'success';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -160,6 +161,12 @@ $registeredSuccess = isset($_GET['registered']) && $_GET['registered'] === 'succ
             </div>
         <?php endif; ?>
 
+        <?php if ($resetSuccess): ?>
+            <div class="alert alert-success">
+                Votre mot de passe a été réinitialisé avec succès ! Vous pouvez maintenant vous connecter.
+            </div>
+        <?php endif; ?>
+
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger">
                 <?= htmlspecialchars($error) ?>
@@ -167,6 +174,7 @@ $registeredSuccess = isset($_GET['registered']) && $_GET['registered'] === 'succ
         <?php endif; ?>
 
         <form action="index.php?action=login" method="post">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="form-group">
                 <label for="login">Identifiant :</label>
                 <input type="text" id="login" name="login" required autocomplete="username" placeholder="Votre identifiant" value="<?= htmlspecialchars($_POST['login'] ?? '') ?>">
@@ -175,6 +183,10 @@ $registeredSuccess = isset($_GET['registered']) && $_GET['registered'] === 'succ
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Votre mot de passe">
+            </div>
+
+            <div style="text-align: right; margin-top: -12px; margin-bottom: 16px;">
+                <a href="index.php?action=forgot_password" style="font-size: 13px; color: #2563eb; text-decoration: none;">Mot de passe oublié ?</a>
             </div>
 
             <button type="submit" class="btn-submit">Se connecter</button>

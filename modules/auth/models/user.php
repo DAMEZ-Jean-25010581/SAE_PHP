@@ -112,19 +112,124 @@ class UserRepository
 
     public function createUser(string $username, string $email, string $passwordHash): bool
     {
-        $idStmt = $this->getPdo()->query('SELECT COALESCE(MAX(user_id), 0) + 1 FROM User_');
-        $nextId = (int) $idStmt->fetchColumn();
+        try {
+            $idStmt = $this->getPdo()->query('SELECT COALESCE(MAX(user_id), 0) + 1 FROM User_');
+            $nextId = (int) $idStmt->fetchColumn();
 
+            $statement = $this->getPdo()->prepare(
+                'INSERT INTO User_ (user_id, user_name, email, password_hash) 
+                 VALUES (:user_id, :username, :email, :password_hash)'
+            );
+
+            return $statement->execute([
+                'user_id'       => $nextId,
+                'username'      => $username,
+                'email'         => $email,
+                'password_hash' => $passwordHash,
+            ]);
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function findByUsernameOrEmail(string $identifier): ?User
+    {
         $statement = $this->getPdo()->prepare(
-            'INSERT INTO User_ (user_id, user_name, email, password_hash) 
-             VALUES (:user_id, :username, :email, :password_hash)'
+            'SELECT user_id, user_name, email, password_hash 
+             FROM User_ 
+             WHERE user_name = :identifier OR email = :identifier'
         );
+        $statement->execute(['identifier' => $identifier]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $statement->execute([
-            'user_id'       => $nextId,
-            'username'      => $username,
-            'email'         => $email,
-            'password_hash' => $passwordHash,
+        if (!$row) {
+            return null;
+        }
+
+        return new User(
+            (int) $row['user_id'],
+            $row['user_name'],
+            $row['email'],
+            $row['password_hash']
+        );
+    }
+
+    public function createPasswordReset(int $userId, string $tokenHash, int $expiresAt): bool
+    {
+        try {
+            $deleteStmt = $this->getPdo()->prepare('DELETE FROM PasswordReset_ WHERE user_id = :user_id');
+            $deleteStmt->execute(['user_id' => $userId]);
+
+            $statement = $this->getPdo()->prepare(
+                'INSERT INTO PasswordReset_ (user_id, token_hash, expires_at) 
+                 VALUES (:user_id, :token_hash, :expires_at)'
+            );
+
+            return $statement->execute([
+                'user_id'    => $userId,
+                'token_hash' => $tokenHash,
+                'expires_at' => $expiresAt,
+            ]);
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function findUserByResetToken(string $tokenHash): ?User
+    {
+        $statement = $this->getPdo()->prepare(
+            'SELECT u.user_id, u.user_name, u.email, u.password_hash 
+             FROM User_ u
+             INNER JOIN PasswordReset_ pr ON u.user_id = pr.user_id
+             WHERE pr.token_hash = :token_hash AND pr.expires_at > :current_time'
+        );
+        $statement->execute([
+            'token_hash'   => $tokenHash,
+            'current_time' => time(),
         ]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return null;
+        }
+
+        return new User(
+            (int) $row['user_id'],
+            $row['user_name'],
+            $row['email'],
+            $row['password_hash']
+        );
+    }
+
+    public function deletePasswordReset(string $tokenHash): bool
+    {
+        try {
+            $statement = $this->getPdo()->prepare('DELETE FROM PasswordReset_ WHERE token_hash = :token_hash');
+            return $statement->execute(['token_hash' => $tokenHash]);
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function updatePassword(int $userId, string $passwordHash): bool
+    {
+        try {
+            $statement = $this->getPdo()->prepare(
+                'UPDATE User_ 
+                 SET password_hash = :password_hash 
+                 WHERE user_id = :user_id'
+            );
+
+            return $statement->execute([
+                'password_hash' => $passwordHash,
+                'user_id'       => $userId,
+            ]);
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
     }
 }

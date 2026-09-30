@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - SAE PHP</title>
+    <title>Mot de passe oublié - SAE PHP</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,7 +22,7 @@
             color: #1f2937;
         }
 
-        .register-container {
+        .forgot-container {
             background-color: #ffffff;
             width: 100%;
             max-width: 420px;
@@ -31,21 +31,22 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
-        .register-header {
+        .forgot-header {
             text-align: center;
             margin-bottom: 28px;
         }
 
-        .register-header h1 {
-            font-size: 26px;
+        .forgot-header h1 {
+            font-size: 24px;
             font-weight: 700;
             color: #111827;
             margin-bottom: 8px;
         }
 
-        .register-header p {
+        .forgot-header p {
             font-size: 14px;
             color: #6b7280;
+            line-height: 1.5;
         }
 
         .alert {
@@ -56,6 +57,24 @@
             line-height: 1.4;
         }
 
+        .alert-success {
+            background-color: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            word-break: break-all;
+        }
+
+        .alert-info a {
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+
         .alert-danger {
             background-color: #fef2f2;
             color: #991b1b;
@@ -63,7 +82,7 @@
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
@@ -102,7 +121,6 @@
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
-            margin-top: 8px;
         }
 
         .btn-submit:hover {
@@ -113,64 +131,61 @@
             transform: scale(0.99);
         }
 
-        .login-link {
+        .back-link {
             margin-top: 24px;
             text-align: center;
             font-size: 14px;
             color: #6b7280;
         }
 
-        .login-link a {
+        .back-link a {
             color: #2563eb;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .login-link a:hover {
+        .back-link a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="register-container">
-        <div class="register-header">
-            <h1>Inscription</h1>
-            <p>Créez votre compte pour vous connecter</p>
+    <div class="forgot-container">
+        <div class="forgot-header">
+            <h1>Mot de passe oublié</h1>
+            <p>Saisissez votre identifiant ou email pour recevoir un lien de réinitialisation.</p>
         </div>
 
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger">
-                <?= htmlspecialchars($error) ?>
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
             </div>
         <?php endif; ?>
 
-        <form action="index.php?action=register" method="post">
+        <?php if (!empty($successMessage)): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($resetLink)): ?>
+            <div class="alert alert-info">
+                Lien de test : <a href="<?= htmlspecialchars($resetLink, ENT_QUOTES, 'UTF-8') ?>">Réinitialiser mon mot de passe</a>
+            </div>
+        <?php endif; ?>
+
+        <form action="index.php?action=forgot_password" method="post">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="form-group">
-                <label for="login">Identifiant :</label>
-                <input type="text" id="login" name="login" required minlength="3" maxlength="30" pattern="^[a-zA-Z0-9_\-\.]{3,30}$" autocomplete="username" placeholder="Lettres, chiffres, tirets, underscores" value="<?= htmlspecialchars($_POST['login'] ?? '') ?>">
+                <label for="identifier">Identifiant ou Email :</label>
+                <input type="text" id="identifier" name="identifier" required autocomplete="username" placeholder="Votre nom d'utilisateur ou email" value="<?= htmlspecialchars($_POST['identifier'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
-            <div class="form-group">
-                <label for="email">Adresse email :</label>
-                <input type="email" id="email" name="email" required maxlength="100" autocomplete="email" placeholder="votre.email@exemple.fr" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required minlength="12" maxlength="72" autocomplete="new-password" placeholder="12 caractères min. (Maj, min, chiffre, symbole)">
-            </div>
-
-            <div class="form-group">
-                <label for="password_confirm">Confirmer le mot de passe :</label>
-                <input type="password" id="password_confirm" name="password_confirm" required minlength="12" maxlength="72" autocomplete="new-password" placeholder="Répétez le mot de passe">
-            </div>
-
-            <button type="submit" class="btn-submit">S'inscrire</button>
+            <button type="submit" class="btn-submit">Envoyer le lien</button>
         </form>
 
-        <div class="login-link">
-            Déjà inscrit ? <a href="index.php?action=login">Se connecter</a>
+        <div class="back-link">
+            <a href="index.php?action=login">Retour à la connexion</a>
         </div>
     </div>
 </body>

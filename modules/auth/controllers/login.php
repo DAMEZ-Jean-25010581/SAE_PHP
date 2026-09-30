@@ -4,6 +4,7 @@ namespace Auth\Controllers\Login;
 
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
+use Utils\Csrf;
 
 class Login
 {
@@ -12,10 +13,13 @@ class Login
         $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $csrfToken = $_POST['csrf_token'] ?? '';
             $username = trim($_POST['login'] ?? '');
             $password = $_POST['password'] ?? '';
 
-            if (empty($username) || empty($password)) {
+            if (!Csrf::validateToken($csrfToken)) {
+                $error = 'Jeton de sécurité invalide ou expiré.';
+            } elseif (empty($username) || empty($password)) {
                 $error = 'Veuillez renseigner tous les champs.';
             } else {
                 $userRepository = new UserRepository(DatabaseConnection::getInstance());
@@ -25,6 +29,9 @@ class Login
                     if (session_status() === PHP_SESSION_NONE) {
                         session_start();
                     }
+
+                    session_regenerate_id(true);
+
                     $_SESSION['user'] = [
                         'id'       => $user->getId(),
                         'username' => $user->getUsername(),
