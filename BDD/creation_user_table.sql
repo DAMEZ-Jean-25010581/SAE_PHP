@@ -25,7 +25,7 @@ CREATE TABLE User_(
    email VARCHAR(50) NOT NULL,
    password_hash VARCHAR(50) NOT NULL,
    nb_points INT DEFAULT 0,
-   progression INT NUMERIC(3, 2) DEFAULT 0,
+   progression NUMERIC(3, 2) DEFAULT 0,
    PRIMARY KEY(user_id),
    UNIQUE(user_name),
    UNIQUE(email)
