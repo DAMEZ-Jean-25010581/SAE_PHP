@@ -28,8 +28,17 @@ class DatabaseConnection
                 CREATE TABLE IF NOT EXISTS User_ (
                     user_id INT PRIMARY KEY,
                     user_name VARCHAR(50) NOT NULL UNIQUE,
-                    email VARCHAR(50) NOT NULL UNIQUE,
+                    email VARCHAR(100) NOT NULL UNIQUE,
                     password_hash VARCHAR(255) NOT NULL
+                );
+            ");
+
+            $this->pdo->exec("
+                CREATE TABLE IF NOT EXISTS PasswordReset_ (
+                    reset_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    token_hash VARCHAR(64) NOT NULL UNIQUE,
+                    expires_at INTEGER NOT NULL
                 );
             ");
 
