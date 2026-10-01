@@ -14,7 +14,7 @@ class ForgotPassword
         $successMessage = null;
         $resetLink = null;
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $csrfToken = $_POST['csrf_token'] ?? '';
             $identifier = trim($_POST['identifier'] ?? '');
 

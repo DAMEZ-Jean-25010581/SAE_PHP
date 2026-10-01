@@ -4,7 +4,7 @@ header('X-Frame-Options: SAMEORIGIN');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 
-require __DIR__ . '/_assets/includes/exceptions/autoloader.php';
+require_once __DIR__ . '/_assets/includes/exceptions/autoloader.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', '1');
@@ -24,20 +24,32 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/_assets/includes/exceptions/autoloader.php';
-
-$action = $_GET['action'] ?? 'home';
+$action = $_GET['action'] ?? null;
+if (!$action) {
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+    $path = trim(parse_url($requestUri, PHP_URL_PATH) ?? '', '/');
+    $segments = explode('/', $path);
+    $lastSegment = end($segments);
+    if (!empty($lastSegment) && $lastSegment !== 'index.php') {
+        $action = $lastSegment;
+    } else {
+        $action = 'home';
+    }
+}
 
 switch ($action) {
     case 'login':
+    case 'authentification':
         (new \Auth\Controllers\Login\Login())->execute();
         break;
 
     case 'register':
+    case 'inscription':
         (new \Auth\Controllers\Register\Register())->execute();
         break;
 
     case 'logout':
+    case 'deconnexion':
         (new \Auth\Controllers\Logout\Logout())->execute();
         break;
 
@@ -49,88 +61,24 @@ switch ($action) {
         (new \Auth\Controllers\ResetPassword\ResetPassword())->execute();
         break;
 
+    case 'a-propos':
+        (new \SAE_PHP\controllers\APropos())->execute();
+        break;
+
+    case 'contact':
+        (new \SAE_PHP\controllers\Contact())->execute();
+        break;
+
+    case 'mentions-legales':
+        (new \SAE_PHP\controllers\MentionsLegales())->execute();
+        break;
+
+    case 'plan-site':
+        (new \SAE_PHP\controllers\PlanSite())->execute();
+        break;
+
     case 'home':
     default:
-        if (isset($_SESSION['user'])) {
-            ?>
-            <!DOCTYPE html>
-            <html lang="fr">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Accueil - SAE PHP</title>
-                <style>
-                    body {
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                        background: linear-gradient(135deg, #f5f7fb 0%, #e5e9f2 100%);
-                        min-height: 100vh;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin: 0;
-                        padding: 20px;
-                    }
-                    .dashboard-card {
-                        background: #ffffff;
-                        padding: 40px;
-                        border-radius: 12px;
-                        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-                        max-width: 480px;
-                        width: 100%;
-                        text-align: center;
-                    }
-                    h1 {
-                        color: #111827;
-                        font-size: 24px;
-                        margin-bottom: 12px;
-                    }
-                    .user-info {
-                        background: #f9fafb;
-                        border: 1px solid #e5e7eb;
-                        border-radius: 8px;
-                        padding: 16px;
-                        margin: 20px 0;
-                        text-align: left;
-                        font-size: 15px;
-                        color: #374151;
-                    }
-                    .user-info p {
-                        margin: 6px 0;
-                    }
-                    .user-info strong {
-                        color: #111827;
-                    }
-                    .btn-logout {
-                        display: inline-block;
-                        padding: 12px 24px;
-                        background-color: #ef4444;
-                        color: #ffffff;
-                        text-decoration: none;
-                        border-radius: 8px;
-                        font-weight: 600;
-                        transition: background-color 0.2s;
-                    }
-                    .btn-logout:hover {
-                        background-color: #dc2626;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="dashboard-card">
-                    <h1>Bienvenue, <?= htmlspecialchars($_SESSION['user']['username']) ?> !</h1>
-                    <div class="user-info">
-                        <p><strong>Identifiant :</strong> <?= htmlspecialchars($_SESSION['user']['username']) ?></p>
-                        <p><strong>Email :</strong> <?= htmlspecialchars($_SESSION['user']['email']) ?></p>
-                        <p><strong>Statut :</strong> Connecté</p>
-                    </div>
-                    <a href="index.php?action=logout" class="btn-logout">Se déconnecter</a>
-                </div>
-            </body>
-            </html>
-            <?php
-        } else {
-            header('Location: index.php?action=login');
-            exit;
-        }
+        (new \SAE_PHP\controllers\Homepage())->execute();
         break;
 }

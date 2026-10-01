@@ -1,10 +1,12 @@
 <?php
 namespace SAE_PHP\controllers;
 
+use Auth\Controllers\Login\Login;
+
 class Authentification
 {
     public function execute(): void
     {
-        (new \SAE_PHP\views\Authentification())->show();
+        (new Login())->execute();
     }
 }

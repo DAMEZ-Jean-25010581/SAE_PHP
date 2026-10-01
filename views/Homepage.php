@@ -1,16 +1,19 @@
 <?php
 namespace SAE_PHP\views;
-class Homepage { 
-    public function show(): void { 
-        ob_start();
-        ?><!-- UPPER SECTION -->
 
+class Homepage
+{
+    public function show(): void
+    {
+        ob_start();
+        ?>
+        <!-- UPPER SECTION -->
         <section>
             <h1 class="main-title">CYBERLAB</h1>
         
             <h2 class="subtitle">
                 <p class="cursor">
-                    <span class="blue-word">> Pirater</span>
+                    <span class="blue-word">&gt; Pirater</span>
                     <span>pour mieux </span>
                     <span class="green-word">protéger. </span>
                 </p>
@@ -27,39 +30,34 @@ class Homepage {
             </h3>
                 
             <li>
-                <form action="/inscription">
-                    <button class="btn">NOUS REJOINDRE</button>
+                <form action="index.php" method="GET">
+                    <input type="hidden" name="action" value="register">
+                    <button type="submit" class="btn">NOUS REJOINDRE</button>
                 </form>
             </li>
-            
         </section>
 
         <!-- STATS LIST -->
-
         <section class="stats">
             <section class="rectangle-list">
                 <ul>
-
                     <li>
                         <section class="data-rectangle">
                             <span class="rectangle-text">XXX+</span>
                             <p class="data-descriptive-text">UTILISATEURS <br> INSCRITS</p>
                         </section>
                     </li>
-
                     <li>
                         <section class="data-rectangle">
                             <span class="rectangle-text">XXX+</span>
                             <p class="data-descriptive-text">LEÇONS <br> COMPLÉTÉES</p>
                         </section>
                     </li>
-
                 </ul>
             </section>
         </section>
 
         <!-- LEVELS -->
-
         <section id="levels">
             <h2 class="subtitle">
                 Niveaux
@@ -67,10 +65,8 @@ class Homepage {
                     // Apprenez le piratage en le pratiquant
                 </h3>
             </h2>
-        
 
             <!-- LEVELS LIST -->
-        
             <section class="rectangle-list">
                 <ul>
                     <li class="level-rectangle">
@@ -86,12 +82,11 @@ class Homepage {
                         <p>Exploitez un chiffrement faible ou absent pour intercepter des mots de passe ou données confidentielles</p>
                     </li>
                 </ul>
-                <a href="">[liste]</a>
+                <a href="index.php#levels">[liste]</a>
             </section>
         </section>
 
         <!-- RANKING -->
-
         <section id="ranking">
             <h2 class="subtitle">
                 Classement
@@ -99,9 +94,8 @@ class Homepage {
                     // Devenez le meilleur CyberLab hacker !
                 </h3>
             </h2>
-        
-            <!-- RANKING LIST -->
 
+            <!-- RANKING LIST -->
             <section class="rectangle-list">
                 <ul>
                     <li class="ranking-rectangle">
@@ -120,9 +114,10 @@ class Homepage {
                         <span class="rank">#3</span>
                     </li>
                 </ul>
-                <a href="">[liste]</a>
+                <a href="index.php#ranking">[liste]</a>
             </section>
-        </section><?php
+        </section>
+        <?php
         (new \SAE_PHP\views\Layout('CyberLab - Accueil', ob_get_clean()))->show();
     }
 }

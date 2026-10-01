@@ -78,4 +78,24 @@ spl_autoload_register(function (string $class): void {
             }
         }
     }
+
+    if (str_starts_with($class, 'SAE_PHP\\')) {
+        $relative = substr($class, strlen('SAE_PHP\\'));
+        $file = __DIR__ . '/../../../' . str_replace('\\', '/', $relative) . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
+    }
+
+    $topDirs = ['controllers\\', 'views\\', 'models\\', 'routes\\'];
+    foreach ($topDirs as $dirPrefix) {
+        if (str_starts_with($class, $dirPrefix)) {
+            $file = __DIR__ . '/../../../' . str_replace('\\', '/', $class) . '.php';
+            if (file_exists($file)) {
+                require_once $file;
+                return;
+            }
+        }
+    }
 });

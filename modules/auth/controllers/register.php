@@ -12,7 +12,7 @@ class Register
     {
         $error = null;
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $csrfToken = $_POST['csrf_token'] ?? '';
             $username = trim($_POST['login'] ?? '');
             $email = trim($_POST['email'] ?? '');

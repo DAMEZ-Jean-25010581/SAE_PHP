@@ -23,7 +23,7 @@ class ResetPassword
 
             if ($user === null) {
                 $error = 'Le lien de réinitialisation est invalide ou a expiré.';
-            } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            } elseif (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $csrfToken = $_POST['csrf_token'] ?? '';
                 $password = $_POST['password'] ?? '';
                 $passwordConfirm = $_POST['password_confirm'] ?? '';
