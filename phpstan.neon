@@ -2,11 +2,13 @@ parameters:
     level: 1
 
     paths:
-        - index.php
-        - controllers
-        - models
-        - modules
-        - routes
+        - public/index.php
+        - app/controller
+        - app/models
+        - app/routes
+        - app/views
+        - public/_assets/includes
+        - public/_assets/utils
 
     excludePaths:
         - temp/*
