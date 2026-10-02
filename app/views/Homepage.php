@@ -30,7 +30,7 @@ class Homepage
     </h3>
 
     <li>
-        <a href="/inscription" class="btn">NOUS REJOINDRE</a>
+        <a href="/register" class="btn">NOUS REJOINDRE</a>
     </li>
 </section>
 

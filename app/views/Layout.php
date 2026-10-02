@@ -46,7 +46,7 @@ class Layout
                         </span>
                     </li>
                     <li>
-                        <a href="/deconnexion" class="btn" style="text-decoration: none; display: inline-block;">DÉCONNEXION</a>
+                        <a href="/logout" class="btn" style="text-decoration: none; display: inline-block;">DÉCONNEXION</a>
                     </li>
                 <?php else: ?>
                     <li>

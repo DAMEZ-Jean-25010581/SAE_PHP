@@ -2,8 +2,7 @@
 
 namespace Auth\Controllers\Register;
 
-use Includes\Database\DatabaseConnection;
-use Auth\Model\User\UserRepository;
+use SAE_PHP\models\UserRepository;
 use Utils\Csrf;
 
 class Register
@@ -36,7 +35,7 @@ class Register
             } elseif (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[\W_]/', $password)) {
                 $error = 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.';
             } else {
-                $userRepository = new UserRepository(DatabaseConnection::getInstance());
+                $userRepository = new UserRepository();
 
                 if ($userRepository->exists($username, $email)) {
                     $error = 'Cet identifiant ou cette adresse email est déjà utilisé.';

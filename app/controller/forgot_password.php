@@ -2,8 +2,7 @@
 
 namespace Auth\Controllers\ForgotPassword;
 
-use Includes\Database\DatabaseConnection;
-use Auth\Model\User\UserRepository;
+use SAE_PHP\models\UserRepository;
 use Utils\Csrf;
 
 class ForgotPassword
@@ -23,7 +22,7 @@ class ForgotPassword
             } elseif (empty($identifier)) {
                 $error = 'Veuillez saisir votre identifiant ou votre adresse email.';
             } else {
-                $userRepository = new UserRepository(DatabaseConnection::getInstance());
+                $userRepository = new UserRepository();
                 $user = $userRepository->findByUsernameOrEmail($identifier);
 
                 if ($user !== null) {
