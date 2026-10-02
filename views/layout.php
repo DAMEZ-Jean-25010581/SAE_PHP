@@ -1,19 +1,51 @@
-<?php
-namespace Blog\View;
-class Layout { // PSR-12: opening brace next line
-public function __construct(private string $title, private string $content) {}
-public function show(): void { // PSR-12: opening brace next line
-?><!DOCTYPE html>
-<html>
+<<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <meta charset="utf-8"/>
-    <title><?= $this->title; ?></title>
-    <link href="style.css" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style.css">
+    <title>CyberLab - Accueil</title>
+
+    <!-- Polices -->
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Audiowide&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
 </head>
 <body>
-<?= $this->content; ?>
+    <section>
+        <header>
+            <nav>
+                <ul>
+                    <li class="header-links">
+                        <ul>
+                            <li><a href="index.html"><img id="logo" src="../_assets/images/CyberLab_logo.svg"></a></li>
+                            <li><a class="header-link" href="#niveaux">NIVEAUX</a></li>
+                            <li><a class="header-link" href="#classement">CLASSEMENT</a></li>
+                            <li><a class="header-link" href="apropos.html">A PROPOS</a></li>
+                            <li><a class="header-link" href="contact.html">CONTACT</a></li>
+                        </ul>
+                    </li>
+                    <li><button id="mode-toggle"><img src="../_assets/images/icons/Light_mode_icon.svg"></button></li>
+                    <li><button class="btn"><a href="">SE CONNECTER</a></button></li>
+                    <li><button class="btn"><a href="">S'INSCRIRE</a></button></li>
+                </ul>
+            </nav>
+        </header>
+
+    <main>
+        <?= $content ?>
+    </main>
+
+    <footer>
+        <p>&copy; <?= date('Y') ?> Cybertone</p>
+    </footer>
 </body>
 </html>
-<?php
-}
-}
