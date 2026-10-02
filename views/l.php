@@ -7,7 +7,8 @@ class Layout
 
     public function show(): void
     {
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -61,7 +62,7 @@ class Layout
     </header>
         
     <main>
-<?= $this->content; ?>
+<?=content; ?>
     </main>
 
     <!-- FOOTER -->
