@@ -14,7 +14,7 @@ class DatabaseConnection
     {
         $dataDir = __DIR__ . '/../data';
         if (!is_dir($dataDir)) {
-            mkdir($dataDir, 0777, true);
+            mkdir($dataDir, 0777, true); //probleme de sécurité, à revoir
         }
 
         $dbFile = $dataDir . '/database.sqlite';

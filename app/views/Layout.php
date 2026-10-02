@@ -12,8 +12,8 @@ class Layout
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="_assets/images/logo/CyberLab_logo.svg">
-    <link rel="stylesheet" href="_assets/styles/styles.css">
+    <link rel="icon" type="image/svg+xml" href="/_assets/images/logo/CyberLab_logo.svg">
+    <link rel="stylesheet" href="/_assets/styles/styles.css">
     <title><?= htmlspecialchars($this->title); ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
 
@@ -24,36 +24,36 @@ class Layout
 </head>
 <body>
 
-    <!-- NAVIGUATION BAR -->
+    <!-- NAVIGATION BAR -->
     <header>
         <nav>
             <ul>
                 <li class="header-links">
                     <ul>
-                        <li><a href="index.php"><img id="logo" src="_assets/images/logo/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
-                        <li><a class="header-link" href="index.php#levels">NIVEAUX</a></li>
-                        <li><a class="header-link" href="index.php#ranking">CLASSEMENT</a></li>
-                        <li><a class="header-link" href="index.php?action=a-propos">A PROPOS</a></li>
-                        <li><a class="header-link" href="index.php?action=contact">CONTACT</a></li>
+                        <li><a href="/"><img id="logo" src="/_assets/images/logo/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
+                        <li><a class="header-link" href="/#levels">NIVEAUX</a></li>
+                        <li><a class="header-link" href="/#ranking">CLASSEMENT</a></li>
+                        <li><a class="header-link" href="/a-propos">A PROPOS</a></li>
+                        <li><a class="header-link" href="/contact">CONTACT</a></li>
                     </ul>
                 </li>
 
-                <li><button id="mode-toggle"><img src="_assets/images/icons/Light_mode_icon.svg" alt="Mode"></button></li>
+                <li><button id="mode-toggle"><img src="/_assets/images/icons/Light_mode_icon.svg" alt="Mode"></button></li>
                 <?php if (isset($_SESSION['user'])): ?>
                     <li>
                         <span style="color: #60a5fa; font-weight: bold; margin-right: 8px;">
-                            👤 <?= htmlspecialchars($_SESSION['user']['username']); ?>
+                            👤 <?= htmlspecialchars($_SESSION['user']['username'] ?? $_SESSION['user']['name'] ?? 'Utilisateur'); ?>
                         </span>
                     </li>
                     <li>
-                        <a href="index.php?action=logout" class="btn" style="text-decoration: none; display: inline-block;">DÉCONNEXION</a>
+                        <a href="/deconnexion" class="btn" style="text-decoration: none; display: inline-block;">DÉCONNEXION</a>
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="index.php?action=login" class="btn" style="text-decoration: none; display: inline-block;">SE CONNECTER</a>
+                        <a href="/login" class="btn" style="text-decoration: none; display: inline-block;">SE CONNECTER</a>
                     </li>
                     <li>
-                        <a href="index.php?action=register" class="btn" style="text-decoration: none; display: inline-block;">S'INSCRIRE</a>
+                        <a href="/register" class="btn" style="text-decoration: none; display: inline-block;">S'INSCRIRE</a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -68,8 +68,8 @@ class Layout
     <footer>
         <ul>
             <li><span>© 2026 CyberLab</span></li>
-            <li><span><a href="index.php?action=plan-site">Plan du site</a></span></li>
-            <li><span><a href="index.php?action=mentions-legales">Mentions légales</a></span></li>
+            <li><span><a href="/plan-site">Plan du site</a></span></li>
+            <li><span><a href="/mentions-legales">Mentions légales</a></span></li>
         </ul>
     </footer>
 </body>

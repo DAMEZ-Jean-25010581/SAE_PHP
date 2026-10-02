@@ -24,6 +24,10 @@ class Web
             (new \Auth\Controllers\Login\Login())->execute();
         });
 
+        Route::add('/connexion', function () {
+            (new \Auth\Controllers\Login\Login())->execute();
+        });
+
         Route::add('/register', function () {
             (new \Auth\Controllers\Register\Register())->execute();
         });
@@ -61,6 +65,10 @@ class Web
         });
 
         Route::add('/plan-site', function () {
+            (new \SAE_PHP\controllers\PlanSite())->execute();
+        });
+
+        Route::add('/plan-du-site', function () {
             (new \SAE_PHP\controllers\PlanSite())->execute();
         });
     }
