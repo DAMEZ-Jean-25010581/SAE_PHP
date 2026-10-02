@@ -1,69 +1,19 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="../_assets/images/CyberLab_logo.svg">
-    <link rel="stylesheet" href="styles.css">
-    <title>CyberLab - Accueil</title>
-    <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
+<?php
+namespace SAE_PHP\views;
 
-    <!-- FONTS -->
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Audiowide&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-</head>
-<body>
-
-    <!-- NAVIGUATION BAR -->
-
-        <header>
-            <nav>
-                <ul>
-
-                    <li class="header-links">
-                        <ul>
-                            <li><a href="index.html"><img id="logo" src="../_assets/images/CyberLab_logo.svg"></a></li>
-                            <li><a class="header-link" href="#levels">NIVEAUX</a></li>
-                            <li><a class="header-link" href="#ranking">CLASSEMENT</a></li>
-                            <li><a class="header-link" href="a_propos.html">A PROPOS</a></li>
-                            <li><a class="header-link" href="contact.html">CONTACT</a></li>
-                        </ul>
-                    </li>
-
-                    <li><button id="mode-toggle"><img src="../_assets/images/icons/Light_mode_icon.svg"></button></li>
-                    <li>
-                        <form action="authentification.php">
-                            <button class="btn">SE CONNECTER</button>
-                        </form>
-                    </li>
-                    <li>
-                        <form action="inscription.php">
-                            <button class="btn">S'INSCRIRE</button>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-        
-    <main>
-
+class Homepage
+{
+    public function show(): void
+    {
+        ob_start();
+        ?>
         <!-- UPPER SECTION -->
-
         <section>
             <h1 class="main-title">CYBERLAB</h1>
         
             <h2 class="subtitle">
                 <p class="cursor">
-                    <span class="blue-word">> Pirater</span>
+                    <span class="blue-word">&gt; Pirater</span>
                     <span>pour mieux </span>
                     <span class="green-word">protéger. </span>
                 </p>
@@ -80,39 +30,34 @@
             </h3>
                 
             <li>
-                <form action="inscription.php">
-                    <button class="btn">NOUS REJOINDRE</button>
+                <form action="index.php" method="GET">
+                    <input type="hidden" name="action" value="register">
+                    <button type="submit" class="btn">NOUS REJOINDRE</button>
                 </form>
             </li>
-            
         </section>
 
         <!-- STATS LIST -->
-
         <section class="stats">
             <section class="rectangle-list">
                 <ul>
-
                     <li>
                         <section class="data-rectangle">
                             <span class="rectangle-text">XXX+</span>
                             <p class="data-descriptive-text">UTILISATEURS <br> INSCRITS</p>
                         </section>
                     </li>
-
                     <li>
                         <section class="data-rectangle">
                             <span class="rectangle-text">XXX+</span>
                             <p class="data-descriptive-text">LEÇONS <br> COMPLÉTÉES</p>
                         </section>
                     </li>
-
                 </ul>
             </section>
         </section>
 
         <!-- LEVELS -->
-
         <section id="levels">
             <h2 class="subtitle">
                 Niveaux
@@ -120,10 +65,8 @@
                     // Apprenez le piratage en le pratiquant
                 </h3>
             </h2>
-        
 
             <!-- LEVELS LIST -->
-        
             <section class="rectangle-list">
                 <ul>
                     <li class="level-rectangle">
@@ -139,12 +82,11 @@
                         <p>Exploitez un chiffrement faible ou absent pour intercepter des mots de passe ou données confidentielles</p>
                     </li>
                 </ul>
-                <a href="">[liste]</a>
+                <a href="index.php#levels">[liste]</a>
             </section>
         </section>
 
         <!-- RANKING -->
-
         <section id="ranking">
             <h2 class="subtitle">
                 Classement
@@ -152,9 +94,8 @@
                     // Devenez le meilleur CyberLab hacker !
                 </h3>
             </h2>
-        
-            <!-- RANKING LIST -->
 
+            <!-- RANKING LIST -->
             <section class="rectangle-list">
                 <ul>
                     <li class="ranking-rectangle">
@@ -173,19 +114,10 @@
                         <span class="rank">#3</span>
                     </li>
                 </ul>
-                <a href="">[liste]</a>
+                <a href="index.php#ranking">[liste]</a>
             </section>
         </section>
-    </main>
-
-        <!-- FOOTER -->
-
-        <footer>
-            <ul>
-                <li><span>© 2026 CyberLab</span></li>
-                <li><span><a href="plan_site.html">Plan du site</a></span></li>
-                <li><span><a href="mentions_legales.html">Mentions légales</a></span></li>
-            </ul>
-        </footer>
-</body>
-</html>
+        <?php
+        (new \SAE_PHP\views\Layout('CyberLab - Accueil', ob_get_clean()))->show();
+    }
+}
