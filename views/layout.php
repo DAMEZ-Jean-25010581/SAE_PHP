@@ -1,51 +1,67 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/style.css">
-    <title>CyberLab - Accueil</title>
+    <link rel="icon" type="image/svg+xml" href="/_assets/images/CyberLab_logo.svg">
+    <link rel="stylesheet" href="public/_assets/styles/styles.css">
+    <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
+    <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
 
-    <!-- Polices -->
-    
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Audiowide&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Audiowide&family=Chakra+Petch:wght@200;300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <section>
-        <header>
-            <nav>
-                <ul>
-                    <li class="header-links">
-                        <ul>
-                            <li><a href="index.html"><img id="logo" src="../_assets/images/CyberLab_logo.svg"></a></li>
-                            <li><a class="header-link" href="#niveaux">NIVEAUX</a></li>
-                            <li><a class="header-link" href="#classement">CLASSEMENT</a></li>
-                            <li><a class="header-link" href="apropos.html">A PROPOS</a></li>
-                            <li><a class="header-link" href="contact.html">CONTACT</a></li>
-                        </ul>
+
+    <!-- NAVIGATION BAR -->
+    <header>
+        <nav>
+            <ul>
+                <li class="header-links">
+                    <ul>
+                        <li><a href="/"><img id="logo" src="/_assets/images/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
+                        <li><a class="header-link" href="/#levels">NIVEAUX</a></li>
+                        <li><a class="header-link" href="/#ranking">CLASSEMENT</a></li>
+                        <li><a class="header-link" href="/a-propos">A PROPOS</a></li>
+                        <li><a class="header-link" href="/contact">CONTACT</a></li>
+                    </ul>
+                </li>
+
+                <li><button id="mode-toggle"><img src="/_assets/images/icons/Light_mode_icon.svg" alt="Mode"></button></li>
+                <?php if (\utils\SessionHelpers::isLogin()): ?>
+                    <li>
+                        <span style="color: #60a5fa; font-weight: bold; margin-right: 8px;">
+                            👤 <?= htmlspecialchars($_SESSION['user']['name']) ?>
+                        </span>
                     </li>
-                    <li><button id="mode-toggle"><img src="../_assets/images/icons/Light_mode_icon.svg"></button></li>
-                    <li><button class="btn"><a href="">SE CONNECTER</a></button></li>
-                    <li><button class="btn"><a href="">S'INSCRIRE</a></button></li>
-                </ul>
-            </nav>
-        </header>
+                    <li>
+                        <a href="/deconnexion" class="btn" style="text-decoration: none; display: inline-block;">DÉCONNEXION</a>
+                    </li>
+                <?php else: ?>
+                    <li>
+                        <a href="/connexion" class="btn" style="text-decoration: none; display: inline-block;">SE CONNECTER</a>
+                    </li>
+                    <li>
+                        <a href="/inscription" class="btn" style="text-decoration: none; display: inline-block;">S'INSCRIRE</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </header>
 
     <main>
         <?= $content ?>
     </main>
 
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; <?= date('Y') ?> Cybertone</p>
+        <ul>
+            <li><span>© 2026 CyberLab</span></li>
+            <li><span><a href="/plan-du-site">Plan du site</a></span></li>
+            <li><span><a href="/mentions-legales">Mentions légales</a></span></li>
+        </ul>
     </footer>
 </body>
 </html>
