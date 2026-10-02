@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="/_assets/images/CyberLab_logo.svg">
-    <link rel="stylesheet" href="public/_assets/styles/styles.css">
+    <link rel="stylesheet" href="/_assets/styles/styles.css">
     <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
 
@@ -30,7 +30,7 @@
                 </li>
 
                 <li><button id="mode-toggle"><img src="/_assets/images/icons/Light_mode_icon.svg" alt="Mode"></button></li>
-                <?php if (\utils\SessionHelpers::isLogin()): ?>
+                <?php if (\Utils\SessionHelpers::isLogin()): ?>
                     <li>
                         <span style="color: #60a5fa; font-weight: bold; margin-right: 8px;">
                             👤 <?= htmlspecialchars($_SESSION['user']['name']) ?>
