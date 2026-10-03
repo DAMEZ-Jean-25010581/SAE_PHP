@@ -2,7 +2,8 @@
 
 namespace Auth\Controllers\Login;
 
-use SAE_PHP\models\UserRepository;
+use Includes\Database\DatabaseConnection;
+use Auth\Model\User\UserRepository;
 use Utils\Csrf;
 
 class Login
@@ -21,7 +22,7 @@ class Login
             } elseif (empty($username) || empty($password)) {
                 $error = 'Veuillez renseigner tous les champs.';
             } else {
-                $userRepository = new UserRepository();
+                $userRepository = new UserRepository(DatabaseConnection::getInstance());
                 $user = $userRepository->findByUsername($username);
 
                 if ($user !== null && password_verify($password, $user->getPasswordHash())) {

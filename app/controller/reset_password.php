@@ -2,7 +2,8 @@
 
 namespace Auth\Controllers\ResetPassword;
 
-use SAE_PHP\models\UserRepository;
+use Includes\Database\DatabaseConnection;
+use Auth\Model\User\UserRepository;
 use Utils\Csrf;
 
 class ResetPassword
@@ -17,7 +18,7 @@ class ResetPassword
             $error = 'Jeton de réinitialisation manquant ou invalide.';
         } else {
             $tokenHash = hash('sha256', $token);
-            $userRepository = new UserRepository();
+            $userRepository = new UserRepository(DatabaseConnection::getInstance());
             $user = $userRepository->findUserByResetToken($tokenHash);
 
             if ($user === null) {

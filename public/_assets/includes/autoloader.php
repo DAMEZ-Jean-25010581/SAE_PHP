@@ -5,6 +5,8 @@ spl_autoload_register(function (string $class): void {
 
     $classMap = [
         'Includes\\Database\\DatabaseConnection' => __DIR__ . '/database.php',
+        'Auth\\Model\\User\\User'                => $rootDir . '/app/models/user.php',
+        'Auth\\Model\\User\\UserRepository'      => $rootDir . '/app/models/user.php',
     ];
 
     $prefixes = [
