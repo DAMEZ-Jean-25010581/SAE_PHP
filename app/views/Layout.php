@@ -46,7 +46,10 @@ class Layout
                         </span>
                     </li>
                     <li>
-                        <a href="/logout" class="btn" style="text-decoration: none; display: inline-block;">DÉCONNEXION</a>
+                        <form action="index.php?action=logout" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
+                            <button type="submit" class="btn">DÉCONNEXION</button>
+                        </form>
                     </li>
                 <?php else: ?>
                     <li>
