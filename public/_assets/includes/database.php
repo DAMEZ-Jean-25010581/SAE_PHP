@@ -5,6 +5,15 @@ namespace Includes\Database;
 use PDO;
 use PDOException;
 
+/**
+ * Connexion MySQL / MariaDB (singleton).
+ *
+ * Identifiants lus dans cet ordre :
+ *  1. public/_assets/config/config.local.php  (sur alwaysdata, fichier non versionné)
+ *  2. variables d'environnement DB_*    (en local, fournies par Docker)
+ *
+ * Le schéma de la base est dans BDD/mysql/*.sql (plus créé ici).
+ */
 class DatabaseConnection
 {
     private static ?DatabaseConnection $instance = null;
@@ -12,44 +21,51 @@ class DatabaseConnection
 
     private function __construct()
     {
-        $dataDir = __DIR__ . '/../data';
-        if (!is_dir($dataDir)) {
-            mkdir($dataDir, 0777, true); //probleme de sécurité, à revoir
-        }
+        $config = self::loadConfig();
 
-        $dbFile = $dataDir . '/database.sqlite';
+        $dsn = sprintf(
+            'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
+            $config['DB_HOST'],
+            $config['DB_PORT'],
+            $config['DB_NAME']
+        );
 
         try {
-            $this->pdo = new PDO('sqlite:' . $dbFile);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-            $this->pdo->exec("
-                CREATE TABLE IF NOT EXISTS User_ (
-                    user_id INT PRIMARY KEY,
-                    user_name VARCHAR(50) NOT NULL UNIQUE,
-                    email VARCHAR(100) NOT NULL UNIQUE,
-                    password_hash VARCHAR(255) NOT NULL
-                );
-            ");
-
-            $this->pdo->exec("
-                CREATE TABLE IF NOT EXISTS PasswordReset_ (
-                    reset_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id INTEGER NOT NULL,
-                    token_hash VARCHAR(64) NOT NULL UNIQUE,
-                    expires_at INTEGER NOT NULL
-                );
-            ");
-
-            $checkStmt = $this->pdo->query("SELECT COUNT(*) FROM User_ WHERE user_name = 'wanis'");
-            if ((int) $checkStmt->fetchColumn() === 0) {
-                $hash = '$2y$10$OfMA8xv7SzCLO6E1FVB8u.SgKJGRVotmabJHYGLwZ8/Rigc4Vm5ba';
-                $this->pdo->exec("INSERT INTO User_ (user_id, user_name, email, password_hash) VALUES ((SELECT COALESCE(MAX(user_id), 0) + 1 FROM User_), 'wanis', 'wanis@admin.local', '$hash')");
-            }
+            $this->pdo = new PDO($dsn, $config['DB_USER'], $config['DB_PASS'], [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
         } catch (PDOException $e) {
-            die("Erreur de connexion : " . $e->getMessage());
+            // On ne montre pas le détail (hôte, utilisateur...) aux visiteurs
+            error_log('Connexion BDD impossible : ' . $e->getMessage());
+            http_response_code(500);
+            die('Erreur de connexion à la base de données.');
         }
+    }
+
+    /**
+     * @return array{DB_HOST: string, DB_PORT: string, DB_NAME: string, DB_USER: string, DB_PASS: string}
+     */
+    private static function loadConfig(): array
+    {
+        $file = __DIR__ . '/../config/config.local.php';
+        $local = is_file($file) ? (array) require $file : [];
+
+        $get = static function (string $key, string $default = '') use ($local): string {
+            if (isset($local[$key])) {
+                return (string) $local[$key];
+            }
+            $env = getenv($key);
+            return $env !== false ? $env : $default;
+        };
+
+        return [
+            'DB_HOST' => $get('DB_HOST', 'db'),
+            'DB_PORT' => $get('DB_PORT', '3306'),
+            'DB_NAME' => $get('DB_NAME'),
+            'DB_USER' => $get('DB_USER'),
+            'DB_PASS' => $get('DB_PASS'),
+        ];
     }
 
     public static function getInstance(): self
