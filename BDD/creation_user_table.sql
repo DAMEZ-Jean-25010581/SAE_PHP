@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS User_ CASCADE CONSTRAINTS PURGE;
 DROP TABLE IF EXISTS Session_ CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE User_(
-   user_id INT,
+   user_id INT AUTO_INCREMENT,
    user_name VARCHAR(50) NOT NULL,
    email VARCHAR(50) NOT NULL,
    password_hash VARCHAR(50) NOT NULL,
@@ -46,6 +46,7 @@ INSERT INTO User_ (user_id, user_name, email, password_hash)
 VALUES (1, 'wanis', 'wanis@univ-amu.fr', '$2y$10$OfMA8xv7SzCLO6E1FVB8u.SgKJGRVotmabJHYGLwZ8/Rigc4Vm5ba');
 
 -- Contraintes.
+
 
 
 
