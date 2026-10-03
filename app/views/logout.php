@@ -4,7 +4,7 @@ use SAE_PHP\views\Layout;
 ob_start();
 ?>
 <div class="auth-wrapper">
-    <div class="auth-card" style="text-align: center;">
+    <div class="auth-card text-center">
         <div class="auth-header">
             <h1 class="auth-title">DÉCONNEXION</h1>
             <p class="auth-subtitle">&gt; Session clôturée</p>
@@ -14,13 +14,13 @@ ob_start();
             ✓ Votre session CyberLab a été fermée avec succès. Vos cookies de connexion ont été invalidés.
         </div>
 
-        <div style="margin-top: 2rem;">
-            <a href="index.php?action=login" class="btn auth-btn-submit" style="text-decoration: none; display: inline-block;">
+        <div class="mt-2">
+            <a href="index.php?action=login" class="btn auth-btn-submit">
                 SE RECONNECTER
             </a>
         </div>
 
-        <div class="auth-links" style="margin-top: 1.5rem;">
+        <div class="auth-links mt-15">
             <a href="index.php">Retour à l'accueil</a>
         </div>
     </div>
