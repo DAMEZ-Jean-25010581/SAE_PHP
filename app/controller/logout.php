@@ -2,12 +2,19 @@
 
 namespace Auth\Controllers\Logout;
 
+use Utils\Csrf;
+
 class Logout
 {
     public function execute(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
+        }
+
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST' || !Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            header('Location: index.php');
+            exit;
         }
 
         $_SESSION = [];

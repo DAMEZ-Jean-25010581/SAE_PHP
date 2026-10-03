@@ -1,3 +1,12 @@
+<?php
+namespace SAE_PHP\views;
+
+class Homepage
+{
+    public function show(): void
+    {
+        ob_start();
+        ?>
 <!-- UPPER SECTION -->
 <section>
     <h1 class="main-title">CYBERLAB</h1>
@@ -105,3 +114,7 @@
         <a href="/#ranking">[liste]</a>
     </section>
 </section>
+        <?php
+        (new \SAE_PHP\views\Layout('CyberLab - Accueil', (string)ob_get_clean()))->show();
+    }
+}

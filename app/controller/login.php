@@ -4,6 +4,8 @@ namespace Auth\Controllers\Login;
 
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
+use PDOException;
+use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
 
 class Login
@@ -14,18 +16,16 @@ class Login
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $csrfToken = $_POST['csrf_token'] ?? '';
-            $username = trim($_POST['login'] ?? '');
+            $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
 
             if (!Csrf::validateToken($csrfToken)) {
                 $error = 'Jeton de sécurité invalide ou expiré.';
-            } elseif (empty($username) || empty($password)) {
-                $error = 'Veuillez renseigner tous les champs.';
             } else {
-                $userRepository = new UserRepository(DatabaseConnection::getInstance());
-                $user = $userRepository->findByUsername($username);
+                try {
+                    $userRepository = new UserRepository(DatabaseConnection::getInstance());
+                    $user = $userRepository->login($email, $password);
 
-                if ($user !== null && password_verify($password, $user->getPasswordHash())) {
                     if (session_status() === PHP_SESSION_NONE) {
                         session_start();
                     }
@@ -40,8 +40,11 @@ class Login
 
                     header('Location: index.php');
                     exit;
-                } else {
-                    $error = 'Identifiant ou mot de passe incorrect.';
+                } catch (UserException $e) {
+                    $error = $e->getMessage();
+                } catch (PDOException $e) {
+                    error_log($e->getMessage());
+                    $error = 'Une erreur est survenue lors de la connexion.';
                 }
             }
         }

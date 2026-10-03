@@ -25,27 +25,11 @@ class Web
             (new \Auth\Controllers\Login\Login())->execute();
         });
 
-        Route::add('/authentification', function () {
-            (new \Auth\Controllers\Login\Login())->execute();
-        });
-
-        Route::add('/connexion', function () {
-            (new \Auth\Controllers\Login\Login())->execute();
-        });
-
         Route::add('/register', function () {
             (new \Auth\Controllers\Register\Register())->execute();
         });
 
-        Route::add('/inscription', function () {
-            (new \Auth\Controllers\Register\Register())->execute();
-        });
-
         Route::add('/logout', function () {
-            (new \Auth\Controllers\Logout\Logout())->execute();
-        });
-
-        Route::add('/deconnexion', function () {
             (new \Auth\Controllers\Logout\Logout())->execute();
         });
 
