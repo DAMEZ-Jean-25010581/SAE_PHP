@@ -3,17 +3,22 @@
 namespace routes;
 
 use routes\base\Route;
+use Utils\Template;
 
 class Web
 {
     public function __construct()
     {
         Route::add('/', function () {
-            (new \SAE_PHP\controllers\Homepage())->execute();
+            Template::render('homepage', [
+                'title' => 'CyberLab - Accueil'
+            ]);
         });
 
         Route::add('/home', function () {
-            (new \SAE_PHP\controllers\Homepage())->execute();
+            Template::render('homepage', [
+                'title' => 'CyberLab - Accueil'
+            ]);
         });
 
         Route::add('/login', function () {
@@ -53,23 +58,33 @@ class Web
         });
 
         Route::add('/a-propos', function () {
-            (new \SAE_PHP\controllers\APropos())->execute();
+            Template::render('a-propos', [
+                'title' => 'CyberLab - À propos'
+            ]);
         });
 
         Route::add('/contact', function () {
-            (new \SAE_PHP\controllers\Contact())->execute();
+            Template::render('contact', [
+                'title' => 'CyberLab - Contact'
+            ]);
         });
 
         Route::add('/mentions-legales', function () {
-            (new \SAE_PHP\controllers\MentionsLegales())->execute();
+            Template::render('mentions-legales', [
+                'title' => 'CyberLab - Mentions légales'
+            ]);
         });
 
         Route::add('/plan-site', function () {
-            (new \SAE_PHP\controllers\PlanSite())->execute();
+            Template::render('plan-site', [
+                'title' => 'CyberLab - Plan du site'
+            ]);
         });
 
         Route::add('/plan-du-site', function () {
-            (new \SAE_PHP\controllers\PlanSite())->execute();
+            Template::render('plan-site', [
+                'title' => 'CyberLab - Plan du site'
+            ]);
         });
     }
 }

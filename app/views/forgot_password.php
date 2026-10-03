@@ -1,8 +1,3 @@
-<?php
-use SAE_PHP\views\Layout;
-
-ob_start();
-?>
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">
@@ -48,5 +43,3 @@ ob_start();
         </div>
     </div>
 </div>
-<?php
-(new Layout('CyberLab - Mot de passe oublié', ob_get_clean()))->show();

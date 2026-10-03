@@ -1,7 +1,4 @@
 <?php
-use SAE_PHP\views\Layout;
-
-ob_start();
 ?>
 <div class="auth-wrapper">
     <div class="auth-card text-center">
@@ -25,5 +22,3 @@ ob_start();
         </div>
     </div>
 </div>
-<?php
-(new Layout('CyberLab - Déconnexion', ob_get_clean()))->show();

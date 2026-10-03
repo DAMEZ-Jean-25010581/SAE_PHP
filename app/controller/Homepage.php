@@ -5,6 +5,6 @@ class Homepage
 {
     public function execute(): void
     {
-        (new \SAE_PHP\views\Homepage())->show();
+        \Utils\Template::render('homepage');
     }
 }
