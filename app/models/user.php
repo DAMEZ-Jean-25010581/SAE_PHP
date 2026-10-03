@@ -308,7 +308,31 @@ class UserRepository
         $statement->execute(['token_hash' => $tokenHash]);
     }
 
-    /* AJOUTER METHODE UPDATE NOM D'UTILISATEUR */
+    public function updateUsername(int $userId, string $username): void
+    {
+        if ($username === '') {
+            throw UserException::emptyField();
+        }
+
+        if (!($this->idExists($userId))) {
+            throw UserException::invalidUserId();
+        }
+
+        if ($this->usernameExists($username)) {
+            throw UserException::usernameAlreadyExists();
+        }
+
+        $statement = $this->getPdo()->prepare(
+            'UPDATE User_
+             SET user_name = :username
+             WHERE user_id = :user_id'
+        );
+
+        $statement->execute([
+            'username' => $username,
+            'user_id'  => $userId,
+        ]);
+    }
 
     public function updatePassword(int $userId, string $password, string $passwordConfirm): void
     {
