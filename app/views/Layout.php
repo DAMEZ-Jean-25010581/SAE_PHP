@@ -32,8 +32,8 @@
                 <li><button id="mode-toggle"><img src="/_assets/images/icons/Light_mode_icon.svg" alt="Mode"></button></li>
                 <?php if (\Utils\SessionHelpers::isLogin()): ?>
                     <li>
-                        <span class="user-greeting">
-                            <?= htmlspecialchars($_SESSION['user']['username'] ?? $_SESSION['user']['name'] ?? 'Utilisateur'); ?>
+                        <span style="color: #60a5fa; font-weight: bold; margin-right: 8px;">
+                            👤 <?= htmlspecialchars($_SESSION['user']['name']) ?>
                         </span>
                     </li>
                     <li>
@@ -41,10 +41,10 @@
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="/login" class="btn">SE CONNECTER</a>
+                        <a href="/connexion" class="btn" style="text-decoration: none; display: inline-block;">SE CONNECTER</a>
                     </li>
                     <li>
-                        <a href="/register" class="btn">S'INSCRIRE</a>
+                        <a href="/inscription" class="btn" style="text-decoration: none; display: inline-block;">S'INSCRIRE</a>
                     </li>
                 <?php endif; ?>
             </ul>
