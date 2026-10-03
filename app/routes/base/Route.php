@@ -2,6 +2,8 @@
 
 namespace routes\base;
 
+use Utils\Template;
+
 class Route
 {
     private static array $routes = [];
@@ -40,12 +42,9 @@ class Route
             }
         }
 
-        if (isset(self::$routes['/'])) {
-            call_user_func(self::$routes['/']);
-            return;
-        }
-
         http_response_code(404);
-        echo "Page introuvable (404)";
+        Template::render('error', [
+            'title' => 'CyberLab - Page non trouvée'
+        ]);
     }
 }
