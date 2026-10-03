@@ -69,9 +69,10 @@ nav ul {
 }
 
 .btn {
-    font-family:'Aldrich', sans-serif;
+    font-family: 'Aldrich', sans-serif;
     font-weight: bold;
     background: linear-gradient(to right, #5FF6AD, #98D1F4);
+    -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     padding: 1rem;
@@ -81,6 +82,9 @@ nav ul {
     border: 2px solid #48C0D2;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    display: inline-block;
+    isolation: isolate;
 }
 
 .btn::before {
@@ -460,4 +464,38 @@ footer a:hover {
 .password-hints li {
     margin: 0.2rem 0;
     color: #e5e7eb;
+}
+
+.link-plain {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.text-center { text-align: center; }
+.mt-15 { margin-top: 1.5rem; }
+.mt-2 { margin-top: 2rem; }
+
+.forgot-link-wrapper {
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 16px;
+}
+
+.forgot-link {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 0.85rem;
+    color: #48C0D2;
+    text-decoration: none;
+}
+
+.user-greeting {
+    color: #60a5fa;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.reset-link {
+    word-break: break-all;
+    color: #5FF6AD;
+    font-size: 0.85rem;
 }

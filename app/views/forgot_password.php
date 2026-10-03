@@ -26,7 +26,7 @@ ob_start();
             <div class="auth-alert auth-alert-info">
                 <strong>[Mode Démo / Évaluation]</strong><br>
                 Lien de réinitialisation généré (valide 15 min) :<br>
-                <a href="<?= htmlspecialchars($resetLink, ENT_QUOTES, 'UTF-8') ?>" style="word-break: break-all; color: #5FF6AD; font-size: 0.85rem;">
+                <a href="<?= htmlspecialchars($resetLink, ENT_QUOTES, 'UTF-8') ?>" class="reset-link">
                     <?= htmlspecialchars($resetLink, ENT_QUOTES, 'UTF-8') ?>
                 </a>
             </div>

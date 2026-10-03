@@ -51,8 +51,8 @@ ob_start();
                 <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••••••">
             </div>
 
-            <div style="text-align: right; margin-top: -8px; margin-bottom: 16px;">
-                <a href="index.php?action=forgot_password" style="font-family: 'Chakra Petch', sans-serif; font-size: 0.85rem; color: #48C0D2; text-decoration: none;">Mot de passe oublié ?</a>
+            <div class="forgot-link-wrapper">
+                <a href="index.php?action=forgot_password" class="forgot-link">Mot de passe oublié ?</a>
             </div>
 
             <button type="submit" class="btn auth-btn-submit">SE CONNECTER</button>
