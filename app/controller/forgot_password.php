@@ -7,6 +7,7 @@ use Auth\Model\User\UserRepository;
 use PDOException;
 use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
+use Utils\Template;
 
 class ForgotPassword
 {
@@ -44,7 +45,12 @@ class ForgotPassword
             }
         }
 
-        require_once __DIR__ . '/../views/forgot_password.php';
+        Template::render('forgot_password', [
+            'title' => 'CyberLab - Récupération',
+            'error' => $error,
+            'successMessage' => $successMessage,
+            'resetLink' => $resetLink
+        ]);
     }
 
     private function sendResetEmail(string $email, string $token): void

@@ -7,6 +7,7 @@ use Auth\Model\User\UserRepository;
 use PDOException;
 use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
+use Utils\Template;
 
 class Register
 {
@@ -43,6 +44,9 @@ class Register
             }
         }
 
-        require_once __DIR__ . '/../views/register.php';
+        Template::render('register', [
+            'title' => 'CyberLab - Inscription',
+            'error' => $error
+        ]);
     }
 }

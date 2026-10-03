@@ -44,10 +44,10 @@
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="/login" class="btn">SE CONNECTER</a>
+                        <a href="index.php?action=login" class="btn">SE CONNECTER</a>
                     </li>
                     <li>
-                        <a href="/register" class="btn">S'INSCRIRE</a>
+                        <a href="index.php?action=register" class="btn">S'INSCRIRE</a>
                     </li>
                 <?php endif; ?>
             </ul>

@@ -7,6 +7,7 @@ use Auth\Model\User\UserRepository;
 use PDOException;
 use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
+use Utils\Template;
 
 class ResetPassword
 {
@@ -49,6 +50,11 @@ class ResetPassword
             }
         }
 
-        require_once __DIR__ . '/../views/reset_password.php';
+        Template::render('reset_password', [
+            'title' => 'CyberLab - Nouveau mot de passe',
+            'error' => $error,
+            'token' => $token,
+            'user' => $user
+        ]);
     }
 }
