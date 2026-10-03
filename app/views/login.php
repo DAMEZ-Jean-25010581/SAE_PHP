@@ -1,11 +1,8 @@
 <?php
-use SAE_PHP\views\Layout;
-
 $logoutSuccess = isset($_GET['logout']) && $_GET['logout'] === 'success';
 $registeredSuccess = isset($_GET['registered']) && $_GET['registered'] === 'success';
 $resetSuccess = isset($_GET['reset']) && $_GET['reset'] === 'success';
 
-ob_start();
 ?>
 <div class="auth-wrapper">
     <div class="auth-card">
@@ -63,5 +60,3 @@ ob_start();
         </div>
     </div>
 </div>
-<?php
-(new Layout('CyberLab - Connexion', ob_get_clean()))->show();

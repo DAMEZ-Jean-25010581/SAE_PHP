@@ -5,6 +5,7 @@ namespace Auth\Controllers\ForgotPassword;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use Utils\Csrf;
+use Utils\Template;
 
 class ForgotPassword
 {
@@ -39,6 +40,11 @@ class ForgotPassword
             }
         }
 
-        require_once __DIR__ . '/../views/forgot_password.php';
+        Template::render('forgot_password', [
+            'title' => 'CyberLab - Récupération',
+            'error' => $error,
+            'successMessage' => $successMessage,
+            'resetLink' => $resetLink
+        ]);
     }
 }

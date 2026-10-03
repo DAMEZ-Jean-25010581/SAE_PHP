@@ -10,6 +10,12 @@ class Logout
             session_start();
         }
 
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !\Utils\Csrf::validateToken($_POST['csrf_token'] ?? null)) {
+            http_response_code(403);
+            echo 'Requête de déconnexion invalide (403)';
+            return;
+        }
+
         $_SESSION = [];
 
         if (ini_get("session.use_cookies")) {

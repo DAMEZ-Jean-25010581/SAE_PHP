@@ -5,6 +5,7 @@ namespace Auth\Controllers\Login;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use Utils\Csrf;
+use Utils\Template;
 
 class Login
 {
@@ -46,6 +47,9 @@ class Login
             }
         }
 
-        require_once __DIR__ . '/../views/login.php';
+        Template::render('login', [
+            'title' => 'CyberLab - Connexion',
+            'error' => $error
+        ]);
     }
 }

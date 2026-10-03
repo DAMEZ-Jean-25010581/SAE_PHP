@@ -5,6 +5,7 @@ namespace Auth\Controllers\Register;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use Utils\Csrf;
+use Utils\Template;
 
 class Register
 {
@@ -38,22 +39,28 @@ class Register
             } else {
                 $userRepository = new UserRepository(DatabaseConnection::getInstance());
 
-                if ($userRepository->exists($username, $email)) {
+                if (
+                    $userRepository->usernameExists($username)
+                    || $userRepository->emailExists($email)
+                ) {
                     $error = 'Cet identifiant ou cette adresse email est déjà utilisé.';
                 } else {
-                    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                    $success = $userRepository->createUser($username, $email, $passwordHash);
+                    $userRepository->createUser(
+                        $username,
+                        $email,
+                        $password,
+                        $passwordConfirm
+                    );
 
-                    if ($success) {
-                        header('Location: index.php?action=login&registered=success');
-                        exit;
-                    } else {
-                        $error = 'Une erreur est survenue lors de l\'enregistrement.';
-                    }
+                    header('Location: index.php?action=login&registered=success');
+                    exit;
                 }
             }
         }
 
-        require_once __DIR__ . '/../views/register.php';
+        Template::render('register', [
+            'title' => 'CyberLab - Inscription',
+            'error' => $error
+        ]);
     }
 }
