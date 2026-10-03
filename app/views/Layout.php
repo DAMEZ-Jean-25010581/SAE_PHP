@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="/_assets/images/CyberLab_logo.svg">
+    <link rel="icon" type="image/svg+xml" href="/_assets/images/logo/CyberLab_logo.svg">
     <link rel="stylesheet" href="/_assets/styles/styles.css">
     <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
@@ -21,7 +21,7 @@
             <ul>
                 <li class="header-links">
                     <ul>
-                        <li><a href="/"><img id="logo" src="/_assets/images/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
+                        <li><a href="/"><img id="logo" src="/_assets/images/logo/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
                         <li><a class="header-link" href="/#levels">NIVEAUX</a></li>
                         <li><a class="header-link" href="/#ranking">CLASSEMENT</a></li>
                         <li><a class="header-link" href="/a-propos">A PROPOS</a></li>
@@ -37,7 +37,10 @@
                         </span>
                     </li>
                     <li>
-                        <a href="/deconnexion" class="btn">DÉCONNEXION</a>
+                        <form action="index.php?action=logout" method="post">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
+                            <button type="submit" class="btn">DÉCONNEXION</button>
+                        </form>
                     </li>
                 <?php else: ?>
                     <li>
@@ -59,7 +62,7 @@
     <footer>
         <ul>
             <li><span>© 2026 CyberLab</span></li>
-            <li><span><a href="/plan-du-site">Plan du site</a></span></li>
+            <li><span><a href="/plan-site">Plan du site</a></span></li>
             <li><span><a href="/mentions-legales">Mentions légales</a></span></li>
         </ul>
     </footer>

@@ -22,16 +22,6 @@ ob_start();
             </div>
         <?php endif; ?>
 
-        <?php if (!empty($resetLink)): ?>
-            <div class="auth-alert auth-alert-info">
-                <strong>[Mode Démo / Évaluation]</strong><br>
-                Lien de réinitialisation généré (valide 15 min) :<br>
-                <a href="<?= htmlspecialchars($resetLink, ENT_QUOTES, 'UTF-8') ?>" class="reset-link">
-                    <?= htmlspecialchars($resetLink, ENT_QUOTES, 'UTF-8') ?>
-                </a>
-            </div>
-        <?php endif; ?>
-
         <form action="index.php?action=forgot_password" method="post">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             
@@ -40,7 +30,7 @@ ob_start();
                 <input type="text" id="identifier" name="identifier" required placeholder="Entrez votre identifiant ou email" value="<?= htmlspecialchars($_POST['identifier'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
-            <button type="submit" class="btn auth-btn-submit">GÉNÉRER LE LIEN</button>
+            <button type="submit" class="btn auth-btn-submit">ENVOYER LE LIEN</button>
         </form>
 
         <div class="auth-links">

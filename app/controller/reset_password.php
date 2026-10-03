@@ -4,6 +4,8 @@ namespace Auth\Controllers\ResetPassword;
 
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
+use PDOException;
+use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
 
 class ResetPassword
@@ -30,25 +32,17 @@ class ResetPassword
 
                 if (!Csrf::validateToken($csrfToken)) {
                     $error = 'Jeton de sécurité invalide ou expiré.';
-                } elseif (empty($password) || empty($passwordConfirm)) {
-                    $error = 'Veuillez renseigner tous les champs obligatoires.';
-                } elseif ($password !== $passwordConfirm) {
-                    $error = 'Les mots de passe ne correspondent pas.';
-                } elseif (strlen($password) < 12) {
-                    $error = 'Le mot de passe doit comporter au moins 12 caractères.';
-                } elseif (strlen($password) > 72) {
-                    $error = 'Le mot de passe ne doit pas dépasser 72 caractères.';
-                } elseif (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[\W_]/', $password)) {
-                    $error = 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.';
                 } else {
-                    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                    $updated = $userRepository->updatePassword($user->getId(), $passwordHash);
-
-                    if ($updated) {
+                    try {
+                        $userRepository->updatePassword($user->getId(), $password, $passwordConfirm);
                         $userRepository->deletePasswordReset($tokenHash);
+
                         header('Location: index.php?action=login&reset=success');
                         exit;
-                    } else {
+                    } catch (UserException $e) {
+                        $error = $e->getMessage();
+                    } catch (PDOException $e) {
+                        error_log($e->getMessage());
                         $error = 'Une erreur est survenue lors de la mise à jour du mot de passe.';
                     }
                 }

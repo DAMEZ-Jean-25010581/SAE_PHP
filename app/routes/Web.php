@@ -12,19 +12,7 @@ class Web
             (new \SAE_PHP\controllers\Homepage())->execute();
         });
 
-        Route::add('/home', function () {
-            (new \SAE_PHP\controllers\Homepage())->execute();
-        });
-
         Route::add('/login', function () {
-            (new \Auth\Controllers\Login\Login())->execute();
-        });
-
-        Route::add('/authentification', function () {
-            (new \Auth\Controllers\Login\Login())->execute();
-        });
-
-        Route::add('/connexion', function () {
             (new \Auth\Controllers\Login\Login())->execute();
         });
 
@@ -32,15 +20,7 @@ class Web
             (new \Auth\Controllers\Register\Register())->execute();
         });
 
-        Route::add('/inscription', function () {
-            (new \Auth\Controllers\Register\Register())->execute();
-        });
-
         Route::add('/logout', function () {
-            (new \Auth\Controllers\Logout\Logout())->execute();
-        });
-
-        Route::add('/deconnexion', function () {
             (new \Auth\Controllers\Logout\Logout())->execute();
         });
 
@@ -65,10 +45,6 @@ class Web
         });
 
         Route::add('/plan-site', function () {
-            (new \SAE_PHP\controllers\PlanSite())->execute();
-        });
-
-        Route::add('/plan-du-site', function () {
             (new \SAE_PHP\controllers\PlanSite())->execute();
         });
     }
