@@ -21,7 +21,7 @@
     </h3>
 
     <li>
-        <a href="/inscription" class="btn">NOUS REJOINDRE</a>
+        <a href="index.php?action=register" class="btn">NOUS REJOINDRE</a>
     </li>
 </section>
 
