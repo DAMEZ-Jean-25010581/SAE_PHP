@@ -4,6 +4,8 @@ namespace Auth\Controllers\ForgotPassword;
 
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
+use PDOException;
+use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
 
 class ForgotPassword
@@ -31,8 +33,12 @@ class ForgotPassword
                     $tokenHash = hash('sha256', $token);
                     $expiresAt = time() + 900;
 
-                    $userRepository->createPasswordReset($user->getId(), $tokenHash, $expiresAt);
-                    $resetLink = 'index.php?action=reset_password&token=' . urlencode($token);
+                    try {
+                        $userRepository->createPasswordReset($user->getId(), $tokenHash, $expiresAt);
+                        $resetLink = 'index.php?action=reset_password&token=' . urlencode($token);
+                    } catch (UserException | PDOException $e) {
+                        error_log($e->getMessage());
+                    }
                 }
 
                 $successMessage = 'Si ce compte existe, un lien de réinitialisation a été généré.';
