@@ -38,7 +38,7 @@ class ResetPassword
                         $userRepository->updatePassword($user->getId(), $password, $passwordConfirm);
                         $userRepository->deletePasswordReset($tokenHash);
 
-                        header('Location: index.php?action=login&reset=success');
+                        header('Location: /login?reset=success');
                         exit;
                     } catch (UserException $e) {
                         $error = $e->getMessage();

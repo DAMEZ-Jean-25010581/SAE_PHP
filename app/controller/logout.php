@@ -8,12 +8,8 @@ class Logout
 {
     public function execute(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST' || !Csrf::validateToken($_POST['csrf_token'] ?? '')) {
-            header('Location: index.php');
+            header('Location: /');
             exit;
         }
 
@@ -34,7 +30,7 @@ class Logout
 
         session_destroy();
 
-        header('Location: index.php?action=login&logout=success');
+        header('Location: /login?logout=success');
         exit;
     }
 }

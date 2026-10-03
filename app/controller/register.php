@@ -33,7 +33,7 @@ class Register
                     $userRepository = new UserRepository(DatabaseConnection::getInstance());
                     $userRepository->createUser($username, $email, $password, $passwordConfirm);
 
-                    header('Location: index.php?action=login&registered=success');
+                    header('Location: /login?registered=success');
                     exit;
                 } catch (UserException $e) {
                     $error = $e->getMessage();
