@@ -48,15 +48,14 @@ class ForgotPassword
         Template::render('forgot_password', [
             'title' => 'CyberLab - Récupération',
             'error' => $error,
-            'successMessage' => $successMessage,
-            'resetLink' => $resetLink
+            'successMessage' => $successMessage
         ]);
     }
 
     private function sendResetEmail(string $email, string $token): void
     {
         $baseUrl = rtrim(getenv('APP_URL') ?: 'http://localhost:8080', '/');
-        $resetLink = $baseUrl . '/index.php?action=reset_password&token=' . urlencode($token);
+        $resetLink = $baseUrl . '/reset_password?token=' . urlencode($token);
         $sender = getenv('MAIL_FROM') ?: 'no-reply@' . (parse_url($baseUrl, PHP_URL_HOST) ?: 'localhost');
 
         $subject = '=?UTF-8?B?' . base64_encode('CyberLab - Réinitialisation de votre mot de passe') . '?=';
