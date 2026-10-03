@@ -7,6 +7,7 @@ use Auth\Model\User\UserRepository;
 use PDOException;
 use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
+use Utils\Template;
 
 class Login
 {
@@ -49,6 +50,9 @@ class Login
             }
         }
 
-        require_once __DIR__ . '/../views/login.php';
+        Template::render('login', [
+            'title' => 'CyberLab - Connexion',
+            'error' => $error
+        ]);
     }
 }
