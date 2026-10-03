@@ -1,20 +1,11 @@
-<?php
-namespace SAE_PHP\views;
-
-class Layout
-{
-    public function __construct(private string $title, private string $content) {}
-
-    public function show(): void
-    {
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="/_assets/images/logo/CyberLab_logo.svg">
+    <link rel="icon" type="image/svg+xml" href="/_assets/images/CyberLab_logo.svg">
     <link rel="stylesheet" href="/_assets/styles/styles.css">
-    <title><?= htmlspecialchars($this->title); ?></title>
+    <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
 
     <!-- FONTS -->
@@ -30,7 +21,7 @@ class Layout
             <ul>
                 <li class="header-links">
                     <ul>
-                        <li><a href="/"><img id="logo" src="/_assets/images/logo/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
+                        <li><a href="/"><img id="logo" src="/_assets/images/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
                         <li><a class="header-link" href="/#levels">NIVEAUX</a></li>
                         <li><a class="header-link" href="/#ranking">CLASSEMENT</a></li>
                         <li><a class="header-link" href="/a-propos">A PROPOS</a></li>
@@ -39,10 +30,10 @@ class Layout
                 </li>
 
                 <li><button id="mode-toggle"><img src="/_assets/images/icons/Light_mode_icon.svg" alt="Mode"></button></li>
-                <?php if (isset($_SESSION['user'])): ?>
+                <?php if (\Utils\SessionHelpers::isLogin()): ?>
                     <li>
                         <span style="color: #60a5fa; font-weight: bold; margin-right: 8px;">
-                            👤 <?= htmlspecialchars($_SESSION['user']['username'] ?? $_SESSION['user']['name'] ?? 'Utilisateur'); ?>
+                            👤 <?= htmlspecialchars($_SESSION['user']['name']) ?>
                         </span>
                     </li>
                     <li>
@@ -50,30 +41,27 @@ class Layout
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="/login" class="btn" style="text-decoration: none; display: inline-block;">SE CONNECTER</a>
+                        <a href="/connexion" class="btn" style="text-decoration: none; display: inline-block;">SE CONNECTER</a>
                     </li>
                     <li>
-                        <a href="/register" class="btn" style="text-decoration: none; display: inline-block;">S'INSCRIRE</a>
+                        <a href="/inscription" class="btn" style="text-decoration: none; display: inline-block;">S'INSCRIRE</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </nav>
     </header>
-        
+
     <main>
-<?= $this->content; ?>
+        <?= $content ?>
     </main>
 
     <!-- FOOTER -->
     <footer>
         <ul>
             <li><span>© 2026 CyberLab</span></li>
-            <li><span><a href="/plan-site">Plan du site</a></span></li>
+            <li><span><a href="/plan-du-site">Plan du site</a></span></li>
             <li><span><a href="/mentions-legales">Mentions légales</a></span></li>
         </ul>
     </footer>
 </body>
 </html>
-<?php
-    }
-}
