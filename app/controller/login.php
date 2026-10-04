@@ -7,6 +7,7 @@ use Auth\Model\User\UserRepository;
 use PDOException;
 use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
+use Utils\SessionHelpers;
 use Utils\Template;
 
 class Login
@@ -16,6 +17,11 @@ class Login
 
     public function execute(): void
     {
+        if (SessionHelpers::isLogin()) {
+            header('Location: /');
+            exit;
+        }
+
         $error = null;
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {

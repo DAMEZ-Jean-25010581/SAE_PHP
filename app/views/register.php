@@ -17,8 +17,8 @@
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             
             <div class="auth-group">
-                <label for="login">IDENTIFIANT :</label>
-                <input type="text" id="login" name="login" required autocomplete="username" placeholder="3 à 30 caractères alphanumériques" value="<?= htmlspecialchars($_POST['login'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                <label for="login">PSEUDO :</label>
+                <input type="text" id="login" name="login" required autocomplete="username" placeholder="Votre pseudo (3 à 30 caractères)" value="<?= htmlspecialchars($_POST['login'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
             <div class="auth-group">
