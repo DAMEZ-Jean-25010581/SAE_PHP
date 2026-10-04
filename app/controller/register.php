@@ -7,12 +7,18 @@ use Auth\Model\User\UserRepository;
 use PDOException;
 use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
+use Utils\SessionHelpers;
 use Utils\Template;
 
 class Register
 {
     public function execute(): void
     {
+        if (SessionHelpers::isLogin()) {
+            header('Location: /');
+            exit;
+        }
+
         $error = null;
 
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
@@ -25,7 +31,7 @@ class Register
             if (!Csrf::validateToken($csrfToken)) {
                 $error = 'Jeton de sécurité invalide ou expiré.';
             } elseif ($username !== '' && !preg_match('/^[a-zA-Z0-9_\-\.]{3,30}$/', $username)) {
-                $error = 'L\'identifiant doit comporter entre 3 et 30 caractères (lettres, chiffres, tirets, underscores).';
+                $error = 'Le pseudo doit comporter entre 3 et 30 caractères (lettres, chiffres, tirets, points, underscores).';
             } elseif (strlen($email) > 100) {
                 $error = 'L\'adresse email saisie est invalide.';
             } else {

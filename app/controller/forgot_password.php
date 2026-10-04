@@ -23,7 +23,7 @@ class ForgotPassword
             if (!Csrf::validateToken($csrfToken)) {
                 $error = 'Jeton de sécurité invalide ou expiré.';
             } elseif (empty($identifier)) {
-                $error = 'Veuillez saisir votre identifiant ou votre adresse email.';
+                $error = 'Veuillez saisir votre pseudo ou votre adresse email.';
             } else {
                 $userRepository = new UserRepository(DatabaseConnection::getInstance());
                 $user = $userRepository->findByUsernameOrEmail($identifier);
