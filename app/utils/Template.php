@@ -6,7 +6,7 @@ class Template
 {
     public static function render(string $view, array $params = []): void
     {
-        $viewPath = __DIR__ . '/../../../../app/views/' . $view . '.php';
+        $viewPath = __DIR__ . '/../views/' . $view . '.php';
 
         if (!is_file($viewPath)) {
             http_response_code(404);
@@ -20,6 +20,6 @@ class Template
         include $viewPath;
         $content = ob_get_clean();
 
-        include __DIR__ . '/../../../../app/views/layout.php';
+        include __DIR__ . '/../views/layout.php';
     }
 }
