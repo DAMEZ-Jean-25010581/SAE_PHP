@@ -1,29 +1,22 @@
 <?php
-namespace SAE_PHP\views;
-class Contact {
-    public function __construct(
-        private array $erreurs = [],
-        private bool $succes = false,
-        private array $anciens = []
-    ) {}
 
-    public function show(): void
-    {
-        $email   = $this->anciens['email'] ?? '';
-        $objet   = $this->anciens['objet'] ?? '';
-        $message = $this->anciens['message'] ?? '';
+$erreurs = [];
+$succes = false;
+$anciens = [];
+$email = $anciens['email'] ?? '';
+$objet = $anciens['objet'] ?? '';
+$message = $anciens['message'] ?? '';
 
-        ob_start();
-        ?>
+?>
         <section class="contact">
             <h1 class="main-title">Une question ?</h1>
-            <p class="sous-titre">// Veuillez remplir le formulaire ci-dessous</p>
+            <p class="subsubtitle">// Veuillez remplir le formulaire ci-dessous</p>
 
-            <?php if ($this->succes): ?>
+            <?php if ($succes): ?>
                 <p class="succes">Votre message a bien été envoyé.</p>
             <?php endif; ?>
 
-            <?php foreach ($this->erreurs as $erreur): ?>
+            <?php foreach ($erreurs as $erreur): ?>
                 <p class="erreur"><?= htmlspecialchars($erreur) ?></p>
             <?php endforeach; ?>
 
@@ -42,14 +35,8 @@ class Contact {
                     <label class="large">Sujet
                         <textarea name="message" rows="5" required><?= htmlspecialchars($message) ?></textarea>
                     </label>
-                </fieldset>
+
 
                 <button type="submit">Soumettre</button>
             </form>
         </section>
-        <?php
-        (new \SAE_PHP\views\Layout('CyberLab - Contact', ob_get_clean()))->show();
-    }
-} 
-
-      

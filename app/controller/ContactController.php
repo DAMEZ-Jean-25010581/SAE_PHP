@@ -1,10 +1,10 @@
 <?php
 namespace SAE_PHP\controllers;
 
-class Contact
+class ContactController
 {
     public function execute(): void
     {
-        (new \SAE_PHP\views\Contact())->show();
+        (new \SAE_PHP\app\views\Contact())->show();
     }
 }
