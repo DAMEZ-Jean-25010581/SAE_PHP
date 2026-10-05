@@ -22,18 +22,20 @@ $message = $anciens['message'] ?? '';
 
             <form action="/contact" method="post">
 
-                    <label>Adresse e-mail
-                        <input type="email" name="email"
+            <div class="auth-group">        
+                        <label for="email">Adresse e-mail </label>
+                        <input type="email" name="email" id="email"
                                value="<?= htmlspecialchars($email) ?>" required>
-                    </label>
+                    
 
-                    <label>Objet
-                        <input type="text" name="objet"
+                    <label for="objet">Objet
+                        <input type="text" name="objet" id="objet"
                                value="<?= htmlspecialchars($objet) ?>" required>
                     </label>
+            </div>
 
-                    <label class="large">Sujet
-                        <textarea name="message" rows="5" required><?= htmlspecialchars($message) ?></textarea>
+                    <label for="message" class="large">Sujet
+                        <textarea name="message" id="message" rows="5" required><?= htmlspecialchars($message) ?></textarea>
                     </label>
 
 
