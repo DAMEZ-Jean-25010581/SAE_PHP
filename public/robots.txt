@@ -1,0 +1,16 @@
+# robots.txt - CyberLab
+# Indique aux moteurs de recherche ce qu'ils peuvent explorer.
+# Ce n'est PAS une protection : ce fichier est public, n'y lister aucun chemin sensible.
+
+User-agent: *
+# Pages de compte : sans intérêt pour la recherche
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+Disallow: /forgot_password
+Disallow: /reset_password
+# Dossiers techniques (déjà bloqués par .htaccess)
+Disallow: /_assets/config/
+Disallow: /_assets/data/
+
+Sitemap: https://cyberlab.alwaysdata.net/sitemap.xml
