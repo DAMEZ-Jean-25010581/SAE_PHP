@@ -20,23 +20,26 @@ $message = $anciens['message'] ?? '';
                 <p class="erreur"><?= htmlspecialchars($erreur) ?></p>
             <?php endforeach; ?>
 
-            <form action="/contact" method="post">
-
-                    <label>Adresse e-mail
-                        <input type="email" name="email"
-                               value="<?= htmlspecialchars($email) ?>" required>
-                    </label>
-
-                    <label>Objet
-                        <input type="text" name="objet"
-                               value="<?= htmlspecialchars($objet) ?>" required>
-                    </label>
-
-                    <label class="large">Sujet
-                        <textarea name="message" rows="5" required><?= htmlspecialchars($message) ?></textarea>
-                    </label>
+            <form action="/contact" method="post" class="contact-form">
+                <div class="form-row">
+                    <div class="auth-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email"
+                         value="<?= htmlspecialchars($email) ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="objet">Objet</label>
+                        <input type="text" name="objet" id="objet"
+                            value="<?= htmlspecialchars($objet) ?>" required>
+                    </div>
+                </div>
 
 
-                <button type="submit">Soumettre</button>
+                <div class="form-group">
+                    <label for="message">Sujet</label>
+                    <textarea name="message" id="message" rows="5" required><?= htmlspecialchars($message) ?></textarea>
+                </div>
+
+                <button type="submit" class="btn">Soumettre</button>
             </form>
         </section>
