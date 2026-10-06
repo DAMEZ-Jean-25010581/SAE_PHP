@@ -1,6 +1,6 @@
 <section class="about">
     <h1 class="main-title">CYBERLAB</h1>
-    <p class="description">
+    <p class="about-text">
         CyberLab est né d’un projet d’étudiants en informatique.<br>
         Sa visée principale est pédagogique : montrer par le biais d’activités amusantes les risques qui pèsent sur
         toutes les applications : les attaques.<br>
