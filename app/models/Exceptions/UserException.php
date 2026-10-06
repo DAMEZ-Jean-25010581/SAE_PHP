@@ -77,4 +77,10 @@ class UserException extends \RuntimeException {
         return new self(self::EMPTY_FIELD, self::EMPTY_FIELD_CODE);
     }
 
+    private const WRONG_CURRENT_PASSWORD = "Le mot de passe actuel est incorrect.";
+    private const WRONG_CURRENT_PASSWORD_CODE = 1013;
+    public static function wrongCurrentPassword():self {
+        return new self(self::WRONG_CURRENT_PASSWORD, self::WRONG_CURRENT_PASSWORD_CODE);
+    }
+
 }

@@ -41,6 +41,10 @@ class Web
             (new \Auth\Controllers\ResetPassword\ResetPassword())->execute();
         });
 
+        Route::add('/account', function () {
+            (new \Auth\Controllers\Account\Account())->execute();
+        });
+
         Route::add('/a-propos', function () {
             Template::render('aPropos', [
                 'title' => 'CyberLab - À propos'
