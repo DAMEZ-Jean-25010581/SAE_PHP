@@ -334,6 +334,59 @@ class UserRepository
         ]);
     }
 
+    public function checkPassword(int $userId, string $password): void
+    {
+        $user = $this->findById($userId);
+
+        if ($user === null) {
+            throw UserException::invalidUserId();
+        }
+
+        if ($password === '' || !password_verify($password, $user->getPasswordHash() ?? '')) {
+            throw UserException::wrongCurrentPassword();
+        }
+    }
+
+    public function updateEmail(int $userId, string $email): void
+    {
+        if ($email === '') {
+            throw UserException::emptyField();
+        }
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            throw UserException::invalidEmailFormat();
+        }
+
+        if (!($this->idExists($userId))) {
+            throw UserException::invalidUserId();
+        }
+
+        if ($this->emailExists($email)) {
+            throw UserException::emailAlreadyExists();
+        }
+
+        $statement = $this->getPdo()->prepare(
+            'UPDATE User_
+             SET email = :email
+             WHERE user_id = :user_id'
+        );
+
+        $statement->execute([
+            'email'   => $email,
+            'user_id' => $userId,
+        ]);
+    }
+
+    public function deleteUser(int $userId): void
+    {
+        if (!($this->idExists($userId))) {
+            throw UserException::invalidUserId();
+        }
+
+        $statement = $this->getPdo()->prepare('DELETE FROM User_ WHERE user_id = :user_id');
+        $statement->execute(['user_id' => $userId]);
+    }
+
     public function updatePassword(int $userId, string $password, string $passwordConfirm): void
     {
         if ($password === '' || $passwordConfirm === '') {
