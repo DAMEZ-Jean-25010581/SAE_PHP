@@ -70,23 +70,36 @@ class Pagination
 
         $html = '<nav class="pagination" aria-label="Pagination">';
 
+        // Précédent : grisé sur la première page pour que les boutons ne bougent pas
         if ($this->currentPage > 1) {
-            $html .= '<a class="pagination-link" href="' . $url($this->currentPage - 1) . '" rel="prev">&lt; Précédent</a>';
+            $html .= '<a class="pagination-link pagination-arrow pagination-prev" href="' . $url($this->currentPage - 1) . '" rel="prev" aria-label="Page précédente">'
+                . '<span aria-hidden="true">&lsaquo;</span><span class="pagination-label">Précédent</span></a>';
+        } else {
+            $html .= '<span class="pagination-link pagination-arrow pagination-prev is-disabled" aria-hidden="true">'
+                . '<span>&lsaquo;</span><span class="pagination-label">Précédent</span></span>';
         }
 
         foreach ($this->getVisiblePages() as $page) {
             if ($page === null) {
-                $html .= '<span class="pagination-ellipsis">…</span>';
+                $html .= '<span class="pagination-ellipsis" aria-hidden="true">&hellip;</span>';
             } elseif ($page === $this->currentPage) {
-                $html .= '<span class="pagination-link is-current" aria-current="page">' . $page . '</span>';
+                $html .= '<span class="pagination-link pagination-page is-current" aria-current="page">' . $page . '</span>';
             } else {
-                $html .= '<a class="pagination-link" href="' . $url($page) . '">' . $page . '</a>';
+                $html .= '<a class="pagination-link pagination-page" href="' . $url($page) . '" aria-label="Page ' . $page . '">' . $page . '</a>';
             }
         }
 
+        // Suivant : grisé sur la dernière page
         if ($this->currentPage < $this->totalPages) {
-            $html .= '<a class="pagination-link" href="' . $url($this->currentPage + 1) . '" rel="next">Suivant &gt;</a>';
+            $html .= '<a class="pagination-link pagination-arrow pagination-next" href="' . $url($this->currentPage + 1) . '" rel="next" aria-label="Page suivante">'
+                . '<span class="pagination-label">Suivant</span><span aria-hidden="true">&rsaquo;</span></a>';
+        } else {
+            $html .= '<span class="pagination-link pagination-arrow pagination-next is-disabled" aria-hidden="true">'
+                . '<span class="pagination-label">Suivant</span><span>&rsaquo;</span></span>';
         }
+
+        // Rappel « page X / Y », affiché seulement sur mobile
+        $html .= '<span class="pagination-status">' . $this->currentPage . ' / ' . $this->totalPages . '</span>';
 
         return $html . '</nav>';
     }
