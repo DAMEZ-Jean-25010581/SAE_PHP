@@ -83,7 +83,7 @@ class UserException extends \RuntimeException {
         return new self(self::WRONG_CURRENT_PASSWORD, self::WRONG_CURRENT_PASSWORD_CODE);
     }
 
-    private const EMAIL_DOMAIN_NOT_FOUND = "Cette adresse email n'existe pas : son domaine n'accepte aucun email.";
+    private const EMAIL_DOMAIN_NOT_FOUND = "Cette adresse email n'existe pas.";
     private const EMAIL_DOMAIN_NOT_FOUND_CODE = 1014;
     public static function emailDomainNotFound():self {
         return new self(self::EMAIL_DOMAIN_NOT_FOUND, self::EMAIL_DOMAIN_NOT_FOUND_CODE);
