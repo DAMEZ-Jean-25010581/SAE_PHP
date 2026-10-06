@@ -560,41 +560,113 @@ footer a:hover {
 /* Pagination */
 
 .pagination {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
-    gap: 0.5rem;
-    margin: 1rem 2rem 3rem 2rem;
+    gap: 0.75rem;
+    margin: 2rem 2rem 3rem 2rem;
     font-family: 'Aldrich', sans-serif;
 }
 
+/* Même esprit que .btn : texte en dégradé et fond qui glisse au survol */
 .pagination-link {
-    min-width: 2.5rem;
-    padding: 0.5rem 0.9rem;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    padding: 0 0.9rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     border: 2px solid #48C0D2;
     border-radius: 5px;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-}
-
-.pagination a.pagination-link:hover,
-.pagination a.pagination-link:focus-visible {
-    background-color: #48C0D2;
-    color: #070811;
-}
-
-.pagination-link.is-current {
-    background-color: #5FF6AD;
-    border-color: #5FF6AD;
-    color: #070811;
+    background: linear-gradient(to right, #5FF6AD, #98D1F4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-weight: bold;
+    text-decoration: none;
+    -webkit-transition: border-color 0.3s ease, -webkit-box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pagination-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #48C0D2;
+    z-index: -1;
+    -webkit-transition: left 0.3s ease;
+    transition: left 0.3s ease;
+}
+
+a.pagination-link:hover::before,
+a.pagination-link:focus-visible::before {
+    left: 0;
+}
+
+a.pagination-link:hover,
+a.pagination-link:focus-visible {
+    -webkit-text-fill-color: #070811;
+    outline: none;
+}
+
+.pagination-page {
+    font-family: 'Audiowide', sans-serif;
+}
+
+.pagination-arrow span[aria-hidden="true"],
+.pagination-arrow.is-disabled span:not(.pagination-label) {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* Page courante : remplie en vert, comme les rangs */
+.pagination-link.is-current {
+    background: #5FF6AD;
+    border-color: #5FF6AD;
+    -webkit-text-fill-color: #070811;
+    color: #070811;
+    -webkit-box-shadow: 0 0 12px rgba(95, 246, 173, 0.6);
+    box-shadow: 0 0 12px rgba(95, 246, 173, 0.6);
+}
+
+.pagination-link.is-disabled {
+    opacity: 0.35;
+    cursor: default;
 }
 
 .pagination-ellipsis {
+    font-family: 'Audiowide', sans-serif;
     color: #98D1F4;
     padding: 0 0.25rem;
+}
+
+.pagination-status {
+    display: none;
+    font-family: 'Audiowide', sans-serif;
+    color: #98D1F4;
 }
 
 .pagination-info {
@@ -602,4 +674,31 @@ footer a:hover {
     color: #98D1F4;
     text-align: center;
     margin-bottom: 3rem;
+}
+
+/* Mobile : seulement ‹ 2 / 8 › pour tenir sur une ligne */
+@media (max-width: 600px) {
+    .pagination {
+        gap: 1rem;
+        margin: 1.5rem 1rem 2.5rem 1rem;
+    }
+
+    .pagination-page,
+    .pagination-ellipsis,
+    .pagination-label {
+        display: none;
+    }
+
+    .pagination-status {
+        display: inline;
+        -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+        order: 1;
+    }
+
+    .pagination-next {
+        -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+        order: 2;
+    }
 }
