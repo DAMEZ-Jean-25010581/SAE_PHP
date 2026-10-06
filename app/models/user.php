@@ -66,6 +66,45 @@ class UserRepository
         throw new \RuntimeException("Connexion à la base de données invalide.");
     }
 
+    /** Total number of users (used by the pagination). */
+    public function countAll(): int
+    {
+        return (int) $this->getPdo()->query('SELECT COUNT(*) FROM User_')->fetchColumn();
+    }
+
+    /**
+     * One page of the ranking, from the highest score to the lowest.
+     *
+     * @return User[]
+     */
+    public function findRankingPage(int $limit, int $offset): array
+    {
+        $statement = $this->getPdo()->prepare(
+            'SELECT user_id, user_name, email, nb_points, progression
+             FROM User_
+             ORDER BY nb_points DESC, progression DESC, user_name ASC
+             LIMIT :limit OFFSET :offset'
+        );
+        // PARAM_INT is required: otherwise MySQL receives LIMIT '10' and rejects the query
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $statement->execute();
+
+        $users = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $users[] = new User(
+                (int) $row['user_id'],
+                $row['user_name'],
+                $row['email'],
+                null,
+                (int) $row['nb_points'],
+                (float) $row['progression']
+            );
+        }
+
+        return $users;
+    }
+
     public function findByUsername(string $username): ?User
     {
         $statement = $this->getPdo()->prepare(

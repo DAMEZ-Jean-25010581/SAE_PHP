@@ -87,23 +87,23 @@
 
     <!-- RANKING LIST -->
     <section class="rectangle-list">
-        <ul>
-            <li class="ranking-rectangle">
-                <span class="rectangle-text">Username1</span><br>
-                <p>X points - Progression totale : X%</p>
-                <span class="rank">#1</span>
-            </li>
-            <li class="ranking-rectangle">
-                <span class="rectangle-text">Username2</span><br>
-                <p>X points - Progression totale : X%</p>
-                <span class="rank">#2</span>
-            </li>
-            <li class="ranking-rectangle">
-                <span class="rectangle-text">Username3</span><br>
-                <p>X points - Progression totale : X%</p>
-                <span class="rank">#3</span>
-            </li>
-        </ul>
-        <a href="/#ranking">[liste]</a>
+        <?php if (empty($players)): ?>
+            <p class="pagination-info">Aucun joueur pour le moment.</p>
+        <?php else: ?>
+            <?php $rank = $pagination->getOffset(); ?>
+            <ul>
+                <?php foreach ($players as $player): $rank++; ?>
+                    <li class="ranking-rectangle">
+                        <span class="rectangle-text"><?= htmlspecialchars($player->getUsername(), ENT_QUOTES, 'UTF-8') ?></span><br>
+                        <p><?= $player->getPoints() ?> points - Progression totale : <?= rtrim(rtrim(number_format($player->getProgression(), 2, ',', ''), '0'), ',') ?>%</p>
+                        <span class="rank">#<?= $rank ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+        <?php if (isset($pagination)): ?>
+            <?= $pagination->render('/', 'ranking') ?>
+        <?php endif; ?>
     </section>
 </section>
