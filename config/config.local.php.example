@@ -1,6 +1,6 @@
 <?php
 // À copier en config.local.php SUR ALWAYSDATA uniquement.
-// Ce fichier n'est pas versionné (voir public/_assets/config/.gitignore).
+// Ce fichier n'est pas versionné (voir config/.gitignore).
 // En local, Docker fournit les identifiants via docker-compose.yml.
 return [
     'DB_HOST' => 'mysql-cyberlab.alwaysdata.net',
