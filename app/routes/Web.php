@@ -11,17 +11,11 @@ class Web
     public function __construct()
     {
         Route::add('/', function () {
-            Template::render('homepage', [
-                'title'      => 'CyberLab - Accueil',
-                'isLoggedIn' => SessionHelpers::isLogin()
-            ]);
+            (new \SAE_PHP\controllers\HomeController())->execute();
         });
 
         Route::add('/home', function () {
-            Template::render('homepage', [
-                'title'      => 'CyberLab - Accueil',
-                'isLoggedIn' => SessionHelpers::isLogin()
-            ]);
+            (new \SAE_PHP\controllers\HomeController())->execute();
         });
 
         Route::add('/login', function () {

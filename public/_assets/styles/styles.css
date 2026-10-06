@@ -556,3 +556,50 @@ footer a:hover {
     margin-left: 0;
 }
 
+
+/* Pagination */
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 2rem 3rem 2rem;
+    font-family: 'Aldrich', sans-serif;
+}
+
+.pagination-link {
+    min-width: 2.5rem;
+    padding: 0.5rem 0.9rem;
+    border: 2px solid #48C0D2;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+.pagination a.pagination-link:hover,
+.pagination a.pagination-link:focus-visible {
+    background-color: #48C0D2;
+    color: #070811;
+}
+
+.pagination-link.is-current {
+    background-color: #5FF6AD;
+    border-color: #5FF6AD;
+    color: #070811;
+    font-weight: bold;
+}
+
+.pagination-ellipsis {
+    color: #98D1F4;
+    padding: 0 0.25rem;
+}
+
+.pagination-info {
+    font-family: 'Aldrich', sans-serif;
+    color: #98D1F4;
+    text-align: center;
+    margin-bottom: 3rem;
+}
