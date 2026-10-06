@@ -2,6 +2,7 @@
 
 namespace Auth\Controllers\ResetPassword;
 
+use Auth\Controllers\RequestInput;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use PDOException;
@@ -11,13 +12,15 @@ use Utils\Template;
 
 class ResetPassword
 {
+    use RequestInput;
+
     public function execute(): void
     {
         $error = null;
-        $token = $_POST['token'] ?? ($_GET['token'] ?? '');
+        $token = $this->post('token') ?: $this->query('token');
         $user = null;
 
-        if (empty($token)) {
+        if ($token === '') {
             $error = 'Jeton de réinitialisation manquant ou invalide.';
         } else {
             $tokenHash = hash('sha256', $token);
@@ -26,16 +29,12 @@ class ResetPassword
 
             if ($user === null) {
                 $error = 'Le lien de réinitialisation est invalide ou a expiré.';
-            } elseif (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-                $csrfToken = $_POST['csrf_token'] ?? '';
-                $password = $_POST['password'] ?? '';
-                $passwordConfirm = $_POST['password_confirm'] ?? '';
-
-                if (!Csrf::validateToken($csrfToken)) {
+            } elseif ($this->isPost()) {
+                if (!Csrf::validateToken($this->post('csrf_token'))) {
                     $error = 'Jeton de sécurité invalide ou expiré.';
                 } else {
                     try {
-                        $userRepository->updatePassword($user->getId(), $password, $passwordConfirm);
+                        $userRepository->updatePassword($user->getId(), $this->post('password'), $this->post('password_confirm'));
                         $userRepository->deletePasswordReset($tokenHash);
 
                         header('Location: /login?reset=success');
@@ -54,7 +53,7 @@ class ResetPassword
             'title' => 'CyberLab - Nouveau mot de passe',
             'error' => $error,
             'token' => $token,
-            'user' => $user
+            'user'  => $user
         ]);
     }
 }

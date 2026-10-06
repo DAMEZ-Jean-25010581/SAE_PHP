@@ -2,6 +2,7 @@
 
 namespace Auth\Controllers\Login;
 
+use Auth\Controllers\RequestInput;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use PDOException;
@@ -12,6 +13,8 @@ use Utils\Template;
 
 class Login
 {
+    use RequestInput;
+
     private const MAX_ATTEMPTS = 5;
     private const LOCK_SECONDS = 900;
 
@@ -23,23 +26,23 @@ class Login
         }
 
         $error = null;
+        $identifier = '';
 
-        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-            $csrfToken = $_POST['csrf_token'] ?? '';
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['password'] ?? '';
-            $lockRemaining = $this->lockRemaining($email);
+        if ($this->isPost()) {
+            $identifier = trim($this->post('identifier'));
+            $password = $this->post('password');
+            $lockRemaining = $this->lockRemaining($identifier);
 
-            if (!Csrf::validateToken($csrfToken)) {
+            if (!Csrf::validateToken($this->post('csrf_token'))) {
                 $error = 'Jeton de sécurité invalide ou expiré.';
             } elseif ($lockRemaining > 0) {
                 $error = 'Trop de tentatives de connexion. Réessayez dans ' . (int) ceil($lockRemaining / 60) . ' minute(s).';
             } else {
                 try {
                     $userRepository = new UserRepository(DatabaseConnection::getInstance());
-                    $user = $userRepository->login($email, $password);
+                    $user = $userRepository->login($identifier, $password);
 
-                    $this->clearAttempts($email);
+                    $this->clearAttempts($identifier);
                     session_regenerate_id(true);
 
                     $_SESSION['user'] = [
@@ -51,8 +54,8 @@ class Login
                     header('Location: /');
                     exit;
                 } catch (UserException $e) {
-                    if ($email !== '' && $password !== '') {
-                        $this->recordFailure($email);
+                    if ($identifier !== '' && $password !== '') {
+                        $this->recordFailure($identifier);
                     }
                     $error = $e->getMessage();
                 } catch (PDOException $e) {
@@ -64,11 +67,12 @@ class Login
 
         Template::render('login', [
             'title' => 'CyberLab - Connexion',
-            'error' => $error
+            'error' => $error,
+            'identifier' => $identifier
         ]);
     }
 
-    private function attemptsFile(string $email): string
+    private function attemptsFile(string $identifier): string
     {
         $directory = sys_get_temp_dir() . '/cyberlab_login_attempts';
 
@@ -76,14 +80,14 @@ class Login
             mkdir($directory, 0700, true);
         }
 
-        $key = hash('sha256', strtolower($email) . '|' . ($_SERVER['REMOTE_ADDR'] ?? ''));
+        $key = hash('sha256', strtolower($identifier) . '|' . ($_SERVER['REMOTE_ADDR'] ?? ''));
 
         return $directory . '/' . $key . '.json';
     }
 
-    private function readAttempts(string $email): array
+    private function readAttempts(string $identifier): array
     {
-        $file = $this->attemptsFile($email);
+        $file = $this->attemptsFile($identifier);
         $data = is_file($file) ? json_decode((string) file_get_contents($file), true) : null;
 
         if (!is_array($data) || !isset($data['count'], $data['first'])) {
@@ -93,9 +97,9 @@ class Login
         return $data;
     }
 
-    private function lockRemaining(string $email): int
+    private function lockRemaining(string $identifier): int
     {
-        $attempts = $this->readAttempts($email);
+        $attempts = $this->readAttempts($identifier);
 
         if ($attempts['count'] < self::MAX_ATTEMPTS) {
             return 0;
@@ -104,9 +108,9 @@ class Login
         return max(0, $attempts['first'] + self::LOCK_SECONDS - time());
     }
 
-    private function recordFailure(string $email): void
+    private function recordFailure(string $identifier): void
     {
-        $attempts = $this->readAttempts($email);
+        $attempts = $this->readAttempts($identifier);
 
         if (time() - $attempts['first'] > self::LOCK_SECONDS) {
             $attempts = ['count' => 0, 'first' => time()];
@@ -114,12 +118,12 @@ class Login
 
         $attempts['count']++;
 
-        file_put_contents($this->attemptsFile($email), json_encode($attempts), LOCK_EX);
+        file_put_contents($this->attemptsFile($identifier), json_encode($attempts), LOCK_EX);
     }
 
-    private function clearAttempts(string $email): void
+    private function clearAttempts(string $identifier): void
     {
-        $file = $this->attemptsFile($email);
+        $file = $this->attemptsFile($identifier);
 
         if (is_file($file)) {
             unlink($file);

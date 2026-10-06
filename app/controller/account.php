@@ -2,6 +2,9 @@
 
 namespace Auth\Controllers\Account;
 
+use Auth\Controllers\Logout\Logout;
+use Auth\Controllers\Register\Register;
+use Auth\Controllers\RequestInput;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use PDOException;
@@ -12,6 +15,8 @@ use Utils\Template;
 
 class Account
 {
+    use RequestInput;
+
     private const SUCCESS_MESSAGES = [
         'username' => 'Votre pseudo a bien été modifié.',
         'email'    => 'Votre adresse email a bien été modifiée.',
@@ -29,12 +34,12 @@ class Account
         $userRepository = new UserRepository(DatabaseConnection::getInstance());
         $error = null;
 
-        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-            if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+        if ($this->isPost()) {
+            if (!Csrf::validateToken($this->post('csrf_token'))) {
                 $error = 'Jeton de sécurité invalide ou expiré.';
             } else {
                 try {
-                    $this->handleForm($userRepository, $userId, $_POST['form'] ?? '');
+                    $this->handleForm($userRepository, $userId, $this->post('form'));
                 } catch (UserException $e) {
                     $error = $e->getMessage();
                 } catch (PDOException $e) {
@@ -47,7 +52,7 @@ class Account
         $user = $userRepository->findById($userId);
 
         if ($user === null) {
-            $this->destroySession();
+            Logout::destroySession();
             header('Location: /login');
             exit;
         }
@@ -56,7 +61,7 @@ class Account
             'title'          => 'CyberLab - Mon compte',
             'user'           => $user,
             'error'          => $error,
-            'successMessage' => self::SUCCESS_MESSAGES[$_GET['updated'] ?? ''] ?? null,
+            'successMessage' => self::SUCCESS_MESSAGES[$this->query('updated')] ?? null,
             'csrfToken'      => Csrf::generateToken(),
         ]);
     }
@@ -65,10 +70,10 @@ class Account
     {
         switch ($form) {
             case 'username':
-                $username = trim($_POST['username'] ?? '');
+                $username = trim($this->post('username'));
 
-                if ($username !== '' && !preg_match('/^[a-zA-Z0-9_\-\.]{3,30}$/', $username)) {
-                    throw new UserException('Le pseudo doit comporter entre 3 et 30 caractères (lettres, chiffres, tirets, points, underscores).');
+                if ($username !== '' && !preg_match(Register::USERNAME_PATTERN, $username)) {
+                    throw new UserException(Register::USERNAME_RULES);
                 }
 
                 if ($username === ($_SESSION['user']['username'] ?? null)) {
@@ -80,27 +85,27 @@ class Account
                 $this->redirect('username');
 
             case 'email':
-                $email = trim($_POST['email'] ?? '');
+                $email = trim($this->post('email'));
 
                 if (strlen($email) > 100) {
                     throw new UserException('L\'adresse email saisie est invalide.');
                 }
 
-                $userRepository->checkPassword($userId, $_POST['current_password'] ?? '');
+                $userRepository->checkPassword($userId, $this->post('current_password'));
                 $userRepository->updateEmail($userId, $email);
                 $_SESSION['user']['email'] = $email;
                 $this->redirect('email');
 
             case 'password':
-                $userRepository->checkPassword($userId, $_POST['current_password'] ?? '');
-                $userRepository->updatePassword($userId, $_POST['password'] ?? '', $_POST['password_confirm'] ?? '');
+                $userRepository->checkPassword($userId, $this->post('current_password'));
+                $userRepository->updatePassword($userId, $this->post('password'), $this->post('password_confirm'));
                 session_regenerate_id(true);
                 $this->redirect('password');
 
             case 'delete':
-                $userRepository->checkPassword($userId, $_POST['current_password'] ?? '');
+                $userRepository->checkPassword($userId, $this->post('current_password'));
                 $userRepository->deleteUser($userId);
-                $this->destroySession();
+                Logout::destroySession();
                 header('Location: /');
                 exit;
         }
@@ -110,25 +115,5 @@ class Account
     {
         header('Location: /account?updated=' . $updated);
         exit;
-    }
-
-    private function destroySession(): void
-    {
-        $_SESSION = [];
-
-        if (ini_get('session.use_cookies')) {
-            $params = session_get_cookie_params();
-            setcookie(
-                session_name(),
-                '',
-                time() - 42000,
-                $params['path'],
-                $params['domain'],
-                $params['secure'],
-                $params['httponly']
-            );
-        }
-
-        session_destroy();
     }
 }

@@ -39,8 +39,8 @@ $resetSuccess = isset($_GET['reset']) && $_GET['reset'] === 'success';
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             
             <div class="auth-group">
-                <label for="email">ADRESSE EMAIL :</label>
-                <input type="email" id="email" name="email" required autocomplete="email" placeholder="votre.email@domaine.com" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                <label for="identifier">PSEUDO OU EMAIL :</label>
+                <input type="text" id="identifier" name="identifier" required autocomplete="username" placeholder="Votre pseudo ou votre email" value="<?= htmlspecialchars($identifier ?? '', ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
             <div class="auth-group">

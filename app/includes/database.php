@@ -17,7 +17,7 @@ use PDOException;
 class DatabaseConnection
 {
     private static ?DatabaseConnection $instance = null;
-    private ?PDO $pdo = null;
+    private PDO $pdo;
 
     private function __construct()
     {
@@ -70,22 +70,11 @@ class DatabaseConnection
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
+        return self::$instance ??= new self();
     }
 
     public function getConnection(): PDO
     {
         return $this->pdo;
-    }
-
-    public static function setConnection(PDO $customPdo): void
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        self::$instance->pdo = $customPdo;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Auth\Controllers\ForgotPassword;
 
+use Auth\Controllers\RequestInput;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use PDOException;
@@ -11,18 +12,20 @@ use Utils\Template;
 
 class ForgotPassword
 {
+    use RequestInput;
+
     public function execute(): void
     {
         $error = null;
         $successMessage = null;
+        $identifier = '';
 
-        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-            $csrfToken = $_POST['csrf_token'] ?? '';
-            $identifier = trim($_POST['identifier'] ?? '');
+        if ($this->isPost()) {
+            $identifier = trim($this->post('identifier'));
 
-            if (!Csrf::validateToken($csrfToken)) {
+            if (!Csrf::validateToken($this->post('csrf_token'))) {
                 $error = 'Jeton de sécurité invalide ou expiré.';
-            } elseif (empty($identifier)) {
+            } elseif ($identifier === '') {
                 $error = 'Veuillez saisir votre pseudo ou votre adresse email.';
             } else {
                 $userRepository = new UserRepository(DatabaseConnection::getInstance());
@@ -48,7 +51,8 @@ class ForgotPassword
         Template::render('forgot_password', [
             'title' => 'CyberLab - Récupération',
             'error' => $error,
-            'successMessage' => $successMessage
+            'successMessage' => $successMessage,
+            'identifier' => $identifier
         ]);
     }
 

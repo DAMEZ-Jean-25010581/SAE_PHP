@@ -49,6 +49,8 @@ class User
 
 class UserRepository
 {
+    private const DUMMY_PASSWORD_HASH = '$2y$10$uQrnMSGl8VfjQOoYbYtY6.yQkCUc3m8Y5CTgcFAMdbqP2mXQ6vIq6';
+
     public function __construct(private mixed $connection) {}
 
     private function getPdo(): PDO
@@ -141,9 +143,12 @@ class UserRepository
         $statement = $this->getPdo()->prepare(
             'SELECT *
              FROM User_ 
-             WHERE user_name = :identifier OR email = :identifier'
+             WHERE user_name = :username OR email = :email'
         );
-        $statement->execute(['identifier' => $identifier]);
+        $statement->execute([
+            'username' => $identifier,
+            'email'    => $identifier,
+        ]);
         $row = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {
@@ -219,6 +224,10 @@ class UserRepository
             throw UserException::invalidEmailFormat();
         }
 
+        if (!$this->emailDomainExists($email)) {
+            throw UserException::emailDomainNotFound();
+        }
+
         if ($password !== $passwordConfirm) {
             throw UserException::passwordsDontMatch();
         }
@@ -261,21 +270,27 @@ class UserRepository
         ]);
     }
 
-    public function login(string $email, string $password): User
+    public function login(string $identifier, string $password): User
     {
-
-        if ($email === '' || $password === ''){
+        if ($identifier === '' || $password === '') {
             throw UserException::emptyField();
         }
 
-        $user = $this->findByEmail($email);
+        $user = $this->findByUsernameOrEmail($identifier);
+        $passwordHash = $user?->getPasswordHash() ?? self::DUMMY_PASSWORD_HASH;
 
-        if ($user === null || !(password_verify($password, $user->getPasswordHash() ?? ''))){
+        if (!password_verify($password, $passwordHash) || $user === null) {
             throw UserException::invalidPasswordOrEmail();
         }
 
         return $user;
+    }
 
+    private function emailDomainExists(string $email): bool
+    {
+        $domain = substr((string) strrchr($email, '@'), 1);
+
+        return $domain !== '' && checkdnsrr($domain, 'MX');
     }
 
     public function createPasswordReset(int $userId, string $tokenHash, int $expiresAt): void
@@ -355,6 +370,10 @@ class UserRepository
 
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             throw UserException::invalidEmailFormat();
+        }
+
+        if (!$this->emailDomainExists($email)) {
+            throw UserException::emailDomainNotFound();
         }
 
         if (!($this->idExists($userId))) {
