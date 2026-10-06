@@ -22,7 +22,7 @@
             
             <div class="auth-group">
                 <label for="identifier">PSEUDO OU EMAIL :</label>
-                <input type="text" id="identifier" name="identifier" required placeholder="Entrez votre pseudo ou votre email" value="<?= htmlspecialchars($_POST['identifier'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                <input type="text" id="identifier" name="identifier" required placeholder="Entrez votre pseudo ou votre email" value="<?= htmlspecialchars($identifier ?? '', ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
             <button type="submit" class="btn auth-btn-submit">ENVOYER LE LIEN</button>

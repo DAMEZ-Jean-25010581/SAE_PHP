@@ -20,9 +20,11 @@
         </p>
     </h3>
 
+    <?php if (empty($isLoggedIn)): ?>
     <li>
         <a href="index.php?action=register" class="btn">NOUS REJOINDRE</a>
     </li>
+    <?php endif; ?>
 </section>
 
 <!-- STATS LIST -->

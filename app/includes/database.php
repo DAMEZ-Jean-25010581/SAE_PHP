@@ -9,7 +9,7 @@ use PDOException;
  * Connexion MySQL / MariaDB (singleton).
  *
  * Identifiants lus dans cet ordre :
- *  1. public/_assets/config/config.local.php  (sur alwaysdata, fichier non versionné)
+ *  1. config/config.local.php  (sur alwaysdata, fichier non versionné)
  *  2. variables d'environnement DB_*    (en local, fournies par Docker)
  *
  * Le schéma de la base est dans BDD/mysql/*.sql (plus créé ici).
@@ -17,7 +17,7 @@ use PDOException;
 class DatabaseConnection
 {
     private static ?DatabaseConnection $instance = null;
-    private ?PDO $pdo = null;
+    private PDO $pdo;
 
     private function __construct()
     {
@@ -48,7 +48,7 @@ class DatabaseConnection
      */
     private static function loadConfig(): array
     {
-        $file = dirname(__DIR__, 2) . '/public/_assets/config/config.local.php';
+        $file = dirname(__DIR__, 2) . '/config/config.local.php';
         $local = is_file($file) ? (array) require $file : [];
 
         $get = static function (string $key, string $default = '') use ($local): string {
@@ -70,22 +70,11 @@ class DatabaseConnection
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
+        return self::$instance ??= new self();
     }
 
     public function getConnection(): PDO
     {
         return $this->pdo;
-    }
-
-    public static function setConnection(PDO $customPdo): void
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        self::$instance->pdo = $customPdo;
     }
 }

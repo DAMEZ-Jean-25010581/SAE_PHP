@@ -3,6 +3,7 @@
 namespace routes;
 
 use routes\base\Route;
+use Utils\SessionHelpers;
 use Utils\Template;
 
 class Web
@@ -11,13 +12,15 @@ class Web
     {
         Route::add('/', function () {
             Template::render('homepage', [
-                'title' => 'CyberLab - Accueil'
+                'title'      => 'CyberLab - Accueil',
+                'isLoggedIn' => SessionHelpers::isLogin()
             ]);
         });
 
         Route::add('/home', function () {
             Template::render('homepage', [
-                'title' => 'CyberLab - Accueil'
+                'title'      => 'CyberLab - Accueil',
+                'isLoggedIn' => SessionHelpers::isLogin()
             ]);
         });
 
