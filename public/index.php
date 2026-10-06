@@ -14,7 +14,7 @@ if ($isHttps) {
     header('Strict-Transport-Security: max-age=31536000');
 }
 
-require_once __DIR__ . '/_assets/includes/autoloader.php';
+require_once dirname(__DIR__) . '/app/includes/autoloader.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', '1');

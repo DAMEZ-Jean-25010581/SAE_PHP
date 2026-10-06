@@ -1,55 +1,45 @@
 <?php
-namespace SAE_PHP\views;
-class Contact {
-    public function __construct(
-        private array $erreurs = [],
-        private bool $succes = false,
-        private array $anciens = []
-    ) {}
 
-    public function show(): void
-    {
-        $email   = $this->anciens['email'] ?? '';
-        $objet   = $this->anciens['objet'] ?? '';
-        $message = $this->anciens['message'] ?? '';
+$erreurs = [];
+$succes = false;
+$anciens = [];
+$email = $anciens['email'] ?? '';
+$objet = $anciens['objet'] ?? '';
+$message = $anciens['message'] ?? '';
 
-        ob_start();
-        ?>
+?>
         <section class="contact">
             <h1 class="main-title">Une question ?</h1>
-            <p class="sous-titre">// Veuillez remplir le formulaire ci-dessous</p>
+            <p class="subsubtitle">// Veuillez remplir le formulaire ci-dessous</p>
 
-            <?php if ($this->succes): ?>
+            <?php if ($succes): ?>
                 <p class="succes">Votre message a bien été envoyé.</p>
             <?php endif; ?>
 
-            <?php foreach ($this->erreurs as $erreur): ?>
+            <?php foreach ($erreurs as $erreur): ?>
                 <p class="erreur"><?= htmlspecialchars($erreur) ?></p>
             <?php endforeach; ?>
 
-            <form action="/contact" method="post">
+            <form action="/contact" method="post" class="contact-form">
+                <div class="form-row">
+                    <div class="auth-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email"
+                         value="<?= htmlspecialchars($email) ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="objet">Objet</label>
+                        <input type="text" name="objet" id="objet"
+                            value="<?= htmlspecialchars($objet) ?>" required>
+                    </div>
+                </div>
 
-                    <label>Adresse e-mail
-                        <input type="email" name="email"
-                               value="<?= htmlspecialchars($email) ?>" required>
-                    </label>
 
-                    <label>Objet
-                        <input type="text" name="objet"
-                               value="<?= htmlspecialchars($objet) ?>" required>
-                    </label>
+                <div class="form-group">
+                    <label for="message">Sujet</label>
+                    <textarea name="message" id="message" rows="5" required><?= htmlspecialchars($message) ?></textarea>
+                </div>
 
-                    <label class="large">Sujet
-                        <textarea name="message" rows="5" required><?= htmlspecialchars($message) ?></textarea>
-                    </label>
-                </fieldset>
-
-                <button type="submit">Soumettre</button>
+                <button type="submit" class="btn">Soumettre</button>
             </form>
         </section>
-        <?php
-        (new \SAE_PHP\views\Layout('CyberLab - Contact', ob_get_clean()))->show();
-    }
-} 
-
-      

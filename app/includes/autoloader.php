@@ -1,7 +1,7 @@
 <?php
 
 spl_autoload_register(function (string $class): void {
-    $rootDir = dirname(__DIR__, 3);
+    $rootDir = dirname(__DIR__, 2);
 
     $classMap = [
         'Includes\\Database\\DatabaseConnection' => __DIR__ . '/database.php',
@@ -14,7 +14,7 @@ spl_autoload_register(function (string $class): void {
         'sae_php\\views\\'       => $rootDir . '/app/views/',
         'sae_php\\models\\'      => $rootDir . '/app/models/',
         'auth\\controllers\\'    => $rootDir . '/app/controller/',
-        'utils\\'                => dirname(__DIR__) . '/utils/class/',
+        'utils\\'                => $rootDir . '/app/utils/',
         'routes\\'               => $rootDir . '/app/routes/',
     ];
 
