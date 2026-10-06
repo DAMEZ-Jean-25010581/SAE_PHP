@@ -3,14 +3,7 @@
 namespace Utils;
 
 /**
- * Reusable pagination helper for every list displayed on the website.
- *
- * Usage in a controller:
- *   $pagination = new Pagination($repository->countAll(), 10, $_GET['page'] ?? 1);
- *   $items = $repository->findPage($pagination->getPerPage(), $pagination->getOffset());
- *
- * Usage in a view:
- *   <?= $pagination->render('/', 'ranking') ?>
+ * Pagination réutilisable pour toutes les listes du site.
  */
 class Pagination
 {
@@ -19,16 +12,16 @@ class Pagination
     private int $currentPage;
 
     /**
-     * @param int   $totalItems  total number of items (SELECT COUNT(*))
-     * @param int   $perPage     number of items per page
-     * @param mixed $requestedPage page number taken from the URL (untrusted input)
+     * @param int   $totalItems    nombre total d'éléments
+     * @param int   $perPage       éléments par page
+     * @param mixed $requestedPage numéro de page venant de l'URL (non fiable)
      */
     public function __construct(private int $totalItems, int $perPage, mixed $requestedPage = 1)
     {
         $this->perPage = max(1, $perPage);
         $this->totalPages = max(1, (int) ceil($this->totalItems / $this->perPage));
 
-        // ?page=abc, ?page=-5 or ?page=999 are clamped between 1 and the last page
+        // Page invalide (abc, -5, 999...) : ramenée entre 1 et la dernière page
         $page = filter_var($requestedPage, FILTER_VALIDATE_INT);
         $this->currentPage = min($this->totalPages, max(1, $page === false ? 1 : $page));
     }
@@ -53,17 +46,17 @@ class Pagination
         return $this->totalItems;
     }
 
-    /** Number of items to skip (SQL OFFSET). */
+    /** Nombre d'éléments à sauter (OFFSET SQL). */
     public function getOffset(): int
     {
         return ($this->currentPage - 1) * $this->perPage;
     }
 
     /**
-     * Builds the "Previous 1 2 3 Next" navigation (empty string when there is a single page).
+     * Génère les liens « Précédent 1 2 3 Suivant » (vide s'il n'y a qu'une page).
      *
-     * @param string $baseUrl page URL, e.g. '/'
-     * @param string $anchor  id of the section to scroll back to, e.g. 'ranking'
+     * @param string $baseUrl adresse de la page, ex. '/'
+     * @param string $anchor  section où revenir après le clic, ex. 'ranking'
      */
     public function render(string $baseUrl, string $anchor = ''): string
     {
@@ -99,8 +92,8 @@ class Pagination
     }
 
     /**
-     * Pages to display: the first, the last and two around the current page.
-     * A null value stands for an ellipsis ("…").
+     * Pages affichées : la première, la dernière et deux autour de la page courante.
+     * null correspond à « … ».
      *
      * @return array<int|null>
      */

@@ -9,13 +9,14 @@ use Utils\SessionHelpers;
 use Utils\Template;
 
 /**
- * Home page: landing page with the paginated players ranking.
+ * Page d'accueil avec le classement paginé des joueurs.
  */
 class HomeController
 {
-    /** Number of players displayed per page in the ranking. */
+    /** Nombre de joueurs affichés par page du classement. */
     private const PLAYERS_PER_PAGE = 5;
 
+    /** Récupère la page du classement demandée et affiche l'accueil. */
     public function execute(): void
     {
         $userRepository = new UserRepository(DatabaseConnection::getInstance());

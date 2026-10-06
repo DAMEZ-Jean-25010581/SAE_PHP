@@ -66,14 +66,14 @@ class UserRepository
         throw new \RuntimeException("Connexion à la base de données invalide.");
     }
 
-    /** Total number of users (used by the pagination). */
+    /** Nombre total d'utilisateurs (pour la pagination). */
     public function countAll(): int
     {
         return (int) $this->getPdo()->query('SELECT COUNT(*) FROM User_')->fetchColumn();
     }
 
     /**
-     * One page of the ranking, from the highest score to the lowest.
+     * Une page du classement, du meilleur score au plus faible.
      *
      * @return User[]
      */
@@ -85,7 +85,7 @@ class UserRepository
              ORDER BY nb_points DESC, progression DESC, user_name ASC
              LIMIT :limit OFFSET :offset'
         );
-        // PARAM_INT is required: otherwise MySQL receives LIMIT '10' and rejects the query
+        // PARAM_INT obligatoire : sinon MySQL reçoit LIMIT '10' et refuse la requête
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->bindValue(':offset', $offset, PDO::PARAM_INT);
         $statement->execute();
