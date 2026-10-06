@@ -48,7 +48,7 @@ class DatabaseConnection
      */
     private static function loadConfig(): array
     {
-        $file = __DIR__ . '/../config/config.local.php';
+        $file = dirname(__DIR__, 2) . '/public/_assets/config/config.local.php';
         $local = is_file($file) ? (array) require $file : [];
 
         $get = static function (string $key, string $default = '') use ($local): string {
