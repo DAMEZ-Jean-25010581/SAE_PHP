@@ -42,7 +42,7 @@ class Web
         });
 
         Route::add('/a-propos', function () {
-            Template::render('a-propos', [
+            Template::render('aPropos', [
                 'title' => 'CyberLab - À propos'
             ]);
         });
