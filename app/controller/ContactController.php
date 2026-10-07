@@ -3,7 +3,7 @@ namespace SAE_PHP\controllers;
 
 use Utils\Template;
 use Utils\Csrf;
-use SAE_PHP\BDD\mysql\DatabaseConnection;
+use Includes\Database\DatabaseConnection;
 
 class ContactController
 {
