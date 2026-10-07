@@ -8,6 +8,7 @@ use Includes\Database\DatabaseConnection;
 class ContactController
 {
 
+    //execute le controller contact, qui gère affichage formulaire de contact et le traitement des soumissions du formulaire
     public function contact(): void
     {
         $erreurs = [];
@@ -36,7 +37,8 @@ class ContactController
             if ($objet === '' || mb_strlen($objet) > 50) {
                 $erreurs[] = "L'objet est obligatoire.(50 caractères maximum)";
             }
-            if (preg_match('/[\r\n]/', $email . $objet)) {
+            //empecher injection d'en-têtes avec \r et \n dans les champs email et objet
+            if (preg_match('/[\r\n]/', $email . $objet)) { 
                 $erreurs[] = "Caractères non autorisés.";
             }
             if ($message === '' || mb_strlen($message) > 2000) {
