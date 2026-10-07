@@ -2,20 +2,20 @@ services:
   web:
     build: .
     ports:
-      "8080:80"
-  volumes:
-    ./:/var/www/html
-environment:
-  DB_HOST: db
-  DB_PORT: 3306
-  DB_NAME: ${DB_NAME:-cyberlab}
-  DB_USER: ${DB_USER:-cyberlab}
-  DB_PASS: ${DB_PASS:-cyberlab}
-depends_on:
-  db:
-    condition: service_healthy
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-cyberlab}
+      DB_USER: ${DB_USER:-cyberlab}
+      DB_PASS: ${DB_PASS:-cyberlab}
+    depends_on:
+      db:
+        condition: service_healthy
 
-    db:
+  db:
     image: mariadb:11
     environment:
       MARIADB_DATABASE: ${DB_NAME:-cyberlab}
@@ -23,23 +23,22 @@ depends_on:
       MARIADB_PASSWORD: ${DB_PASS:-cyberlab}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS:-root}
     ports:
-      
-        "3306:3306"
-  volumes:
-    dbdata:/var/lib/mysql# Les .sql sont exécutés par ordre alphabétique au 1er démarrage
-    ./BDD/mysql:/docker-entrypoint-initdb.d:ro
-healthcheck:
-  test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-  interval: 3s
-  retries: 20
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+      # Les .sql sont exécutés par ordre alphabétique au 1er démarrage
+      - ./BDD/mysql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      retries: 20
 
   adminer:
     image: adminer
     ports:
-      
-      "8081:8080"
-  depends_on:
-    db
+      - "8081:8080"
+    depends_on:
+      - db
 
 volumes:
   dbdata:
