@@ -49,9 +49,7 @@ class Web
         });
 
         Route::add('/contact', function () {
-            Template::render('contact', [
-                'title' => 'CyberLab - Contact'
-            ]);
+            (new \SAE_PHP\controllers\ContactController())->contact();
         });
 
         Route::add('/mentions-legales', function () {
