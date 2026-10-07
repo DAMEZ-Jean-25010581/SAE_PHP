@@ -1,6 +1,7 @@
 <section class="sitemap" aria-labelledby="sitemap-title">
-    <h2 class="subtitle">Plan du site</h2>
-    <h3 class="subsubtitle">// Retrouvez rapidement toutes les pages de CyberLab</h3>
+    
+    <h1 class="subtitle">Plan du site</h1>
+    <h2 class="subsubtitle">// Retrouvez rapidement toutes les pages de CyberLab</h2>
 
     <nav class="toc" aria-label="Plan du site">
         <ol class="toc-sections">
