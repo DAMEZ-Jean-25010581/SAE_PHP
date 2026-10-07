@@ -6,6 +6,8 @@
     <meta name="author" content="CyberLab: AOUAD Ikram,DAMEZ Jean, DJEBIR Yasmine, SAID-BOUTABOUZI Wanis, SEBRI Tasnim">
     <link rel="icon" type="image/svg+xml" href="/_assets/images/logo/CyberLab_logo.svg">
     <link rel="stylesheet" href="/_assets/styles/styles.css">
+    <link rel="me" href="https://www.instagram.com/cybe.rlab00">
+    <link rel="me" href="https://www.tiktok.com/@cyberlab00">
     <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
 
