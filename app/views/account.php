@@ -1,3 +1,13 @@
+<?php
+/**
+ * Vue « Mon compte ». Variables fournies par le contrôleur account.php :
+ *
+ * @var \Auth\Model\User\User $user           utilisateur connecté
+ * @var string|null              $error          message d'erreur éventuel
+ * @var string|null              $successMessage message de succès éventuel
+ * @var string                   $csrfToken      jeton anti-CSRF des formulaires
+ */
+?>
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">

@@ -1,3 +1,12 @@
+<?php
+/**
+ * Vue « Nouveau mot de passe ». Variables fournies par le contrôleur reset_password.php :
+ *
+ * @var \Auth\Model\User\User|null $user  utilisateur lié au jeton (null si jeton invalide)
+ * @var string                       $token jeton de réinitialisation reçu dans l'URL
+ * @var string|null                  $error message d'erreur éventuel
+ */
+?>
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">

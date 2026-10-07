@@ -1,63 +1,66 @@
+<?php
+/**
+ * Vue d'accueil. Variables fournies par HomeController :
+ *
+ * @var bool                       $isLoggedIn vrai si un membre est connecté
+ * @var \Auth\Model\User\User[] $players    joueurs de la page courante du classement
+ * @var \Utils\Pagination         $pagination pagination du classement
+ */
+?>
 <!-- UPPER SECTION -->
 <section>
     <h1 class="main-title">CYBERLAB</h1>
 
-    <h2 class="subtitle">
-        <p class="cursor">
+    <p class="subtitle">
+        <span class="cursor">
             <span class="blue-word">&gt; Pirater</span>
             <span>pour mieux </span>
             <span class="green-word">protéger. </span>
-        </p>
-    </h2>
+        </span>
+    </p>
 
-    <h3>
-        <p class="description">
+    <p class="description">
             <span>L'outil pédagogique pour mettre en pratique ses connaissances en </span>
             <span class="green-word">cybersécurité.</span><br>
             <span>Découvrez comment les </span>
             <span class="blue-word">attaques </span>
             <span>surviennent.</span><br>
-        </p>
-    </h3>
+    </p>
 
     <?php if (empty($isLoggedIn)): ?>
-    <li>
+    <p>
         <a href="index.php?action=register" class="btn">NOUS REJOINDRE</a>
-    </li>
+    </p>
     <?php endif; ?>
 </section>
 
 <!-- STATS LIST -->
-<section class="stats">
-    <section class="rectangle-list">
+<div class="stats">
+    <div class="rectangle-list">
         <ul>
             <li>
-                <section class="data-rectangle">
+                <div class="data-rectangle">
                     <span class="rectangle-text">XXX+</span>
                     <p class="data-descriptive-text">UTILISATEURS <br> INSCRITS</p>
-                </section>
+                </div>
             </li>
             <li>
-                <section class="data-rectangle">
+                <div class="data-rectangle">
                     <span class="rectangle-text">XXX+</span>
                     <p class="data-descriptive-text">LEÇONS <br> COMPLÉTÉES</p>
-                </section>
+                </div>
             </li>
         </ul>
-    </section>
-</section>
+    </div>
+</div>
 
 <!-- LEVELS -->
 <section id="levels">
-    <h2 class="subtitle">
-        Niveaux
-        <h3 class="subsubtitle">
-            // Apprenez le piratage en le pratiquant
-        </h3>
-    </h2>
+    <h2 class="subtitle">Niveaux</h2>
+    <p class="subsubtitle">// Apprenez le piratage en le pratiquant</p>
 
     <!-- LEVELS LIST -->
-    <section class="rectangle-list">
+    <div class="rectangle-list">
         <ul>
             <li class="level-rectangle">
                 <span class="rectangle-text">Injection SQL</span>
@@ -72,20 +75,16 @@
                 <p>Exploitez un chiffrement faible ou absent pour intercepter des mots de passe ou données confidentielles</p>
             </li>
         </ul>
-    </section>
+    </div>
 </section>
 
 <!-- RANKING -->
 <section id="ranking">
-    <h2 class="subtitle">
-        Classement
-        <h3 class="subsubtitle">
-            // Devenez le meilleur CyberLab hacker !
-        </h3>
-    </h2>
+    <h2 class="subtitle">Classement</h2>
+    <p class="subsubtitle">// Devenez le meilleur CyberLab hacker !</p>
 
     <!-- RANKING LIST -->
-    <section class="rectangle-list">
+    <div class="rectangle-list">
         <?php if (empty($players)): ?>
             <p class="pagination-info">Aucun joueur pour le moment.</p>
         <?php else: ?>
@@ -101,8 +100,6 @@
             </ul>
         <?php endif; ?>
 
-        <?php if (isset($pagination)): ?>
-            <?= $pagination->render('/', 'ranking') ?>
-        <?php endif; ?>
-    </section>
+        <?= $pagination->render('/', 'ranking') ?>
+    </div>
 </section>
