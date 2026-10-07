@@ -7,7 +7,7 @@ $message = $anciens['message'] ?? '';
 ?>
         <section class="contact">
             <h2 class="subtitle">Une question ?</h2>
-            <p class="subsubtitle">// Veuillez remplir le formulaire ci-dessous</p>
+            <h3 class="subsubtitle">// Veuillez remplir le formulaire ci-dessous</h3>
 
             <?php if ($succes): ?>
                 <p class="succes">Votre message a bien été envoyé.</p>
