@@ -1058,6 +1058,10 @@ a.pagination-link:focus-visible {
     footer ul {
         padding: 0 2rem;
     }
+
+    #logo {
+        width: 2.5rem;
+    }
 }
 
 
@@ -1161,6 +1165,10 @@ a.pagination-link:focus-visible {
 
     .contact-form {
         width: 100%;
+    }
+
+    #logo {
+        width: 2rem;
     }
 }
 
