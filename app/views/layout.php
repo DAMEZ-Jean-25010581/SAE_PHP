@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="CyberLab: AOUAD Ikram,DAMEZ Jean, DJEBIR Yasmine, SAID-BOUTABOUZI Wanis, SEBRI Tasnim">
     <link rel="icon" type="image/svg+xml" href="/_assets/images/logo/CyberLab_logo.svg">
     <link rel="stylesheet" href="/_assets/styles/styles.css">
     <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
+
+     <!-- TWITTER META TAGS -->
+    
+    <meta name="twitter:title" content="placeholderNAME-PAGE">
+    <meta name="twitter:description" content="découvrez l'univers de la cybersécurité avec Cyberlab">
+    <meta name="twitter:image" content="placeholder">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:domain" content="cyberlab.alwaysdata.net">
+    <meta name="twitter:url" content="https://cyberlab.alwaysdata.net/">
+    <meta name="twitter:image:alt" content="CyberLab website image">
+    <!-- END -->
 
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
