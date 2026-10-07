@@ -4,7 +4,7 @@
 <div class="legal-content">
 <h2>Éditeur du site</h2>
 
-<p>Ce site a été conçu par une équipe d'étudiants dans le cadre d'un projet de formation en BUT Informatique, au titre de l'année scolaire 2026-2076.
+<p>Ce site a été conçu par une équipe d'étudiants dans le cadre d'un projet de formation en BUT Informatique, au titre de l'année scolaire 2026-2027.
     Il n'a aucune vocation commerciale et est présenté à des fins purement pédagogiques.<br>
     Contact : lucile.boix@univ-amu.fr</p>
 
