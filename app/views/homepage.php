@@ -3,27 +3,25 @@
     <h1 class="main-title">CYBERLAB</h1>
 
     <h2 class="subtitle">
-        <p class="cursor">
+        <span class="cursor">
             <span class="blue-word">&gt; Pirater</span>
             <span>pour mieux </span>
             <span class="green-word">protéger. </span>
-        </p>
+        </span>
     </h2>
 
     <h3>
-        <p class="description">
+        <span class="description">
             <span>L'outil pédagogique pour mettre en pratique ses connaissances en </span>
             <span class="green-word">cybersécurité.</span><br>
             <span>Découvrez comment les </span>
             <span class="blue-word">attaques </span>
             <span>surviennent.</span><br>
-        </p>
+        </span>
     </h3>
 
     <?php if (empty($isLoggedIn)): ?>
-    <li>
         <a href="index.php?action=register" class="btn">NOUS REJOINDRE</a>
-    </li>
     <?php endif; ?>
 </section>
 
@@ -49,12 +47,8 @@
 
 <!-- LEVELS -->
 <section id="levels">
-    <h2 class="subtitle">
-        Niveaux
-        <h3 class="subsubtitle">
-            // Apprenez le piratage en le pratiquant
-        </h3>
-    </h2>
+    <h2 class="subtitle">Niveaux</h2>
+    <h3 class="subsubtitle">// Apprenez le piratage en le pratiquant</h3>
 
     <!-- LEVELS LIST -->
     <section class="rectangle-list">
@@ -77,12 +71,8 @@
 
 <!-- RANKING -->
 <section id="ranking">
-    <h2 class="subtitle">
-        Classement
-        <h3 class="subsubtitle">
-            // Devenez le meilleur CyberLab hacker !
-        </h3>
-    </h2>
+    <h2 class="subtitle">Classement</h2>
+    <h3 class="subsubtitle">// Devenez le meilleur CyberLab hacker !</h3>
 
     <!-- RANKING LIST -->
     <section class="rectangle-list">
