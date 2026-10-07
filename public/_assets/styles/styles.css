@@ -1,3 +1,9 @@
+/*
+ * Fichier source du style. Le site charge la version minifiée styles.min.css.
+ * Après chaque modification, régénérer la version minifiée (depuis ce dossier) :
+ *   npx clean-css-cli -O1 -o styles.min.css styles.css
+ */
+
 /* Version PC */
 
 html {

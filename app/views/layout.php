@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="/_assets/images/logo/CyberLab_logo.svg">
-    <link rel="stylesheet" href="/_assets/styles/styles.css">
+    <?php // CSS minifié ; ?v= change à chaque modification pour forcer le navigateur à le recharger ?>
+    <link rel="stylesheet" href="/_assets/styles/styles.min.css?v=<?= @filemtime(dirname(__DIR__, 2) . '/public/_assets/styles/styles.min.css') ?: '1' ?>">
     <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
 
