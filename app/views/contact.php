@@ -9,7 +9,7 @@ $message = $anciens['message'] ?? '';
 
 ?>
         <section class="contact">
-            <h1 class="main-title">Une question ?</h1>
+            <h2 class="subtitle">Une question ?</h2>
             <p class="subsubtitle">// Veuillez remplir le formulaire ci-dessous</p>
 
             <?php if ($succes): ?>

@@ -6,7 +6,7 @@
         <ol class="toc-sections">
 
             <li class="toc-section">
-                <h2>Pages principales</h2>
+                <h2 class="subtitle">Pages principales</h2>
                 <ol class="toc-items">
                     <li>
                         <a href="/">Accueil</a>

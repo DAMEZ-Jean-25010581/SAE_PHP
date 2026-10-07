@@ -72,7 +72,7 @@
                 <p>Exploitez un chiffrement faible ou absent pour intercepter des mots de passe ou données confidentielles</p>
             </li>
         </ul>
-        <a href="/#levels">[liste]</a>
+        <a href="/#levels">Et bien d'autres !</a>
     </section>
 </section>
 
