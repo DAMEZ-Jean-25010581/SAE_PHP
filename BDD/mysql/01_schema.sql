@@ -11,6 +11,7 @@ SET NAMES utf8mb4;
 DROP TABLE IF EXISTS PasswordReset_;
 DROP TABLE IF EXISTS Session_;
 DROP TABLE IF EXISTS User_;
+DROP TABLE IF EXISTS ContactMessage_;
 
 CREATE TABLE User_ (
     user_id       INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -37,3 +38,11 @@ CREATE TABLE PasswordReset_ (
     expires_at BIGINT      NOT NULL,               -- timestamp Unix (time() en PHP)
     FOREIGN KEY (user_id) REFERENCES User_(user_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE ContactMessage_ (
+    contact_id INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    email      VARCHAR(100) NOT NULL,
+    objet      VARCHAR(100) NOT NULL,
+    message    TEXT        NOT NULL,
+    created_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
