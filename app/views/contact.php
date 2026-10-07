@@ -6,6 +6,7 @@ $message = $anciens['message'] ?? '';
 
 ?>
         <section class="contact">
+            <h1 class="main-title">Contact</h1>
             <h2 class="subtitle">Une question ?</h2>
             <h3 class="subsubtitle">// Veuillez remplir le formulaire ci-dessous</h3>
 
