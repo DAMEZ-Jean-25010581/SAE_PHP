@@ -56,11 +56,25 @@ class ForgotPassword
         ]);
     }
 
+    private function setting(string $key, string $default): string
+    {
+        $file = dirname(__DIR__, 2) . '/config/config.local.php';
+        $config = is_file($file) ? (array) require $file : [];
+
+        if (isset($config[$key]) && is_string($config[$key]) && $config[$key] !== '') {
+            return $config[$key];
+        }
+
+        $env = getenv($key);
+
+        return $env !== false && $env !== '' ? $env : $default;
+    }
+
     private function sendResetEmail(string $email, string $token): void
     {
-        $baseUrl = rtrim(getenv('APP_URL') ?: 'http://localhost:8080', '/');
+        $baseUrl = rtrim($this->setting('APP_URL', 'http://localhost:8080'), '/');
         $resetLink = $baseUrl . '/reset_password?token=' . urlencode($token);
-        $sender = getenv('MAIL_FROM') ?: 'no-reply@' . (parse_url($baseUrl, PHP_URL_HOST) ?: 'localhost');
+        $sender = $this->setting('MAIL_FROM', 'no-reply@' . (parse_url($baseUrl, PHP_URL_HOST) ?: 'localhost'));
 
         $subject = '=?UTF-8?B?' . base64_encode('CyberLab - Réinitialisation de votre mot de passe') . '?=';
         $message = "Bonjour,\r\n\r\n"
