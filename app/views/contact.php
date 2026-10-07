@@ -1,11 +1,4 @@
 <?php
-/**
- * Vue « Contact ». Variables fournies par ContactController :
- *
- * @var string[]              $erreurs messages d'erreur du formulaire
- * @var bool                  $succes  vrai si le message a été envoyé
- * @var array<string, string> $anciens valeurs saisies, réaffichées en cas d'erreur
- */
 
 $email = $anciens['email'] ?? '';
 $objet = $anciens['objet'] ?? '';

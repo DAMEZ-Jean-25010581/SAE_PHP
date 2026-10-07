@@ -1,11 +1,3 @@
-<?php
-/**
- * Gabarit commun à toutes les pages (menu, contenu, pied de page).
- *
- * @var string $content HTML de la vue, préparé par Template::render()
- * @var string|null $title titre de la page (« CyberLab » par défaut)
- */
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
