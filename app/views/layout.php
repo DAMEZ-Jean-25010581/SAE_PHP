@@ -17,6 +17,12 @@
 
     <!-- NAVIGATION BAR -->
     <header>
+        <input type="checkbox" id="menu-checkbox" class="menu-checkbox" aria-label="Ouvrir le menu">
+        <label for="menu-checkbox" class="menu-toggle">
+            <span class="menu-toggle-bar"></span>
+            <span class="menu-toggle-bar"></span>
+            <span class="menu-toggle-bar"></span>
+        </label>
         <nav>
             <ul>
                 <li class="header-links">
