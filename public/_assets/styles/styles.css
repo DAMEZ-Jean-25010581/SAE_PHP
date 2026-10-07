@@ -339,7 +339,9 @@ p.description {
     display:flex;
     justify-content: space-between;
     align-items: center;
+    box-sizing: border-box;
     width: 80rem;
+    max-width: calc(100% - 4rem);
     background-color: transparent;
     border: 2px solid #48C0D2;
     border-radius: 5px;
@@ -974,18 +976,8 @@ a.pagination-link:focus-visible {
 
    ========================================================================== */
 
-/* ---------- Tablette (<= 1024px) ---------- */
-
-@media (max-width: 1024px) {
-    html {
-        scroll-padding-top: 7rem;
-    }
-
-    #logo {
-        width: 22%;
-        min-width: 7rem;
-    }
-
+/*----------petit PC ----------*/
+@media (max-width: 1280px) {
     #mode-toggle {
         margin-right: 2rem;
     }
@@ -996,6 +988,71 @@ a.pagination-link:focus-visible {
 
     .header-links li:last-child {
         margin-right: 3rem;
+    }
+}
+
+
+
+/* ---------- Tablette (<= 1024px) ---------- */
+
+@media (max-width: 1024px) {
+    html {
+        scroll-padding-top: 6rem;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    nav {
+        padding: 0.5rem 0;
+    }
+
+    nav > ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    #logo {
+        width: 8rem;
+    }
+
+    #mode-toggle {
+        margin: 0.5rem 1rem;
+    }
+
+    .header-links {
+        width: 100%;
+    }
+
+    .header-links ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .header-links li:last-child {
+        margin-right: 0;
+    }
+
+    /* Menu fermé -> que le logo reste visible */
+    .header-links li:not(:first-child),
+    nav > ul > li:not(.header-links) {
+        display: none;
+    }
+
+    /* Menu ouvert -> tout s'affiche */
+    header:has(.menu-checkbox:checked) .header-links li,
+    header:has(.menu-checkbox:checked) nav > ul > li {
+        display: block;
+    }
+
+    header:has(.menu-checkbox:checked) nav {
+        padding-bottom: 1rem;
+        border-top: 1px solid rgba(72, 192, 210, 0.45);
+        max-height: calc(100vh - 5rem);
+        overflow-y: auto;
     }
 
     footer ul {
@@ -1009,43 +1066,6 @@ a.pagination-link:focus-visible {
 @media (max-width: 768px) {
     html {
         scroll-padding-top: 5rem;
-    }
-
-    /* Header : menu burger */
-    .menu-toggle {
-        display: flex;
-    }
-
-    #logo {
-        width: 35%;
-        min-width: 6rem;
-        max-width: 10rem;
-    }
-
-    #mode-toggle {
-        margin: 0.5rem 1rem;
-    }
-
-    .header-links {
-        display: none;
-        width: 100%;
-    }
-
-    header:has(.menu-checkbox:checked) .header-links {
-        display: block;
-        padding-bottom: 1rem;
-        border-top: 1px solid rgba(72, 192, 210, 0.45);
-    }
-
-    .header-links ul {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-    }
-
-    .header-links li:last-child {
-        margin-right: 0;
     }
 
     /* Boutons */
@@ -1119,7 +1139,7 @@ a.pagination-link:focus-visible {
         margin-bottom: 2rem;
     }
 
-    /* Footer : liens empilés et centrés */
+    /* Footer -> liens empilés et centrés */
     footer {
         margin-top: 2rem;
     }
@@ -1133,7 +1153,7 @@ a.pagination-link:focus-visible {
         padding: 0;
     }
 
-    /* Formulaire de contact : une seule colonne */
+    /* Formulaire contact : une seule colonne */
     .form-row {
         flex-direction: column;
         gap: 0;
@@ -1184,10 +1204,6 @@ a.pagination-link:focus-visible {
 /* ---------- Petit mobile (≤ 480px) ---------- */
 
 @media (max-width: 480px) {
-    html {
-        scroll-padding-top: 5rem;
-    }
-
     .data-rectangle {
         flex-direction: column;
         text-align: center;
