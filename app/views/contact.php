@@ -1,8 +1,5 @@
 <?php
 
-$erreurs = [];
-$succes = false;
-$anciens = [];
 $email = $anciens['email'] ?? '';
 $objet = $anciens['objet'] ?? '';
 $message = $anciens['message'] ?? '';
@@ -21,15 +18,16 @@ $message = $anciens['message'] ?? '';
             <?php endforeach; ?>
 
             <form action="/contact" method="post" class="contact-form">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="form-row">
-                    <div class="auth-group">
+                    <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" name="email" id="email"
+                        <input type="email" name="email" id="email" maxlength="100"
                          value="<?= htmlspecialchars($email) ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="objet">Objet</label>
-                        <input type="text" name="objet" id="objet"
+                        <input type="text" name="objet" id="objet" maxlength="50"
                             value="<?= htmlspecialchars($objet) ?>" required>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ namespace SAE_PHP\controllers;
 
 use Utils\Template;
 use Utils\Csrf;
+use SAE_PHP\BDD\mysql\DatabaseConnection;
 
 class ContactController
 {
@@ -29,11 +30,11 @@ class ContactController
             $anciens = ['email' => $email, 'objet' => $objet, 'message' => $message];
 
             // validation des données
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) === 100) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 100) {
                 $erreurs[] = "L'adresse e-mail n'est pas valide.";
             }
-            if ($objet === '' || mb_strlen($objet) > 100) {
-                $erreurs[] = "L'objet est obligatoire.(100 caractères maximum)";
+            if ($objet === '' || mb_strlen($objet) > 50) {
+                $erreurs[] = "L'objet est obligatoire.(50 caractères maximum)";
             }
             if (preg_match('/[\r\n]/', $email . $objet)) {
                 $erreurs[] = "Caractères non autorisés.";
@@ -49,7 +50,7 @@ class ContactController
             if (empty($erreurs)) {
                 try {
                     $pdo = DatabaseConnection::getInstance()->getConnection();
-                    $stmt = $pdo->prepare('INSERT INTO contact_messages (email, objet, message) VALUES (:email, :objet, :message)');
+                    $stmt = $pdo->prepare('INSERT INTO ContactMessage_ (email, objet, message) VALUES (:email, :objet, :message)');
                     $stmt->execute([
                         ':email'   => $email,
                         ':objet'   => $objet,
