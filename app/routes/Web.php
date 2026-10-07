@@ -3,6 +3,7 @@
 namespace routes;
 
 use routes\base\Route;
+use Utils\SessionHelpers;
 use Utils\Template;
 
 class Web
@@ -10,15 +11,11 @@ class Web
     public function __construct()
     {
         Route::add('/', function () {
-            Template::render('homepage', [
-                'title' => 'CyberLab - Accueil'
-            ]);
+            (new \SAE_PHP\controllers\HomeController())->execute();
         });
 
         Route::add('/home', function () {
-            Template::render('homepage', [
-                'title' => 'CyberLab - Accueil'
-            ]);
+            (new \SAE_PHP\controllers\HomeController())->execute();
         });
 
         Route::add('/login', function () {
@@ -41,8 +38,12 @@ class Web
             (new \Auth\Controllers\ResetPassword\ResetPassword())->execute();
         });
 
+        Route::add('/account', function () {
+            (new \Auth\Controllers\Account\Account())->execute();
+        });
+
         Route::add('/a-propos', function () {
-            Template::render('a-propos', [
+            Template::render('aPropos', [
                 'title' => 'CyberLab - À propos'
             ]);
         });

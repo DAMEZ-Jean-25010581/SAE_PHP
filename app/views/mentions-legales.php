@@ -1,3 +1,6 @@
+<section class="legal-notice" aria-labelledby="legal-title">
+<h1 id="legal-title" class="main-title">Mentions légales</h1>
+<div class="legal-content">
 <h2>Éditeur du site</h2>
 
 <p>Ce site a été conçu par une équipe d'étudiants dans le cadre d'un projet de formation en BUT Informatique, au titre de l'année scolaire 2026-2076.
@@ -34,3 +37,5 @@
 
 <h2>Droit applicable</h2>
 <p>Le présent site est soumis au droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
+</div>
+</section>

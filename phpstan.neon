@@ -7,8 +7,8 @@ parameters:
         - app/models
         - app/routes
         - app/views
-        - public/_assets/includes
-        - public/_assets/utils
+        - app/includes
+        - app/utils
 
     excludePaths:
         - temp/*

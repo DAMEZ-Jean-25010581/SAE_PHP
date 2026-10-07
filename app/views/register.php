@@ -17,13 +17,13 @@
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             
             <div class="auth-group">
-                <label for="login">IDENTIFIANT :</label>
-                <input type="text" id="login" name="login" required autocomplete="username" placeholder="3 à 30 caractères alphanumériques" value="<?= htmlspecialchars($_POST['login'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                <label for="username">PSEUDO :</label>
+                <input type="text" id="username" name="username" required autocomplete="username" placeholder="Votre pseudo (3 à 30 caractères)" value="<?= htmlspecialchars($username ?? '', ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
             <div class="auth-group">
                 <label for="email">ADRESSE EMAIL :</label>
-                <input type="email" id="email" name="email" required autocomplete="email" placeholder="votre.email@domaine.com" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                <input type="email" id="email" name="email" required autocomplete="email" placeholder="votre.email@domaine.com" value="<?= htmlspecialchars($email ?? '', ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
             <div class="auth-group">

@@ -29,7 +29,7 @@ class UserException extends \RuntimeException {
         return new self(self::INVALID_USER_ID, self::INVALID_USER_ID_CODE);
     }
 
-    private const INVALID_PASSWORD_OR_EMAIL = "Mot de passe ou email invalide.";
+    private const INVALID_PASSWORD_OR_EMAIL = "Identifiant ou mot de passe invalide.";
     private const INVALID_PASSWORD_OR_EMAIL_CODE = 1005;
     public static function invalidPasswordOrEmail(): self {
         return new self(self::INVALID_PASSWORD_OR_EMAIL, self::INVALID_PASSWORD_OR_EMAIL_CODE);
@@ -75,6 +75,18 @@ class UserException extends \RuntimeException {
     private const EMPTY_FIELD_CODE = 1012;
     public static function emptyField():self {
         return new self(self::EMPTY_FIELD, self::EMPTY_FIELD_CODE);
+    }
+
+    private const WRONG_CURRENT_PASSWORD = "Le mot de passe actuel est incorrect.";
+    private const WRONG_CURRENT_PASSWORD_CODE = 1013;
+    public static function wrongCurrentPassword():self {
+        return new self(self::WRONG_CURRENT_PASSWORD, self::WRONG_CURRENT_PASSWORD_CODE);
+    }
+
+    private const EMAIL_DOMAIN_NOT_FOUND = "Cette adresse email n'existe pas.";
+    private const EMAIL_DOMAIN_NOT_FOUND_CODE = 1014;
+    public static function emailDomainNotFound():self {
+        return new self(self::EMAIL_DOMAIN_NOT_FOUND, self::EMAIL_DOMAIN_NOT_FOUND_CODE);
     }
 
 }

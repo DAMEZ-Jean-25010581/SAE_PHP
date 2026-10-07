@@ -49,6 +49,8 @@ class User
 
 class UserRepository
 {
+    private const DUMMY_PASSWORD_HASH = '$2y$10$uQrnMSGl8VfjQOoYbYtY6.yQkCUc3m8Y5CTgcFAMdbqP2mXQ6vIq6';
+
     public function __construct(private mixed $connection) {}
 
     private function getPdo(): PDO
@@ -62,6 +64,45 @@ class UserRepository
         }
 
         throw new \RuntimeException("Connexion à la base de données invalide.");
+    }
+
+    /** Nombre total d'utilisateurs (pour la pagination). */
+    public function countAll(): int
+    {
+        return (int) $this->getPdo()->query('SELECT COUNT(*) FROM User_')->fetchColumn();
+    }
+
+    /**
+     * Une page du classement, du meilleur score au plus faible.
+     *
+     * @return User[]
+     */
+    public function findRankingPage(int $limit, int $offset): array
+    {
+        $statement = $this->getPdo()->prepare(
+            'SELECT user_id, user_name, email, nb_points, progression
+             FROM User_
+             ORDER BY nb_points DESC, progression DESC, user_name ASC
+             LIMIT :limit OFFSET :offset'
+        );
+        // PARAM_INT obligatoire : sinon MySQL reçoit LIMIT '10' et refuse la requête
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $statement->execute();
+
+        $users = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $users[] = new User(
+                (int) $row['user_id'],
+                $row['user_name'],
+                $row['email'],
+                null,
+                (int) $row['nb_points'],
+                (float) $row['progression']
+            );
+        }
+
+        return $users;
     }
 
     public function findByUsername(string $username): ?User
@@ -141,9 +182,12 @@ class UserRepository
         $statement = $this->getPdo()->prepare(
             'SELECT *
              FROM User_ 
-             WHERE user_name = :identifier OR email = :identifier'
+             WHERE user_name = :username OR email = :email'
         );
-        $statement->execute(['identifier' => $identifier]);
+        $statement->execute([
+            'username' => $identifier,
+            'email'    => $identifier,
+        ]);
         $row = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {
@@ -219,6 +263,10 @@ class UserRepository
             throw UserException::invalidEmailFormat();
         }
 
+        if (!$this->emailDomainExists($email)) {
+            throw UserException::emailDomainNotFound();
+        }
+
         if ($password !== $passwordConfirm) {
             throw UserException::passwordsDontMatch();
         }
@@ -261,21 +309,27 @@ class UserRepository
         ]);
     }
 
-    public function login(string $email, string $password): User
+    public function login(string $identifier, string $password): User
     {
-
-        if ($email === '' || $password === ''){
+        if ($identifier === '' || $password === '') {
             throw UserException::emptyField();
         }
 
-        $user = $this->findByEmail($email);
+        $user = $this->findByUsernameOrEmail($identifier);
+        $passwordHash = $user?->getPasswordHash() ?? self::DUMMY_PASSWORD_HASH;
 
-        if ($user === null || !(password_verify($password, $user->getPasswordHash() ?? ''))){
+        if (!password_verify($password, $passwordHash) || $user === null) {
             throw UserException::invalidPasswordOrEmail();
         }
 
         return $user;
+    }
 
+    private function emailDomainExists(string $email): bool
+    {
+        $domain = substr((string) strrchr($email, '@'), 1);
+
+        return $domain !== '' && checkdnsrr($domain, 'MX');
     }
 
     public function createPasswordReset(int $userId, string $tokenHash, int $expiresAt): void
@@ -332,6 +386,63 @@ class UserRepository
             'username' => $username,
             'user_id'  => $userId,
         ]);
+    }
+
+    public function checkPassword(int $userId, string $password): void
+    {
+        $user = $this->findById($userId);
+
+        if ($user === null) {
+            throw UserException::invalidUserId();
+        }
+
+        if ($password === '' || !password_verify($password, $user->getPasswordHash() ?? '')) {
+            throw UserException::wrongCurrentPassword();
+        }
+    }
+
+    public function updateEmail(int $userId, string $email): void
+    {
+        if ($email === '') {
+            throw UserException::emptyField();
+        }
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            throw UserException::invalidEmailFormat();
+        }
+
+        if (!$this->emailDomainExists($email)) {
+            throw UserException::emailDomainNotFound();
+        }
+
+        if (!($this->idExists($userId))) {
+            throw UserException::invalidUserId();
+        }
+
+        if ($this->emailExists($email)) {
+            throw UserException::emailAlreadyExists();
+        }
+
+        $statement = $this->getPdo()->prepare(
+            'UPDATE User_
+             SET email = :email
+             WHERE user_id = :user_id'
+        );
+
+        $statement->execute([
+            'email'   => $email,
+            'user_id' => $userId,
+        ]);
+    }
+
+    public function deleteUser(int $userId): void
+    {
+        if (!($this->idExists($userId))) {
+            throw UserException::invalidUserId();
+        }
+
+        $statement = $this->getPdo()->prepare('DELETE FROM User_ WHERE user_id = :user_id');
+        $statement->execute(['user_id' => $userId]);
     }
 
     public function updatePassword(int $userId, string $password, string $passwordConfirm): void
