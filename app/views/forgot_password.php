@@ -17,7 +17,7 @@
             </div>
         <?php endif; ?>
 
-        <form action="index.php?action=forgot_password" method="post">
+        <form action="/forgot_password" method="post">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             
             <div class="auth-group">
@@ -29,7 +29,7 @@
         </form>
 
         <div class="auth-links">
-            Retour à la <a href="index.php?action=login">connexion</a>
+            Retour à la <a href="/login">connexion</a>
         </div>
     </div>
 </div>

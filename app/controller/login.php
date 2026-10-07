@@ -18,6 +18,12 @@ class Login
     private const MAX_ATTEMPTS = 5;
     private const LOCK_SECONDS = 900;
 
+    private const NOTICES = [
+        'logout'     => 'Vous avez été déconnecté avec succès.',
+        'registered' => 'Votre compte a été créé avec succès ! Connectez-vous ci-dessous.',
+        'reset'      => 'Mot de passe réinitialisé avec succès ! Vous pouvez vous connecter.',
+    ];
+
     public function execute(): void
     {
         if (SessionHelpers::isLogin()) {
@@ -68,8 +74,20 @@ class Login
         Template::render('login', [
             'title' => 'CyberLab - Connexion',
             'error' => $error,
+            'successMessage' => $this->notice(),
             'identifier' => $identifier
         ]);
+    }
+
+    private function notice(): ?string
+    {
+        foreach (self::NOTICES as $key => $message) {
+            if ($this->query($key) === 'success') {
+                return $message;
+            }
+        }
+
+        return null;
     }
 
     private function attemptsFile(string $identifier): string

@@ -1,9 +1,3 @@
-<?php
-$logoutSuccess = isset($_GET['logout']) && $_GET['logout'] === 'success';
-$registeredSuccess = isset($_GET['registered']) && $_GET['registered'] === 'success';
-$resetSuccess = isset($_GET['reset']) && $_GET['reset'] === 'success';
-
-?>
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">
@@ -11,21 +5,9 @@ $resetSuccess = isset($_GET['reset']) && $_GET['reset'] === 'success';
             <p class="auth-subtitle">&gt; Accéder au terminal CyberLab</p>
         </div>
 
-        <?php if ($logoutSuccess): ?>
+        <?php if (!empty($successMessage)): ?>
             <div class="auth-alert auth-alert-success">
-                ✓ Vous avez été déconnecté avec succès.
-            </div>
-        <?php endif; ?>
-
-        <?php if ($registeredSuccess): ?>
-            <div class="auth-alert auth-alert-success">
-                ✓ Votre compte a été créé avec succès ! Connectez-vous ci-dessous.
-            </div>
-        <?php endif; ?>
-
-        <?php if ($resetSuccess): ?>
-            <div class="auth-alert auth-alert-success">
-                ✓ Mot de passe réinitialisé avec succès ! Vous pouvez vous connecter.
+                ✓ <?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?>
             </div>
         <?php endif; ?>
 
@@ -35,7 +17,7 @@ $resetSuccess = isset($_GET['reset']) && $_GET['reset'] === 'success';
             </div>
         <?php endif; ?>
 
-        <form action="index.php?action=login" method="post">
+        <form action="/login" method="post">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             
             <div class="auth-group">
@@ -49,14 +31,14 @@ $resetSuccess = isset($_GET['reset']) && $_GET['reset'] === 'success';
             </div>
 
             <div class="forgot-link-wrapper">
-                <a href="index.php?action=forgot_password" class="forgot-link">Mot de passe oublié ?</a>
+                <a href="/forgot_password" class="forgot-link">Mot de passe oublié ?</a>
             </div>
 
             <button type="submit" class="btn auth-btn-submit">SE CONNECTER</button>
         </form>
 
         <div class="auth-links">
-            Nouveau sur la plateforme ? <a href="index.php?action=register">S'inscrire</a>
+            Nouveau sur la plateforme ? <a href="/register">S'inscrire</a>
         </div>
     </div>
 </div>

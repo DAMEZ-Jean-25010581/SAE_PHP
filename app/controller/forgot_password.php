@@ -6,6 +6,7 @@ use Auth\Controllers\RequestInput;
 use Includes\Database\DatabaseConnection;
 use Auth\Model\User\UserRepository;
 use PDOException;
+use Random\RandomException;
 use SAE_PHP\models\Exceptions\UserException;
 use Utils\Csrf;
 use Utils\Template;
@@ -28,20 +29,20 @@ class ForgotPassword
             } elseif ($identifier === '') {
                 $error = 'Veuillez saisir votre pseudo ou votre adresse email.';
             } else {
-                $userRepository = new UserRepository(DatabaseConnection::getInstance());
-                $user = $userRepository->findByUsernameOrEmail($identifier);
+                try {
+                    $userRepository = new UserRepository(DatabaseConnection::getInstance());
+                    $user = $userRepository->findByUsernameOrEmail($identifier);
 
-                if ($user !== null) {
-                    $token = bin2hex(random_bytes(32));
-                    $tokenHash = hash('sha256', $token);
-                    $expiresAt = time() + 900;
+                    if ($user !== null) {
+                        $token = bin2hex(random_bytes(32));
+                        $tokenHash = hash('sha256', $token);
+                        $expiresAt = time() + 900;
 
-                    try {
                         $userRepository->createPasswordReset($user->getId(), $tokenHash, $expiresAt);
                         $this->sendResetEmail($user->getEmail(), $token);
-                    } catch (UserException | PDOException $e) {
-                        error_log($e->getMessage());
                     }
+                } catch (UserException | PDOException | RandomException $e) {
+                    error_log($e->getMessage());
                 }
 
                 $successMessage = 'Si ce compte existe, un email contenant un lien de réinitialisation vient d\'être envoyé.';
