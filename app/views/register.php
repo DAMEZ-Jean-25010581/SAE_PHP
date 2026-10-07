@@ -13,7 +13,7 @@
             </div>
         <?php endif; ?>
 
-        <form action="index.php?action=register" method="post">
+        <form action="/register" method="post">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(\Utils\Csrf::generateToken(), ENT_QUOTES, 'UTF-8') ?>">
             
             <div class="auth-group">
@@ -48,7 +48,7 @@
         </form>
 
         <div class="auth-links">
-            Déjà inscrit ? <a href="index.php?action=login">Se connecter</a>
+            Déjà inscrit ? <a href="/login">Se connecter</a>
         </div>
     </div>
 </div>
