@@ -253,7 +253,7 @@ main a:hover {
 }
 
 .description p,
-p.description {
+p.description, .description span {
     font-family:'Chakra Petch',sans-serif;
     font-weight:200;
     max-width: 60rem;
