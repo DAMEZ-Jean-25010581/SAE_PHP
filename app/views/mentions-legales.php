@@ -1,5 +1,5 @@
 <section class="legal-notice" aria-labelledby="legal-title">
-<h1 id="legal-title" class="main-title">Mentions légales</h1>
+<h2 id="legal-title" class="subtitle">Mentions légales</h2>
 <div class="legal-content">
 <h2>Éditeur du site</h2>
 

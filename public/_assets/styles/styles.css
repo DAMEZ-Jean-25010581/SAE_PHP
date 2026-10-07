@@ -648,10 +648,10 @@ footer a:hover {
 }
 
 .auth-group label {
+    text-align: left;
     display: block;
     font-family: 'Aldrich', sans-serif;
     font-size: 0.95rem;
-    color: #98D1F4;
     margin-bottom: 0.5rem;
 }
 
