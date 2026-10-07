@@ -11,13 +11,13 @@
     </h2>
 
     <h3>
-        <span class="description">
+        <p class="description">
             <span>L'outil pédagogique pour mettre en pratique ses connaissances en </span>
             <span class="green-word">cybersécurité.</span><br>
             <span>Découvrez comment les </span>
             <span class="blue-word">attaques </span>
             <span>surviennent.</span><br>
-        </span>
+        </p>
     </h3>
 
     <?php if (empty($isLoggedIn)): ?>
