@@ -26,7 +26,7 @@ class HomeView implements ViewInterface
         </span>
     </h2>
 
-    <h3>
+    <div>
         <p class="description">
             <span>L'outil pédagogique pour mettre en pratique ses connaissances en </span>
             <span class="green-word">cybersécurité.</span><br>
@@ -34,7 +34,7 @@ class HomeView implements ViewInterface
             <span class="blue-word">attaques </span>
             <span>surviennent.</span><br>
         </p>
-    </h3>
+    </div>
 
     <?php if (empty($isLoggedIn)): ?>
         <a href="index.php?action=register" class="btn">NOUS REJOINDRE</a>

@@ -60,13 +60,5 @@ class Web
         Route::add('/plan-du-site', function () {
             (new \SAE_PHP\controllers\PlanSiteController())->execute();
         });
-
-        Route::add('/authentification', function () {
-            (new \SAE_PHP\controllers\AuthentificationController())->execute();
-        });
-
-        Route::add('/inscription', function () {
-            (new \SAE_PHP\controllers\InscriptionController())->execute();
-        });
     }
 }

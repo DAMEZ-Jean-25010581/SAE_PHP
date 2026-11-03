@@ -13,7 +13,7 @@ class PlanSiteView implements ViewInterface
         ?>
 <section class="sitemap" aria-labelledby="sitemap-title">
     
-    <h1 class="subtitle">Plan du site</h1>
+    <h1 id="sitemap-title" class="subtitle">Plan du site</h1>
     <h2 class="subsubtitle">// Retrouvez rapidement toutes les pages de CyberLab</h2>
 
     <nav class="toc" aria-label="Plan du site">

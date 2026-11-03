@@ -1,0 +1,110 @@
+# Analyse automatique du code à chaque pull request (et à chaque push sur main).
+# Résultat visible dans l'onglet « Checks » de la PR ; les erreurs PHPStan
+# s'affichent directement sur les lignes concernées dans « Files changed ».
+name: Analyse du code
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Une nouvelle push sur la même PR annule l'analyse précédente
+concurrency:
+  group: analyse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  syntaxe:
+    name: Syntaxe PHP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: php -l sur tous les fichiers
+        run: find app public -name '*.php' -print0 | xargs -0 -n1 php -l
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: phpstan
+      - name: Analyse statique (phpstan.neon)
+        run: phpstan analyse --no-progress --memory-limit=1G --error-format=github
+
+  css:
+    name: CSS minifié à jour
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: styles.min.css doit correspondre à styles.css
+        run: |
+          npx --yes clean-css-cli@5 public/_assets/styles/styles.css > /tmp/attendu.min.css
+          if ! cmp -s /tmp/attendu.min.css public/_assets/styles/styles.min.css; then
+            echo "::error file=public/_assets/styles/styles.min.css::styles.min.css n'est pas à jour. Lancez : npx clean-css-cli@5 public/_assets/styles/styles.css -o public/_assets/styles/styles.min.css"
+            exit 1
+          fi
+          echo "styles.min.css est à jour."
+
+  pages:
+    name: Pages du site + validation W3C
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: mariadb:11
+        env:
+          MARIADB_DATABASE: cyberlab
+          MARIADB_USER: cyberlab
+          MARIADB_PASSWORD: cyberlab
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=3s --health-timeout=5s --health-retries=20
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_NAME: cyberlab
+      DB_USER: cyberlab
+      DB_PASS: cyberlab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql
+          coverage: none
+      - name: Créer les tables (BDD/mysql)
+        run: |
+          for f in BDD/mysql/*.sql; do
+            echo "Import de $f"
+            mysql -h 127.0.0.1 -u cyberlab -pcyberlab cyberlab < "$f"
+          done
+      - name: Visiter toutes les pages (déconnecté, connecté, formulaires)
+        run: bash .github/ci/pages.sh
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validation W3C du HTML généré
+        run: |
+          pip install --quiet html5validator
+          html5validator --root pages/ --format text
+      - name: Garder les pages HTML en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-html
+          path: |
+            pages/
+            php-server.log

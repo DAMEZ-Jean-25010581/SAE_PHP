@@ -11,10 +11,7 @@ class Router
         // déclare les routes
         new Web();
 
-        // recupere l'adresse demandée par le navigateur
-        $uri = $_SERVER['REQUEST_URI'] ?? '/';
-
-        // lance la route correspondante à l'adresse demandée (404 sinon)
-        Route::dispatch($uri);
+        // lance la route correspondante à l'action demandée (404 sinon)
+        Route::dispatch();
     }
 }
