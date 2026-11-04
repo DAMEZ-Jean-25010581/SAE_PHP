@@ -29,6 +29,7 @@ class PlanSiteView implements ViewInterface
                             <li><a href="/#ranking">Classement</a></li>
                         </ol>
                     </li>
+                    <li><a href="index.php?action=modules">Modules</a></li>
                     <li><a href="index.php?action=a-propos">À propos</a></li>
                     <li><a href="index.php?action=contact">Contact</a></li>
                 </ol>

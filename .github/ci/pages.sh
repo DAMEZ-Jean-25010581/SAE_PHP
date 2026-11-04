@@ -63,6 +63,7 @@ page login              "?action=login"             200
 page register           "?action=register"          200
 page forgot-password    "?action=forgot_password"   200
 page reset-password     "?action=reset_password&token=test" 200
+page modules            "?action=modules"           200
 page erreur-404         "?action=page-inexistante"  404
 
 echo "== Formulaires"
