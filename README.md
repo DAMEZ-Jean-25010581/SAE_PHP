@@ -3,273 +3,339 @@
 ```mermaid
 classDiagram
 
-    class Character {
-        <<sealed abstract>>
-        -name : String;
-        -gender : char;
-        -age : int;
-        -hungerMetric : int;
-        -tirednessMetric : int;
-        -isResting : boolean;
-        -isNoisy: boolean;
-        -christmasMagicMetric : int;
-        #makeASound() String;
-        #move() void;
-        #eat() void;
-        #rest() void;
-        #workOut() void;
-        #increaseChristmasMagic() void;
-        #decreaseChristmasMagic() void;
-        #performsActivity() void;
+    %% ===== Classes à développer =====
+
+    %% À FAIRE : Module
+    %% À FAIRE : Level
+    %% À FAIRE : Course
+    %% À FAIRE : Test
+    %% À FAIRE : Synthesis
+    %% À FAIRE : Assessment
+    %% À FAIRE : Ranking
+
+    class ModuleModel
+    class ModuleView
+    class ModuleController
+
+    class LevelModel
+    class LevelView
+    class LevelController
+
+    class CourseModel
+    class CourseView
+    class CourseController
+
+    class TestModel
+    class TestView
+    class TestController
+
+    class SynthesisModel
+    class SynthesisView
+    class SynthesisController
+
+    class AssessmentModel
+    class AssessmentView
+    class AssessmentController
+
+    class RankingModel
+    class RankingView
+    class RankingController
+
+    class User {
+        -id: ?int;
+        -username: string;
+        -email: string;
+        -passwordHash: ?string;
+        -nbPoints: int;
+        -progression: float;
+        +getId(): ?int
+        +getUsername(): string
+        +getEmail(): string
+        +getPasswordHash(): ?string
+        +getPoints(): int
+        +getProgression(): float
     }
 
-    class Humanoid {
-
+    class UserRepository {
+        -DUMMY_PASSWORD_HASH: string$;
+        -getPdo(): PDO;
+        +countAll(): int
+        +findRankingPage(limit: int, offset: int): array
+        +findByUsername(username: string): ?User
+        +findByEmail(email: string): ?User
+        +findById(userId: int): ?User
+        +findByUsernameOrEmail(identifier: string): ?User
+        +findUserByResetToken(tokenHash: string): ?User
+        +usernameExists(username: string): bool
+        +emailExists(email: string): bool
+        +idExists(userId: int): bool
+        +tokenExists(tokenHash: string): bool
+        +createUser(username: string, email: string, password: string, passwordConfirm: string): void
+        +login(identifier: string, password: string): User
+        +emailDomainExists(email: string): bool
+        +createPasswordReset(userId: int, tokenHash: string, expiresAt: int): void
+        +deletePasswordReset(tokenHash: string): void
+        +updateUsername(userId: int, username: string): void
+        +checkPassword(userId: int, password: string): void
+        +updateEmail(userId: int, email: string): void
+        +deleteUser(userId: int): void
+        +updatePassword(userId: int, password: string, passwordConfirm: string): void
     }
 
-    class Elf {
-
+    class Account {
+        -SUCCESS_MESSAGES: array$;
+        +execute(): void
+        -handleForm(userRepository: UserRepository, userId: int, form: string): void
+        -redirect(updated: string): never
     }
 
-    class PostmanElf {
-
+    class AProposController {
+        +execute(): void
     }
 
-    class ChristmasFairy {
-
+    class ContactController {
+        +contact(): void
     }
 
-    class VisitingChild {
-
+    class ErrorController {
+        +execute(title: string): void
     }
 
-    Humanoid <|-- Elf
-    Humanoid <|-- PostmanElf
-    Humanoid <|-- ChristmasFairy
-    Humanoid <|-- VisitingChild
-
-    class Creature {
-
+    class ForgotPassword {
+        +execute(): void
+        -setting(key: string, default: string): string
+        -sendResetEmail(email: string, token: string): void
     }
-
-    Creature ..> Humanoid : devours
-
-    class Reindeer {
-
-    }
-
-    class Werewolf {
-
-    }
-
-    class LivingSnowman {
-
-    }
-
-    class NorthSpirit {
-
-    }
-
-    Creature <|-- Reindeer
-    Creature <|-- Werewolf
-    Creature <|-- LivingSnowman
-    Creature <|-- NorthSpirit
-
-    Character <|-- Humanoid
-    Character <|-- Creature
-
-    class Basic
     
-    Food {
-        <<enumeration>>
-        BISCUITS,
-        HOT CHOCOLATE,
-        MARSHMALLOWS,
-        OATMEAL
+    class HomeController {
+        -PLAYERS_PER_PAGE: int$;
+        +execute(): void
     }
 
-    class Sweet {
-        <<enumeration>>
-        CANDY CANE,
-        CANDY
+    class Login {
+        -MAX_ATTEMPTS: int$;
+        -LOCK_SECONDS: int$;
+        -NOTICES: array$;
+        +execute(): void
+        -notice(): ?string
+        -attemptsFile(identifier: string): string
+        -readAttempts(identifier: string): array
+        -lockRemaining(identifier: string): int
+        -recordFailure(identifier: string): void
+        -clearAttempts(identifier: string): void
     }
 
-    class Food {
-        <<sealed interface>>
-        #getNutritionalValue() int
+    class Logout {
+        +execute(): void
+        +destroySession(): void
     }
 
-    Food <|.. BasicFood
-    Food <|.. Sweet
-    
-    Character --> Food: eats
+    class MentionsLegalesController {
+        +execute(): void
+    }
 
-    class Entertainable {
+    class PlanSiteController {
+        +execute(): void
+    }
+
+    class Register {
+        +USERNAME_PATTERN: string$;
+        +USERNAME_RULES: string$;
+        +execute(): void
+    }
+
+    class RequestInput {
+        <<trait>>
+        -isPost(): bool
+        -post(key: string): string
+        -query(key: string): string
+    }
+
+    class ResetPassword {
+        +execute(): void
+    }
+
+    class ViewInterface {
         <<interface>>
-        #entertain() void;
+        +render(params: array): void
     }
 
-    Entertainable <|.. Elf
-    Entertainable <|.. VisitingChild 
-
-    class Worker {
-        <<interface>>
-        #work() void;
+    class AccountView {
+        +render(array params): void
     }
 
-    Worker <|.. Elf
-    Worker <|.. PostmanElf
-    Worker <|.. ChristmasFairy
-
-    class FantasticBeing {
-        <<interface>>
-        #behaveFantastically() void;
+    class AProposView {
+        +render(array params): void
     }
 
-    FantasticBeing <|.. Elf
-    FantasticBeing <|.. ChristmasFairy
-    FantasticBeing <|.. Werewolf
-    FantasticBeing <|.. LivingSnowman
-    FantasticBeing <|.. NorthSpirit
-
-    class ElfState {
-        <<interface>>
+    class ContactView {
+        +render(array params): void
     }
 
-    class PranksterState {
-
+    class ErrorView {
+        +render(array params): void
     }
 
-    class NormalState {
-
+    class ForgotPasswordView {
+        +render(array params): void
     }
 
-    ElfState <|.. PranksterState
-    ElfState <|.. NormalState
-
-
-    class Prank {
-        <<enumeration>>
-        MAGIC MILK,
-        SOCK_SOUP,
-        ROLLED_TOILET_PAPER,
-        GOOGLY_EYES,
-        ZIP_LINE
+    class HomeView {
+        +render(array params): void
     }
 
-    PranksterState --> Prank
-    
-    class FuneralEncounter {
-        -double RESTING_CHANCE$
-        -double NOISY_CHANCE$
-        -double WEREWOLF_MULTIPLIER$
-        -int WITNESS_MAGIC_LOSS$
-        -Random random
-        +trigger(List~Building~ buildings)
-        ~computeDevourChance(Humanoid, Creature) double
+    class LayoutView {
+        +render(array params): void
     }
 
-    class Building {
-        <<sealed abstract>>
-        -double area;
-        -int capacity;
-        -Cleanliness cleanliness;
-        -int numberOfCharacters;
-        -List~Character~ characters;
-        #toString() String;
-        #welcome() void;
-        #clean() void;
+    class LoginView {
+        +render(array params): void
     }
 
-    class Cleanliness {
-        <<enumeration>>
-        BAD
-        CORRECT
-        GOOD
+    class MentionsLegalesView {
+        +render(array params): void
     }
 
-    Building --> Cleanliness : cleanliness
-
-    class SantaHouse {
-
+    class PlanSiteView {
+        +render(array params): void
     }
 
-    class ClockTower {
-
+    class RegisterView {
+        +render(array params): void
     }
 
-    class Cabin {
-
+    class ResetPasswordView {
+        +render(array params): void
     }
 
-    class Enclosure {
-
+    class Template {
+    +render(view: string, params: array): void$
     }
 
-    class CandyShop {
+    class PDO
+    class UserException
+    class RuntimeException
 
-    }
+    UserRepository ..> User : crée et utilise
+    UserRepository ..> RuntimeException : déclenche
+    UserRepository ..> PDO : utilise
+    UserRepository ..> UserException : déclenche
 
-    class Workshop {
+    Account ..> RequestInput : utilise trait
+    Account ..> DatabaseConnection : utilise
+    Account ..> UserRepository : crée et utilise
+    Account ..> UserException : déclenche / intercepte
+    Account ..> PDOException : intercepte
+    Account ..> Csrf : utilise
+    Account ..> SessionHelpers : utilise
+    Account ..> Template : utilise
+    Account ..> AccountView : référence
+    Account ..> Logout : utilise
+    Account ..> Register : utilise
 
-    }
+    AProposController ..> Template : utilise
+    AProposController ..> AProposView : utilise
 
-    class PostOffice {
+    ContactController ..> Csrf : utilise
+    ContactController ..> DatabaseConnection : utilise
+    ContactController ..> PDOException : utilise
+    ContactController ..> Template : utilise
+    ContactController ..> ContactView : utilise
+    ContactController ..> PDO : utilise
 
-    }
+    ErrorController ..> Template : utilise
+    ErrorController ..> ErrorView : utilise
 
-    class MagicSchool {
+    ForgotPassword ..> RequestInput : utilise
+    ForgotPassword ..> PDOException : utilise
+    ForgotPassword ..> Csrf : utilise
+    ForgotPassword ..> UserRepository : utilise
+    ForgotPassword ..> DatabaseConnection : utilise
+    ForgotPassword ..> UserException : utilise
+    ForgotPassword ..> RandomException : utilise
+    ForgotPassword ..> Template : utilise
+    ForgotPassword ..> ForgotPasswordView : utilise
 
-    }
+    HomeController ..> UserRepository : utilise
+    HomeController ..> DatabaseConnection : utilise
+    HomeController ..> Template : utilise
+    HomeController ..> HomeView : utilise
+    HomeController ..> Pagination : utilise
+    HomeController ..> SessionHelpers : utilise
 
-    class ToyShop {
+    Login ..> RequestInput : utilise
+    Login ..> SessionHelpers : utilise
+    Login ..> Csrf : utilise
+    Login ..> UserRepository : utilise
+    Login ..> DatabaseConnection : utilise
+    Login ..> UserException : utilise
+    Login ..> PDOException : utilise
+    Login ..> Template : utilise
+    Login ..> LoginView : utilise
 
-    }
+    Logout ..> RequestInput : utilise
+    Logout ..> Csrf : utilise
 
-    class Playground {
+    MentionsLegalesController ..> Template : utilise
+    MentionsLegalesController ..> MentionsLegalesView : utilise
 
-    }
+    PlanSiteController ..> Template : utilise
+    PlanSiteController ..> PlanSiteView : utilise
 
-    class Reserve {
+    Register ..> RequestInput : utilise
+    Register ..> SessionHelpers : utilise
+    Register ..> Csrf : utilise
+    Register ..> UserRepository : utilise
+    Register ..> DatabaseConnection : utilise
+    Register ..> UserException : utilise
+    Register ..> PDOException : utilise
+    Register ..> Template : utilise
+    Register ..> RegisterView : utilise
 
-    }
+    ResetPassword ..> RequestInput : utilise
+    ResetPassword ..> DatabaseConnection : utilise
+    ResetPassword ..> UserRepository : utilise
+    ResetPassword ..> PDOException : utilise
+    ResetPassword ..> UserException : utilise
+    ResetPassword ..> Csrf : utilise
+    ResetPassword ..> Template : utilise
+    ResetPassword ..> ResetPasswordView : utilise
 
-    Building <|-- SantaHouse
-    Building <|-- ClockTower
-    Building <|-- Cabin
-    Building <|-- Enclosure
-    Building <|-- CandyShop
-    Building <|-- Workshop
-    Building <|-- PostOffice
-    Building <|-- MagicSchool
-    Building <|-- ToyShop
-    Building <|-- Playground
-    Building <|-- Reserve
+    ViewInterface <|.. AccountView : implémente
+    ViewInterface <|.. AProposView : implémente
+    ViewInterface <|.. ContactView : implémente
+    ViewInterface <|.. ErrorView : implémente
+    ViewInterface <|.. ForgotPasswordView : implémente
+    ViewInterface <|.. HomeView : implémente
+    ViewInterface <|.. LayoutView : implémente
+    ViewInterface <|.. LoginView : implémente
+    ViewInterface <|.. MentionsLegalesView : implémente
+    ViewInterface <|.. PlanSiteView : implémente
+    ViewInterface <|.. RegisterView : implémente
+    ViewInterface <|.. ResetPasswordView : implémente
+    Template ..> LayoutView : utilise
+    Template ..> ViewInterface : utilise
 
-    class SantaClaus {
-        <<singleton>>
-        -SantaClaus INSTANCE$
-        -SantaClaus()
-        +getInstance()$ SantaClaus
-        +examine(Building building)
-        +requestMaintenance(Building building)
-        +transfer(Character character, Building from, Building to)
-    }
+    ModuleController ..> ModuleModel : utilise
+    ModuleController ..> ModuleView : utilise
 
-    class SantaVillage {
-        -SantaClaus INSTANCE$
-        -maxArea double;
-        -maxCapacity int;
-        
-    }
+    LevelController ..> LevelModel : utilise
+    LevelController ..> LevelView : utilise
 
-    class 
-}
+    CourseController ..> CourseModel : utilise
+    CourseController ..> CourseView : utilise
 
+    TestController ..> TestModel : utilise
+    TestController ..> TestView : utilise
 
+    SynthesisController ..> SynthesisModel : utilise
+    SynthesisController ..> SynthesisView : utilise
 
+    AssessmentController ..> AssessmentModel : utilise
+    AssessmentController ..> AssessmentView : utilise
 
-
+    RankingController ..> RankingModel : utilise
+    RankingController ..> RankingView : utilise
 
 ```
     

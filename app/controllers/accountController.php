@@ -14,7 +14,7 @@ use SAE_PHP\views\AccountView;
 class Account
 {
     use RequestInput;
-
+    
     private const SUCCESS_MESSAGES = [
         'username' => 'Votre pseudo a bien été modifié.',
         'email'    => 'Votre adresse email a bien été modifiée.',
