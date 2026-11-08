@@ -1,25 +1,26 @@
 ```mermaid
-   
-classDiagram
+
+    classDiagram
     direction LR
 
     namespace Controller {
         class Login {
-            -MAX_ATTEMPTS: int
-            -LOCK_SECONDS: int
+            -MAX_ATTEMPTS: int$
+            -LOCK_SECONDS: int$
             +execute(): void
             -recordFailure(): void
+            -lockRemaining(): int
             -clearAttempts(): void
         }
 
         class Register {
-            +USERNAME_PATTERN: string
+            +USERNAME_PATTERN: string$
             +execute(): void
         }
 
         class Logout {
             +execute(): void
-            +destroySession(): void
+            +destroySession(): void$
         }
 
         class ForgotPassword {
@@ -44,43 +45,45 @@ classDiagram
         }
 
         class UserRepository {
-            +findByUsername(): ?User
-            +findByEmail(): ?User
-            +findById(): ?User
+            +findByUsernameOrEmail(): ?User
+            +findUserByResetToken(): ?User
             +createUser(): void
             +login(): User
+            +createPasswordReset(): void
             +updatePassword(): void
         }
     }
 
     namespace Helper {
-        class RequestInput {
-            <<trait>>
-        }
-        class Csrf
         class SessionHelpers
     }
 
     namespace View {
+        class ViewInterface {
+            <<interface>>
+        }
         class LoginView
         class RegisterView
         class ForgotPasswordView
         class ResetPasswordView
     }
 
-    UserRepository ..> User : utilise
+    Login ..> UserRepository : vérifie les identifiants
+    Register ..> UserRepository : enregistre le compte
+    ForgotPassword ..> UserRepository : stocke le jeton daté
+    ResetPassword ..> UserRepository : remplace le mot de passe
 
-    Login ..> UserRepository
-    Register ..> UserRepository
-    ForgotPassword ..> UserRepository
-    ResetPassword ..> UserRepository
+    Login ..> SessionHelpers : ouvre la session
+    Register ..> SessionHelpers : connecte après inscription
 
-    Login ..> LoginView
-    Register ..> RegisterView
-    ForgotPassword ..> ForgotPasswordView
-    ResetPassword ..> ResetPasswordView
+    Login ..> LoginView : affiche le formulaire
+    Register ..> RegisterView : affiche le formulaire
+    ForgotPassword ..> ForgotPasswordView : affiche le formulaire
+    ResetPassword ..> ResetPasswordView : affiche le formulaire
 
-    Login ..> SessionHelpers
-    Register ..> SessionHelpers
+    LoginView ..|> ViewInterface : implémente
+    RegisterView ..|> ViewInterface : implémente
+    ForgotPasswordView ..|> ViewInterface : implémente
+    ResetPasswordView ..|> ViewInterface : implémente
 
 ```
