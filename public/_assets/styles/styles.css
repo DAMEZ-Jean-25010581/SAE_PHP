@@ -1427,3 +1427,127 @@ a.pagination-link:focus-visible {
         margin: 0 0.5rem;
     }
 }
+
+
+/* ---------- Page de synthèse (#198) ---------- */
+
+.synthesis {
+    width: min(100% - 2rem, 900px);
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+    text-align: center;
+    color: var(--text);
+}
+
+.synthesis .main-title {
+    margin: 2rem 0 1rem;
+}
+
+.synthesis .subtitle {
+    margin-bottom: 0.75rem;
+}
+
+.synthesis .subsubtitle {
+    margin-bottom: 2.5rem;
+}
+
+.synthesis-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.synthesis-card {
+    padding: 1.5rem clamp(1.25rem, 4vw, 2.5rem);
+    border: 1px solid var(--cyan);
+    border-left: 4px solid var(--green);
+    border-radius: 5px;
+    background: rgba(var(--panel-rgb), 0.7);
+    box-shadow: 0 0 24px rgba(var(--cyan-rgb), 0.1);
+}
+
+.synthesis-card-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin: 0 0 0.75rem;
+    font-family: 'Aldrich', sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    color: var(--green);
+}
+
+.synthesis-number {
+    font-family: 'Audiowide', sans-serif;
+    color: var(--cyan);
+}
+
+.synthesis-content {
+    margin: 0;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.synthesis-empty {
+    font-family: 'Chakra Petch', sans-serif;
+    color: var(--text-soft);
+}
+
+.synthesis-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.synthesis-actions .btn {
+    cursor: pointer;
+}
+
+/* Version imprimable : texte noir sur blanc, sans menu ni boutons */
+@media print {
+    header,
+    footer,
+    .synthesis-actions {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff;
+    }
+
+    .synthesis {
+        width: 100%;
+        padding: 0;
+    }
+
+    .synthesis .main-title,
+    .synthesis .subtitle,
+    .synthesis .subsubtitle,
+    .synthesis-card-title,
+    .synthesis-number,
+    .synthesis-content {
+        color: #000000;
+        -webkit-text-fill-color: #000000;
+        background: none;
+    }
+
+    .synthesis .main-title {
+        margin-top: 0;
+        font-size: 2rem;
+    }
+
+    .synthesis-card {
+        border: 1px solid #999999;
+        border-left: 4px solid #000000;
+        background: none;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+}
