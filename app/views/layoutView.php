@@ -22,6 +22,8 @@ class LayoutView implements ViewInterface
     <link rel="icon" type="image/svg+xml" href="/_assets/images/logo/CyberLab_logo.svg">
     <?php // CSS minifié ; ?v= change à chaque modification pour forcer le navigateur à le recharger ?>
     <link rel="stylesheet" href="/_assets/styles/styles.min.css?v=<?= @filemtime(dirname(__DIR__, 2) . '/public/_assets/styles/styles.min.css') ?: '1' ?>">
+    <?php // Mode clair / sombre : chargé avant l'affichage pour éviter un flash de l'autre thème ?>
+    <script src="/_assets/scripts/theme.js?v=<?= @filemtime(dirname(__DIR__, 2) . '/public/_assets/scripts/theme.js') ?: '1' ?>"></script>
     <title><?= htmlspecialchars($title ?? 'CyberLab') ?></title>
     <meta name="description" content="CyberLab est une plateforme pour apprendre la cybersécurité par la pratique, avec des niveaux progressifs.">
 
@@ -55,7 +57,7 @@ class LayoutView implements ViewInterface
             <ul>
                 <li class="header-links">
                     <ul>
-                        <li><a href="/"><img id="logo" src="/_assets/images/logo/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
+                        <li><a href="/"><img class="logo logo-dark" src="/_assets/images/logo/CyberLab_logo.svg" alt="CyberLab Logo"><img class="logo logo-light" src="/_assets/images/logo/CyberLab_logo_light.svg" alt="CyberLab Logo"></a></li>
                         <li><a class="header-link" href="/#levels">NIVEAUX</a></li>
                         <li><a class="header-link" href="/#ranking">CLASSEMENT</a></li>
                         <li><a class="header-link" href="index.php?action=a-propos">A PROPOS</a></li>
@@ -63,7 +65,7 @@ class LayoutView implements ViewInterface
                     </ul>
                 </li>
 
-                <li><button id="mode-toggle"><img src="/_assets/images/icons/Light_mode_icon.svg" alt="Mode"></button></li>
+                <li><button id="mode-toggle" type="button" aria-label="Passer en mode clair" title="Passer en mode clair"><img src="/_assets/images/icons/Light_mode_icon.svg" alt="Passer en mode clair"></button></li>
                 <?php if (\Utils\SessionHelpers::isLogin()): ?>
                     <li>
                         <span class="user-greeting">
