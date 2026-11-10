@@ -57,6 +57,7 @@ class LayoutView implements ViewInterface
                     <ul>
                         <li><a href="/"><img id="logo" src="/_assets/images/logo/CyberLab_logo.svg" alt="CyberLab Logo"></a></li>
                         <li><a class="header-link" href="/#levels">NIVEAUX</a></li>
+                        <li><a class="header-link" href="index.php?action=modules">MODULES</a></li>
                         <li><a class="header-link" href="/#ranking">CLASSEMENT</a></li>
                         <li><a class="header-link" href="index.php?action=a-propos">A PROPOS</a></li>
                         <li><a class="header-link" href="index.php?action=contact">CONTACT</a></li>

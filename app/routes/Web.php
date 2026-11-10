@@ -45,6 +45,10 @@ class Web
             (new \SAE_PHP\controllers\AProposController())->execute();
         });
 
+        Route::add('/modules', function () {
+            (new \SAE_PHP\controllers\ModulesController())->execute();
+        });
+
         Route::add('/contact', function () {
             (new \SAE_PHP\controllers\ContactController())->contact();
         }, ['GET', 'POST']);
