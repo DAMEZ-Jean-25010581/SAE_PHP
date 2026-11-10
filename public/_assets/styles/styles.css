@@ -4,6 +4,70 @@
  *   npx clean-css-cli -O1 -o styles.min.css styles.css
  */
 
+/* Thèmes : sombre par défaut, clair avec <html data-theme="light"> (voir scripts/theme.js) */
+:root {
+    color-scheme: dark;
+    --bg: #070811;
+    --header-bg: #070811;
+    --text: #ffffff;
+    --text-soft: #e5e7eb;
+    --placeholder: #4b5563;
+    --link: #60a5fa;
+    --on-accent: #070811;
+    --green: #5FF6AD;
+    --cyan: #48C0D2;
+    --blue: #98D1F4;
+    --cyan-dark: #149FB4;
+    --error-text: #ff9999;
+    --panel-rgb: 10, 12, 24;
+    --green-rgb: 95, 246, 173;
+    --cyan-rgb: 72, 192, 210;
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+    /* fond blanc, header vert d'eau, couleurs vives pour garder l'esprit CyberLab */
+    --bg: #ffffff;
+    --header-bg: #dff3ee;
+    --text: #0a1d1f;
+    --text-soft: #29464a;
+    --placeholder: #6b7c7f;
+    --link: #0077e6;
+    --on-accent: #ffffff;
+    --green: #00a35c;
+    --cyan: #0097b2;
+    --blue: #1e3a8a; /* bleu marine */
+    --cyan-dark: #007a91;
+    --error-text: #b91c1c;
+    --panel-rgb: 255, 255, 255;
+    --green-rgb: 0, 163, 92;
+    --cyan-rgb: 0, 151, 178;
+}
+
+/* Icônes et logo dessinés pour le fond sombre : on les fonce en mode clair */
+:root[data-theme="light"] #mode-toggle img {
+    filter: brightness(0.5);
+}
+
+.logo-light {
+    display: none;
+}
+
+:root[data-theme="light"] .logo-dark {
+    display: none;
+}
+
+:root[data-theme="light"] .logo-light {
+    display: inline;
+}
+
+/* Footer de la même couleur que le header (flow-root : la marge de la liste
+   reste à l'intérieur du footer, donc pas de bande blanche en bas de page) */
+footer {
+    background-color: var(--header-bg);
+    display: flow-root;
+}
+
 /* Version PC */
 
 html {
@@ -12,7 +76,7 @@ html {
 }
 
 body {
-    background-color: #070811;
+    background-color: var(--bg);
     margin: 0;
     padding: 0;
 }
@@ -36,11 +100,11 @@ header ul, #levels .rectangle-list ul, .stats .rectangle-list ul {
 
 header a {
     text-decoration: none;
-    color:#5FF6AD;
+    color:var(--green);
 }
 
 header a:hover {
-    color: #48C0D2;
+    color: var(--cyan);
 }
 
 /* Accessibilité : focus clavier visible */
@@ -49,7 +113,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-    outline: 2px solid #5FF6AD;
+    outline: 2px solid var(--green);
     outline-offset: 3px;
 }
 
@@ -75,13 +139,13 @@ textarea:focus-visible {
     justify-content: center;
     align-items: center;
     gap: 0.3rem;
-    border: 2px solid #48C0D2;
+    border: 2px solid var(--cyan);
     border-radius: 5px;
     cursor: pointer;
 }
 
 .menu-checkbox:focus-visible + .menu-toggle {
-    outline: 2px solid #5FF6AD;
+    outline: 2px solid var(--green);
     outline-offset: 3px;
 }
 
@@ -89,7 +153,7 @@ textarea:focus-visible {
     display: block;
     width: 1.4rem;
     height: 2px;
-    background-color: #5FF6AD;
+    background-color: var(--green);
     transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
@@ -111,11 +175,11 @@ header {
     position: sticky;
     top: 0;        
     z-index: 100;
-    background-color: #070811;
-    border-bottom: 1px solid #98D1F4;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--blue);
 }
 
-#logo {
+.logo {
     width: 17%;
     max-width: 100%;
     height: auto;
@@ -123,9 +187,24 @@ header {
 
 #mode-toggle {
     all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 1rem;
     margin-right: 4rem;
-    margin-top: 1.25rem;
+    cursor: pointer;
+}
+
+#mode-toggle img {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+#mode-toggle:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 4px;
+    border-radius: 4px;
 }
 
 nav ul {
@@ -148,7 +227,7 @@ nav ul {
 .btn {
     font-family: 'Aldrich', sans-serif;
     font-weight: bold;
-    background: linear-gradient(to right, #5FF6AD, #98D1F4);
+    background: linear-gradient(to right, var(--green), var(--blue));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -156,7 +235,7 @@ nav ul {
     margin: 1rem;
     font-size: 1rem;
     border-radius: 5px;
-    border: 2px solid #48C0D2;
+    border: 2px solid var(--cyan);
     position: relative;
     overflow: hidden;
     text-decoration: none;
@@ -171,7 +250,7 @@ nav ul {
   left: -100%;
   width: 100%;
   height: 100%;
-  background-color: #48C0D2;
+  background-color: var(--cyan);
   z-index: -1;
   transition: left 0.3s ease;
 }
@@ -181,8 +260,8 @@ nav ul {
 }
 
 .btn:hover {
-  color: #070811;
-  -webkit-text-fill-color: #070811;
+  color: var(--on-accent);
+  -webkit-text-fill-color: var(--on-accent);
 }
 
 /* Main */
@@ -197,12 +276,12 @@ main .btn {
 
 main a {
     text-decoration: none;
-    color:#48C0D2;
+    color:var(--cyan);
 }
 
 main a:hover {
     text-decoration: none;
-    color:#5FF6AD
+    color:var(--green)
 }
 
 .main-title {
@@ -214,7 +293,7 @@ main a:hover {
 .rectangle-text, .main-title {
     font-family:'Audiowide',sans-serif;
     font-weight: 400;
-    background-image: radial-gradient(#98D1F4, #149FB4);
+    background-image: radial-gradient(var(--blue), var(--cyan-dark));
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -222,13 +301,13 @@ main a:hover {
 .subtitle, .subsubtitle {
     font-family:'Aldrich',sans-serif;
     font-weight:300;
-    color:white;
+    color:var(--text);
     font-size: clamp(1.25rem, 3.5vw, 2rem);
     margin-bottom: 2rem;
 }
 
 .subsubtitle {
-    color: #5FF6AD;
+    color: var(--green);
     font-size: clamp(1rem, 2.5vw, 1.25rem);
     margin-bottom:3rem;
 }
@@ -245,11 +324,11 @@ main a:hover {
 }
 
 .green-word, .cursor::after {
-    color:#5FF6AD;
+    color:var(--green);
 }
 
 .blue-word {
-    color:#48C0D2;
+    color:var(--cyan);
 }
 
 .description p,
@@ -260,7 +339,7 @@ p.description {
     margin: clamp(2rem, 5vw, 4rem) auto;
     padding: 0 2rem;
     box-sizing: border-box;
-    color:white;
+    color:var(--text);
     font-size: clamp(1.1rem, 2.5vw, 1.5rem);
     line-height: 1.7;
 }
@@ -274,14 +353,14 @@ p.description {
 /* « cybersécurité » et « attaques » en vert */
 .description .green-word,
 .description .blue-word {
-    color:#5FF6AD;
+    color:var(--green);
 }
 
 .about-text {
     font-family:'Chakra Petch',sans-serif;
     font-weight:200;
-    color: #fff;
-    -webkit-text-fill-color: #fff;
+    color: var(--text);
+    -webkit-text-fill-color: var(--text);
     font-size: clamp(1.1rem, 2.5vw, 1.5rem);
     line-height: 1.7;
     display: block;
@@ -313,9 +392,9 @@ p.description {
   display: inline-flex;
   align-items: center;
   background-color: transparent;
-  border: 2px solid #48C0D2;
+  border: 2px solid var(--cyan);
   border-radius: 5px;
-  color: white;
+  color: var(--text);
   padding: 1rem 2rem;
   margin: 3rem 2rem;
   gap: 1rem;
@@ -329,7 +408,7 @@ p.description {
 
 .level-rectangle p, .ranking-rectangle p {
     font-family: 'Aldrich', sans-serif;
-    color:white;
+    color:var(--text);
 }
 
 /* 24.25rem = 20rem de contenu + padding + bordure (rendu PC identique) */
@@ -340,9 +419,9 @@ p.description {
   width: 24.25rem;
   max-width: calc(100% - 4rem);
   background-color: transparent;
-  border: 2px solid #48C0D2;
+  border: 2px solid var(--cyan);
   border-radius: 5px;
-  color: white;
+  color: var(--text);
   padding: 1.5rem 2rem;
   margin : 0rem 2rem 3rem 2rem;
   gap: 1rem;
@@ -361,9 +440,9 @@ p.description {
     width: 80rem;
     max-width: calc(100% - 4rem);
     background-color: transparent;
-    border: 2px solid #48C0D2;
+    border: 2px solid var(--cyan);
     border-radius: 5px;
-    color: white;
+    color: var(--text);
     padding: 1.5rem 2rem;
     margin : 0rem 2rem 1rem 2rem;
 }
@@ -375,7 +454,7 @@ p.description {
 .rank {
     font-family: 'Audiowide', sans-serif;
     font-size:3rem;
-    color:#5FF6AD;
+    color:var(--green);
     font-weight: 500;
 }
 
@@ -384,7 +463,7 @@ p.description {
 footer {
     font-family: 'Aldrich', sans-serif;
     margin-top: 3rem;
-    border-top: 1px solid #98D1F4;
+    border-top: 1px solid var(--blue);
     justify-content: space-between;
 }
 
@@ -394,7 +473,7 @@ footer ul {
     flex-wrap: wrap;
     gap: 1rem;
     list-style: none;
-    color:#48C0D2;
+    color:var(--cyan);
     margin: 2rem;
     padding: 0 5rem;
     
@@ -402,11 +481,11 @@ footer ul {
 
 footer ul, footer a {
     text-decoration: none;
-    color:#5FF6AD;
+    color:var(--green);
 }
 
 footer a:hover {
-    color: #48C0D2;
+    color: var(--cyan);
 }
 
 /* Pages informatives */
@@ -416,7 +495,7 @@ footer a:hover {
     width: min(100% - 2rem, 960px);
     margin: 0 auto;
     box-sizing: border-box;
-    color: #fff;
+    color: var(--text);
 }
 
 .about {
@@ -451,10 +530,10 @@ footer a:hover {
     padding: 2rem clamp(1.25rem, 5vw, 3rem);
     box-sizing: border-box;
     text-align: left;
-    border: 1px solid #48C0D2;
+    border: 1px solid var(--cyan);
     border-radius: 5px;
-    background: rgba(10, 12, 24, 0.7);
-    box-shadow: 0 0 24px rgba(72, 192, 210, 0.1);
+    background: rgba(var(--panel-rgb), 0.7);
+    box-shadow: 0 0 24px rgba(var(--cyan-rgb), 0.1);
 }
 
 .toc ol {
@@ -482,8 +561,8 @@ footer a:hover {
     gap: 0.75rem;
     margin: 0 0 0.75rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(95, 246, 173, 0.45);
-    color: #98D1F4;
+    border-bottom: 1px solid rgba(var(--green-rgb), 0.45);
+    color: var(--blue);
     font-family: 'Aldrich', sans-serif;
     font-size: 1.2rem;
     font-weight: 400;
@@ -492,7 +571,7 @@ footer a:hover {
 .toc-section h2::before {
     content: counter(section, upper-roman) ".";
     min-width: 2.2rem;
-    color: #5FF6AD;
+    color: var(--green);
 }
 
 .toc-items {
@@ -510,7 +589,7 @@ footer a:hover {
 .toc-items li::before {
     content: counters(item, ".") ".";
     flex: 0 0 2.6rem;
-    color: #48C0D2;
+    color: var(--cyan);
     font-family: 'Aldrich', sans-serif;
     font-size: 0.95rem;
 }
@@ -531,7 +610,7 @@ footer a:hover {
     min-width: 0;
     padding: 0.2rem 0;
     overflow-wrap: anywhere;
-    color: #5FF6AD;
+    color: var(--green);
     font-family: 'Chakra Petch', sans-serif;
     font-size: 1.1rem;
     text-decoration: none;
@@ -549,7 +628,7 @@ footer a:hover {
     padding: 0.2rem 0;
     border: 0;
     background: none;
-    color: #5FF6AD;
+    color: var(--green);
     cursor: pointer;
     font-family: 'Chakra Petch', sans-serif;
     font-size: 1.1rem;
@@ -563,7 +642,7 @@ footer a:hover {
 
 .toc-items .sitemap-logout-form button:hover,
 .toc-items .sitemap-logout-form button:focus-visible {
-    color: #98D1F4;
+    color: var(--blue);
     outline: none;
 }
 
@@ -577,23 +656,23 @@ footer a:hover {
 
 .legal-content {
     padding: 2.5rem clamp(2rem, 7vw, 4.5rem);
-    border: 1px solid #48C0D2;
+    border: 1px solid var(--cyan);
     border-radius: 5px;
-    background: rgba(10, 12, 24, 0.7);
-    box-shadow: 0 0 24px rgba(72, 192, 210, 0.1);
+    background: rgba(var(--panel-rgb), 0.7);
+    box-shadow: 0 0 24px rgba(var(--cyan-rgb), 0.1);
     text-align: left;
 }
 
 .legal-content h2,
 .legal-content h3 {
     font-family: 'Aldrich', sans-serif;
-    color: #5FF6AD;
+    color: var(--green);
 }
 
 .legal-content h2 {
     margin: 1.75rem 0 0.75rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(72, 192, 210, 0.45);
+    border-bottom: 1px solid rgba(var(--cyan-rgb), 0.45);
     font-size: 1.35rem;
 }
 
@@ -603,13 +682,13 @@ footer a:hover {
 
 .legal-content h3 {
     margin: 1.25rem 0 0.5rem;
-    color: #98D1F4;
+    color: var(--blue);
     font-size: 1.05rem;
 }
 
 .legal-content p {
     margin: 0 0 1rem;
-    color: #f1f5f9;
+    color: var(--text);
     font-family: 'Chakra Petch', sans-serif;
     font-size: 1.05rem;
     font-weight: 300;
@@ -631,13 +710,13 @@ footer a:hover {
 }
 
 .auth-card {
-    background: rgba(10, 12, 24, 0.95);
-    border: 2px solid #48C0D2;
+    background: rgba(var(--panel-rgb), 0.95);
+    border: 2px solid var(--cyan);
     border-radius: 8px;
     padding: 2.5rem 2.2rem;
     max-width: 480px;
     width: 100%;
-    box-shadow: 0 0 30px rgba(72, 192, 210, 0.2);
+    box-shadow: 0 0 30px rgba(var(--cyan-rgb), 0.2);
     text-align: left;
     box-sizing: border-box;
 }
@@ -650,7 +729,7 @@ footer a:hover {
 .auth-header .auth-title {
     font-family: 'Audiowide', sans-serif;
     font-size: 2rem;
-    background-image: radial-gradient(#98D1F4, #149FB4);
+    background-image: radial-gradient(var(--blue), var(--cyan-dark));
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -659,7 +738,7 @@ footer a:hover {
 
 .auth-header .auth-subtitle {
     font-family: 'Aldrich', sans-serif;
-    color: #5FF6AD;
+    color: var(--green);
     font-size: 1rem;
     margin: 0;
 }
@@ -677,19 +756,19 @@ footer a:hover {
 .auth-alert-error {
     background-color: rgba(246, 95, 95, 0.15);
     border: 1px solid #F65F5F;
-    color: #ff9999;
+    color: var(--error-text);
 }
 
 .auth-alert-success {
-    background-color: rgba(95, 246, 173, 0.15);
-    border: 1px solid #5FF6AD;
-    color: #5FF6AD;
+    background-color: rgba(var(--green-rgb), 0.15);
+    border: 1px solid var(--green);
+    color: var(--green);
 }
 
 .auth-alert-info {
-    background-color: rgba(72, 192, 210, 0.15);
-    border: 1px solid #48C0D2;
-    color: #98D1F4;
+    background-color: rgba(var(--cyan-rgb), 0.15);
+    border: 1px solid var(--cyan);
+    color: var(--blue);
 }
 
 .auth-group {
@@ -702,17 +781,17 @@ footer a:hover {
     font-family: 'Aldrich', sans-serif;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
-    color: #98D1F4;
+    color: var(--blue);
 }
 
 .auth-group input {
     width: 100%;
     box-sizing: border-box;
     padding: 0.85rem 1rem;
-    background-color: #070811;
-    border: 1px solid #48C0D2;
+    background-color: var(--bg);
+    border: 1px solid var(--cyan);
     border-radius: 5px;
-    color: #ffffff;
+    color: var(--text);
     font-family: 'Chakra Petch', sans-serif;
     font-size: 1rem;
     outline: none;
@@ -720,12 +799,12 @@ footer a:hover {
 }
 
 .auth-group input:focus {
-    border-color: #5FF6AD;
-    box-shadow: 0 0 10px rgba(95, 246, 173, 0.35);
+    border-color: var(--green);
+    box-shadow: 0 0 10px rgba(var(--green-rgb), 0.35);
 }
 
 .auth-group input::placeholder {
-    color: #4b5563;
+    color: var(--placeholder);
     font-family: 'Chakra Petch', sans-serif;
 }
 
@@ -743,30 +822,30 @@ footer a:hover {
     text-align: center;
     font-family: 'Chakra Petch', sans-serif;
     font-size: 0.95rem;
-    color: #98D1F4;
+    color: var(--blue);
 }
 
 .auth-links a {
-    color: #5FF6AD;
+    color: var(--green);
     text-decoration: none;
     font-weight: bold;
     transition: color 0.2s;
 }
 
 .auth-links a:hover {
-    color: #48C0D2;
+    color: var(--cyan);
     text-decoration: underline;
 }
 
 .password-hints {
-    background-color: #070811;
-    border: 1px dashed #48C0D2;
+    background-color: var(--bg);
+    border: 1px dashed var(--cyan);
     border-radius: 5px;
     padding: 0.8rem 1rem;
     margin-top: 0.6rem;
     font-family: 'Chakra Petch', sans-serif;
     font-size: 0.85rem;
-    color: #98D1F4;
+    color: var(--blue);
 }
 
 .password-hints ul {
@@ -776,7 +855,7 @@ footer a:hover {
 
 .password-hints li {
     margin: 0.2rem 0;
-    color: #e5e7eb;
+    color: var(--text-soft);
 }
 
 .link-plain {
@@ -797,19 +876,19 @@ footer a:hover {
 .forgot-link {
     font-family: 'Chakra Petch', sans-serif;
     font-size: 0.85rem;
-    color: #48C0D2;
+    color: var(--cyan);
     text-decoration: none;
 }
 
 .user-greeting {
-    color: #60a5fa;
+    color: var(--link);
     font-weight: bold;
     margin-right: 8px;
 }
 
 .reset-link {
     word-break: break-all;
-    color: #5FF6AD;
+    color: var(--green);
     font-size: 0.85rem;
 }
 
@@ -847,7 +926,7 @@ footer a:hover {
 }
 
 .form-group label {
-    color: #fff;
+    color: var(--text);
     font-family: 'Chakra Petch', sans-serif;
     text-align: left;
 }
@@ -858,8 +937,8 @@ footer a:hover {
     width: 100%;
     padding: 0.75rem;
     background: transparent;
-    color: #fff;
-    border: 1px solid #48C0D2;
+    color: var(--text);
+    border: 1px solid var(--cyan);
     border-radius: 5px;
     font-family: 'Chakra Petch', sans-serif;
     font-size: 1rem;
@@ -913,9 +992,9 @@ footer a:hover {
     padding: 0 0.9rem;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    border: 2px solid #48C0D2;
+    border: 2px solid var(--cyan);
     border-radius: 5px;
-    background: linear-gradient(to right, #5FF6AD, #98D1F4);
+    background: linear-gradient(to right, var(--green), var(--blue));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -932,7 +1011,7 @@ footer a:hover {
     left: -100%;
     width: 100%;
     height: 100%;
-    background-color: #48C0D2;
+    background-color: var(--cyan);
     z-index: -1;
     -webkit-transition: left 0.3s ease;
     transition: left 0.3s ease;
@@ -945,7 +1024,7 @@ a.pagination-link:focus-visible::before {
 
 a.pagination-link:hover,
 a.pagination-link:focus-visible {
-    -webkit-text-fill-color: #070811;
+    -webkit-text-fill-color: var(--on-accent);
     outline: none;
 }
 
@@ -961,12 +1040,12 @@ a.pagination-link:focus-visible {
 
 /* Page courante : remplie en vert, comme les rangs */
 .pagination-link.is-current {
-    background: #5FF6AD;
-    border-color: #5FF6AD;
-    -webkit-text-fill-color: #070811;
-    color: #070811;
-    -webkit-box-shadow: 0 0 12px rgba(95, 246, 173, 0.6);
-    box-shadow: 0 0 12px rgba(95, 246, 173, 0.6);
+    background: var(--green);
+    border-color: var(--green);
+    -webkit-text-fill-color: var(--on-accent);
+    color: var(--on-accent);
+    -webkit-box-shadow: 0 0 12px rgba(var(--green-rgb), 0.6);
+    box-shadow: 0 0 12px rgba(var(--green-rgb), 0.6);
 }
 
 .pagination-link.is-disabled {
@@ -976,19 +1055,19 @@ a.pagination-link:focus-visible {
 
 .pagination-ellipsis {
     font-family: 'Audiowide', sans-serif;
-    color: #98D1F4;
+    color: var(--blue);
     padding: 0 0.25rem;
 }
 
 .pagination-status {
     display: none;
     font-family: 'Audiowide', sans-serif;
-    color: #98D1F4;
+    color: var(--blue);
 }
 
 .pagination-info {
     font-family: 'Aldrich', sans-serif;
-    color: #98D1F4;
+    color: var(--blue);
     text-align: center;
     margin-bottom: 3rem;
 }
@@ -1062,7 +1141,7 @@ a.pagination-link:focus-visible {
         gap: 1rem;
     }
 
-    #logo {
+    .logo {
         width: 8rem;
     }
 
@@ -1098,7 +1177,7 @@ a.pagination-link:focus-visible {
 
     header:has(.menu-checkbox:checked) nav {
         padding-bottom: 1rem;
-        border-top: 1px solid rgba(72, 192, 210, 0.45);
+        border-top: 1px solid rgba(var(--cyan-rgb), 0.45);
         max-height: calc(100vh - 5rem);
         overflow-y: auto;
     }
@@ -1107,7 +1186,7 @@ a.pagination-link:focus-visible {
         padding: 0 2rem;
     }
 
-    #logo {
+    .logo {
         width: 2.5rem;
     }
 }
@@ -1215,7 +1294,7 @@ a.pagination-link:focus-visible {
         width: 100%;
     }
 
-    #logo {
+    .logo {
         width: 2rem;
     }
 }
@@ -1255,7 +1334,7 @@ a.pagination-link:focus-visible {
         padding: 1rem 0 2rem;
     }
 
-    #logo {
+    .logo {
         width: 2rem;
     }
 }
@@ -1306,5 +1385,169 @@ a.pagination-link:focus-visible {
 
     .legal-content h2 {
         font-size: 1.2rem;
+    }
+}
+
+
+/* ---------- Header PC (> 1024px) ----------
+   Logo à gauche, liens + thème + boutons à droite, mêmes marges des deux côtés.
+   Placé en fin de fichier pour passer après les règles ci-dessus. */
+@media (min-width: 1025px) {
+    nav > ul {
+        justify-content: flex-start;
+        gap: 1.5rem;
+        padding: 0 clamp(1.5rem, 3vw, 3rem);
+    }
+
+    .header-links {
+        flex: 1;
+    }
+
+    .header-links ul {
+        justify-content: flex-start;
+        gap: clamp(1.5rem, 3.5vw, 4rem);
+    }
+
+    .header-links li:first-child {
+        margin-right: auto;
+        margin-left: 1rem; /* même écart au bord que le dernier bouton à droite */
+    }
+
+    .header-links li:last-child {
+        margin-right: 0;
+    }
+
+    .logo {
+        width: auto;
+        height: 2.75rem;
+        vertical-align: middle;
+    }
+
+    #mode-toggle {
+        margin: 0 0.5rem;
+    }
+}
+
+
+/* ---------- Page de synthèse (#198) ---------- */
+
+.synthesis {
+    width: min(100% - 2rem, 900px);
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+    text-align: center;
+    color: var(--text);
+}
+
+.synthesis .main-title {
+    margin: 2rem 0 1rem;
+}
+
+.synthesis .subtitle {
+    margin-bottom: 0.75rem;
+}
+
+.synthesis .subsubtitle {
+    margin-bottom: 2.5rem;
+}
+
+.synthesis-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.synthesis-card {
+    padding: 1.5rem clamp(1.25rem, 4vw, 2.5rem);
+    border: 1px solid var(--cyan);
+    border-left: 4px solid var(--green);
+    border-radius: 5px;
+    background: rgba(var(--panel-rgb), 0.7);
+    box-shadow: 0 0 24px rgba(var(--cyan-rgb), 0.1);
+}
+
+.synthesis-card-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin: 0 0 0.75rem;
+    font-family: 'Aldrich', sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    color: var(--green);
+}
+
+.synthesis-number {
+    font-family: 'Audiowide', sans-serif;
+    color: var(--cyan);
+}
+
+.synthesis-content {
+    margin: 0;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.synthesis-empty {
+    font-family: 'Chakra Petch', sans-serif;
+    color: var(--text-soft);
+}
+
+.synthesis-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.synthesis-actions .btn {
+    cursor: pointer;
+}
+
+/* Version imprimable : texte noir sur blanc, sans menu ni boutons */
+@media print {
+    header,
+    footer,
+    .synthesis-actions {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff;
+    }
+
+    .synthesis {
+        width: 100%;
+        padding: 0;
+    }
+
+    .synthesis .main-title,
+    .synthesis .subtitle,
+    .synthesis .subsubtitle,
+    .synthesis-card-title,
+    .synthesis-number,
+    .synthesis-content {
+        color: #000000;
+        -webkit-text-fill-color: #000000;
+        background: none;
+    }
+
+    .synthesis .main-title {
+        margin-top: 0;
+        font-size: 2rem;
+    }
+
+    .synthesis-card {
+        border: 1px solid #999999;
+        border-left: 4px solid #000000;
+        background: none;
+        box-shadow: none;
+        break-inside: avoid;
     }
 }
