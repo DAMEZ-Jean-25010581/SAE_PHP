@@ -23,14 +23,6 @@ CREATE TABLE User_ (
         CHECK (progression BETWEEN 0 AND 100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE Session_ (
-    session_id INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    token      VARCHAR(64) NOT NULL UNIQUE,
-    expires_at DATETIME    NULL,
-    user_id    INT         NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES User_(user_id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE PasswordReset_ (
     reset_id   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id    INT         NOT NULL,
@@ -39,6 +31,8 @@ CREATE TABLE PasswordReset_ (
     FOREIGN KEY (user_id) REFERENCES User_(user_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- A supprimer car contactMessage_ n'est inutile (il faut l'envoyer par email, pas stocké en base)
+-- Modifier le PHP pour ne plus l'utiliser, et envoyé le message par email directement.
 CREATE TABLE ContactMessage_ (
     contact_id INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
     email      VARCHAR(100) NOT NULL,
