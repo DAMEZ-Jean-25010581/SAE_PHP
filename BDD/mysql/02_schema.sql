@@ -43,7 +43,7 @@ CREATE TABLE User_ (
 CREATE TABLE PasswordReset_ (
     reset_id   INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     token_hash VARCHAR(255) NOT NULL UNIQUE,       -- hash du token, jamais le token en clair
-    expire_at  DATETIME     NOT NULL,
+    expires_at BIGINT       NOT NULL,               -- timestamp Unix (time() en PHP)
     user_id    INT          NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User_(user_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
