@@ -3,34 +3,36 @@
 -- Exécuté automatiquement par Docker au 1er démarrage,
 -- et à importer tel quel dans la base alwaysdata.
 -- Attention : sous Linux (alwaysdata), MySQL respecte la casse des noms
--- de tables -> toujours écrire User_ et PasswordReset_ comme ici.
+-- de tables -> toujours écrire les noms de tables avec le suffixe _.
 -- =====================================================================
 
 SET NAMES utf8mb4;
 
 -- Ordre : enfants d'abord, parents ensuite
-DROP TABLE IF EXISTS UserExamAnswer;
-DROP TABLE IF EXISTS UserTestChoice;
-DROP TABLE IF EXISTS UserExamResult;
-DROP TABLE IF EXISTS UserTestResult;
-DROP TABLE IF EXISTS UserCourseProgress;
-DROP TABLE IF EXISTS TestResponse;
-DROP TABLE IF EXISTS TestQuestion;
-DROP TABLE IF EXISTS Test;
-DROP TABLE IF EXISTS Course;
+DROP TABLE IF EXISTS UserExamAnswer_;
+DROP TABLE IF EXISTS UserTestChoice_;
+DROP TABLE IF EXISTS UserExamResult_;
+DROP TABLE IF EXISTS UserTestResult_;
+DROP TABLE IF EXISTS UserCourseProgress_;
+DROP TABLE IF EXISTS TestResponse_;
+DROP TABLE IF EXISTS TestQuestion_;
+DROP TABLE IF EXISTS Test_;
+DROP TABLE IF EXISTS Course_;
 DROP TABLE IF EXISTS Level_;
-DROP TABLE IF EXISTS ExamQuestion;
-DROP TABLE IF EXISTS Synthesis;
-DROP TABLE IF EXISTS Exam;
+DROP TABLE IF EXISTS ExamQuestion_;
+DROP TABLE IF EXISTS Synthesis_;
+DROP TABLE IF EXISTS Exam_;
 DROP TABLE IF EXISTS Module_;
-DROP TABLE IF EXISTS PasswordReset;
+DROP TABLE IF EXISTS PasswordReset_;
+DROP TABLE IF EXISTS Session_;
+DROP TABLE IF EXISTS ContactMessage_;
 DROP TABLE IF EXISTS User_;
 
 CREATE TABLE User_ (
     user_id       INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_name     VARCHAR(50)  NOT NULL UNIQUE,
     email         VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,           -- bcrypt = 60 car., prévoir plus
+    password_hash VARCHAR(255) NOT NULL,
     total_points  INT          NOT NULL DEFAULT 0
         CHECK (total_points >= 0),
     progress      INT          NOT NULL DEFAULT 0  -- pourcentage 0 à 100
@@ -38,7 +40,7 @@ CREATE TABLE User_ (
     CHECK (CHAR_LENGTH(TRIM(user_name)) > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE PasswordReset (
+CREATE TABLE PasswordReset_ (
     reset_id   INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     token_hash VARCHAR(255) NOT NULL UNIQUE,       -- hash du token, jamais le token en clair
     expire_at  DATETIME     NOT NULL,
@@ -52,14 +54,14 @@ CREATE TABLE Module_ (
     module_description TEXT         NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE Exam (
+CREATE TABLE Exam_ (
     exam_id   INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     exam_name VARCHAR(255) NOT NULL,
     module_id INT          NOT NULL UNIQUE,        -- un seul examen par module
     FOREIGN KEY (module_id) REFERENCES Module_(module_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE Synthesis (
+CREATE TABLE Synthesis_ (
     synthesis_id      INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     synthesis_name    VARCHAR(255) NOT NULL,
     synthesis_content MEDIUMTEXT   NOT NULL,       -- contenu HTML
@@ -67,7 +69,7 @@ CREATE TABLE Synthesis (
     FOREIGN KEY (module_id) REFERENCES Module_(module_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE ExamQuestion (
+CREATE TABLE ExamQuestion_ (
     question_id      INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
     question_content TEXT NOT NULL,
     example_content  TEXT NULL,
@@ -78,7 +80,7 @@ CREATE TABLE ExamQuestion (
         CHECK (points > 0),
     exam_id          INT  NOT NULL,
     CHECK (example_language IS NULL OR example_language IS NOT NULL), -- permet de vérifier qu'un code exemple est bien associé à un langage, et qu'un langage est bien associé à un code exemple
-    FOREIGN KEY (exam_id) REFERENCES Exam(exam_id) ON DELETE CASCADE
+    FOREIGN KEY (exam_id) REFERENCES Exam_(exam_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Level_ (
@@ -91,7 +93,7 @@ CREATE TABLE Level_ (
     FOREIGN KEY (module_id) REFERENCES Module_(module_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE Course (
+CREATE TABLE Course_ (
     course_id       INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     course_name     VARCHAR(255) NOT NULL,
     course_content  MEDIUMTEXT   NOT NULL,         -- contenu HTML
@@ -103,17 +105,17 @@ CREATE TABLE Course (
     level_id        INT          NOT NULL,
     UNIQUE (level_id, course_index),
     CHECK (example_language IS NULL OR example_language IS NOT NULL), -- permet de vérifier qu'un code exemple est bien associé à un langage, et qu'un langage est bien associé à un code exemple
-    FOREIGN KEY (level_id) REFERENCES Level(level_id) ON DELETE CASCADE
+    FOREIGN KEY (level_id) REFERENCES Level_(level_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE Test (
+CREATE TABLE Test_ (
     test_id   INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     test_name VARCHAR(255) NOT NULL,
     level_id  INT          NOT NULL UNIQUE,        -- un seul test par niveau
-    FOREIGN KEY (level_id) REFERENCES Level(level_id) ON DELETE CASCADE
+    FOREIGN KEY (level_id) REFERENCES Level_(level_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE TestQuestion (
+CREATE TABLE TestQuestion_ (
     question_id      INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
     question_content TEXT NOT NULL,
     example_content  TEXT NULL,
@@ -123,27 +125,27 @@ CREATE TABLE TestQuestion (
         CHECK (points > 0),
     test_id          INT  NOT NULL,
     CHECK (example_language IS NULL OR example_language IS NOT NULL), -- permet de vérifier qu'un code exemple est bien associé à un langage, et qu'un langage est bien associé à un code exemple
-    FOREIGN KEY (test_id) REFERENCES Test(test_id) ON DELETE CASCADE
+    FOREIGN KEY (test_id) REFERENCES Test_(test_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE TestResponse (
+CREATE TABLE TestResponse_ (
     response_id      INT     NOT NULL AUTO_INCREMENT PRIMARY KEY,
     response_content TEXT    NOT NULL,
     is_valid         BOOLEAN NOT NULL DEFAULT FALSE,
     question_id      INT     NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES TestQuestion(question_id) ON DELETE CASCADE
+    FOREIGN KEY (question_id) REFERENCES TestQuestion_(question_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE UserCourseProgress (
+CREATE TABLE UserCourseProgress_ (
     user_id      INT     NOT NULL,
     course_id    INT     NOT NULL,
     is_completed BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (user_id, course_id),
     FOREIGN KEY (user_id)   REFERENCES User_(user_id)     ON DELETE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)  ON DELETE CASCADE
+    FOREIGN KEY (course_id) REFERENCES Course_(course_id)  ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE UserTestResult (
+CREATE TABLE UserTestResult_ (
     user_id      INT     NOT NULL,
     test_id      INT     NOT NULL,
     is_completed BOOLEAN NOT NULL DEFAULT FALSE,   -- calculé par un trigger il faut min 75% (valeur exacte à determiner avec les autres membres du groupe) pour réussir le test
@@ -151,10 +153,10 @@ CREATE TABLE UserTestResult (
         CHECK (grade IS NULL OR grade BETWEEN 0 AND 100),
     PRIMARY KEY (user_id, test_id),
     FOREIGN KEY (user_id) REFERENCES User_(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (test_id) REFERENCES Test(test_id)  ON DELETE CASCADE
+    FOREIGN KEY (test_id) REFERENCES Test_(test_id)  ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE UserExamResult (
+CREATE TABLE UserExamResult_ (
     user_id      INT     NOT NULL,
     exam_id      INT     NOT NULL,
     is_completed BOOLEAN NOT NULL DEFAULT FALSE,   -- TRUE = module complété
@@ -162,25 +164,25 @@ CREATE TABLE UserExamResult (
         CHECK (grade IS NULL OR (grade BETWEEN 0 AND 100)), -- NULL = pas encore noté, sinon note entre 0 et 100
     PRIMARY KEY (user_id, exam_id),
     FOREIGN KEY (user_id) REFERENCES User_(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (exam_id) REFERENCES Exam(exam_id)  ON DELETE CASCADE
+    FOREIGN KEY (exam_id) REFERENCES Exam_(exam_id)  ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE UserTestChoice (
+CREATE TABLE UserTestChoice_ (
     user_id     INT NOT NULL,
     response_id INT NOT NULL,
     PRIMARY KEY (user_id, response_id),
     FOREIGN KEY (user_id)     REFERENCES User_(user_id)            ON DELETE CASCADE,
-    FOREIGN KEY (response_id) REFERENCES TestResponse(response_id) ON DELETE CASCADE
+    FOREIGN KEY (response_id) REFERENCES TestResponse_(response_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE UserExamAnswer (
+CREATE TABLE UserExamAnswer_ (
     user_id     INT     NOT NULL,
     question_id INT     NOT NULL,
     user_answer TEXT    NOT NULL,
     is_correct  BOOLEAN NOT NULL DEFAULT FALSE,    -- verdict figé par le backend (le backend compare la réponse de l'utilisateur avec la réponse attendue)
     PRIMARY KEY (user_id, question_id),
     FOREIGN KEY (user_id)     REFERENCES User_(user_id)            ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES ExamQuestion(question_id) ON DELETE CASCADE
+    FOREIGN KEY (question_id) REFERENCES ExamQuestion_(question_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -197,7 +199,7 @@ DROP TRIGGER IF EXISTS trg_before_update_user_exam_result;
 DELIMITER $$
 
 CREATE TRIGGER trg_before_insert_user_test_result
-BEFORE INSERT ON UserTestResult
+BEFORE INSERT ON UserTestResult_
 FOR EACH ROW
 BEGIN
     DECLARE passing_grade INT;
@@ -210,7 +212,7 @@ BEGIN
 END$$
 
 CREATE TRIGGER trg_before_update_user_test_result
-BEFORE UPDATE ON UserTestResult
+BEFORE UPDATE ON UserTestResult_
 FOR EACH ROW
 BEGIN
     DECLARE passing_grade INT;
@@ -223,7 +225,7 @@ BEGIN
 END$$
 
 CREATE TRIGGER trg_before_update_user_exam_result
-BEFORE UPDATE ON UserExamResult
+BEFORE UPDATE ON UserExamResult_
 FOR EACH ROW
 BEGIN
     DECLARE passing_grade INT;
@@ -236,7 +238,7 @@ BEGIN
 END$$
 
 CREATE TRIGGER trg_before_insert_user_exam_result
-BEFORE INSERT ON UserExamResult
+BEFORE INSERT ON UserExamResult_
 FOR EACH ROW
 BEGIN
     DECLARE passing_grade INT;
