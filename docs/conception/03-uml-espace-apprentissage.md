@@ -4,43 +4,50 @@
     direction LR
 
     namespace Controller {
-        class ModuleController
+        class ExamController
+        class ExamQuestionController
+        class PasswordResetController
+        class TestQuestionController
+        class SynthesisController
         class LevelController
         class CourseController
+        class TestResponseController
         class TestController
-        class SynthesisController
-        class AssessmentController
+        class UserExamResultController
+        class UserCourseProgressController
+        class UserTestResultController
+        class UserExamAnswerController
     }
 
     namespace Model {
-        class ModuleModel
+        class ExamModel
+        class ExamQuestionModel
+        class PasswordResetModel
+        class TestQuestionModel
+        class SynthesisModel
         class LevelModel
         class CourseModel
+        class TestResponseModel
         class TestModel
-        class SynthesisModel
-        class AssessmentModel
+        class UserExamResultModel
+        class UserCourseProgressModel
+        class UserTestResultModel
+        class UserExamAnswerModel
     }
 
     namespace View {
-        class ModuleView
+        class ExamView
+        class ExamQuestionView
+        class PasswordResetView
+        class TestQuestionView
+        class SynthesisView
         class LevelView
         class CourseView
+        class TestResponseView
         class TestView
-        class SynthesisView
-        class AssessmentView
+        class UserExamResultView
+        class UserCourseProgressView
+        class UserTestResultView
+        class UserExamAnswerView
     }
-
-    ModuleController ..> ModuleModel : lit les niveaux du module
-    ModuleController ..> ModuleView : affiche
-    LevelController ..> LevelModel : lit les cours du niveau
-    LevelController ..> LevelView : affiche
-    CourseController ..> CourseModel : lit le cours
-    CourseController ..> CourseView : affiche
-    TestController ..> TestModel : lit les questions
-    TestController ..> TestView : affiche
-    SynthesisController ..> SynthesisModel : lit la synthèse
-    SynthesisController ..> SynthesisView : affiche
-    AssessmentController ..> AssessmentModel : enregistre le score
-    AssessmentController ..> AssessmentView : affiche
-
 ```
