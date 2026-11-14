@@ -1,6 +1,5 @@
 ```mermaid
-
-    classDiagram
+classDiagram
     direction LR
 
     namespace Controller {
@@ -58,9 +57,8 @@
     RankingController ..> RankingView : affiche
     RankingController ..> UserRepository : compte les joueurs
 
-    UserRepository ..> User : gère
+    UserRepository "1" --> "0..*" User : gère
 
     AccountView ..|> ViewInterface : implémente
     RankingView ..|> ViewInterface : implémente
-
 ```

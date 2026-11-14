@@ -1,6 +1,5 @@
 ```mermaid
-
-    classDiagram
+classDiagram
     direction LR
 
     namespace Controller {
@@ -51,12 +50,12 @@
         }
     }
 
-    HomeController ..> HomeView : affiche le classement paginé
-    AProposController ..> AProposView : affiche
-    ContactController ..> ContactView : affiche le formulaire
-    ErrorController ..> ErrorView : affiche l'erreur
-    MentionsLegalesController ..> MentionsLegalesView : affiche
-    PlanSiteController ..> PlanSiteView : affiche
+    HomeController "1" --> "1" HomeView : affiche le classement paginé
+    AProposController "1" --> "1" AProposView : affiche
+    ContactController "1" --> "1" ContactView : affiche le formulaire
+    ErrorController "1" --> "1" ErrorView : affiche l'erreur
+    MentionsLegalesController "1" --> "1" MentionsLegalesView : affiche
+    PlanSiteController "1" --> "1" PlanSiteView : affiche
 
     HomeView ..|> ViewInterface : implémente
     AProposView ..|> ViewInterface : implémente
@@ -68,5 +67,4 @@
 
     Template ..> ViewInterface : rend la vue demandée
     Template ..> LayoutView : applique l'habillage
-
 ```
