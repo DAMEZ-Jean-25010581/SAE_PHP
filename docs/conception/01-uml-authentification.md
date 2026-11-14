@@ -1,6 +1,5 @@
 ```mermaid
-
-    classDiagram
+classDiagram
     direction LR
 
     namespace Controller {
@@ -25,6 +24,7 @@
 
         class ForgotPassword {
             +execute(): void
+            -setting(): string
             -sendResetEmail(): void
         }
 
@@ -42,6 +42,13 @@
             +getId(): ?int
             +getUsername(): string
             +getEmail(): string
+        }
+
+        class PasswordReset {
+            -resetId: int
+            -tokenHash: string
+            -expiresAt: int
+            -userId: int
         }
 
         class UserRepository {
@@ -86,4 +93,7 @@
     ForgotPasswordView ..|> ViewInterface : implémente
     ResetPasswordView ..|> ViewInterface : implémente
 
+    User "1" *-- "0..*" PasswordReset : possède
+    UserRepository "1" --> "0..*" User : gère
+    UserRepository ..> PasswordReset : crée et consulte
 ```
