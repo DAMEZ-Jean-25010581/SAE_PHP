@@ -47,7 +47,7 @@ PSEUDO="ci_test"
 MDP='Motdepasse-CI-2026!'
 PSEUDO="$PSEUDO" MDP="$MDP" php -r '
 $pdo = new PDO(sprintf("mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4", getenv("DB_HOST"), getenv("DB_PORT"), getenv("DB_NAME")), getenv("DB_USER"), getenv("DB_PASS"));
-$add = $pdo->prepare("INSERT IGNORE INTO User_ (user_name, email, password_hash, nb_points, progression) VALUES (?, ?, ?, ?, ?)");
+$add = $pdo->prepare("INSERT IGNORE INTO User_ (user_name, email, password_hash, total_points, progress) VALUES (?, ?, ?, ?, ?)");
 $add->execute([getenv("PSEUDO"), getenv("PSEUDO") . "@example.com", password_hash(getenv("MDP"), PASSWORD_DEFAULT), 50, 10]);
 for ($i = 1; $i <= 7; $i++) { $add->execute(["joueur$i", "joueur$i@example.com", password_hash("x", PASSWORD_DEFAULT), $i * 10, $i]); }
 ' || { echo "::error::impossible de créer le compte de test en base"; exit 1; }

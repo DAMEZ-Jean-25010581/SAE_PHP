@@ -27,7 +27,7 @@ class Web
 
         Route::add('/logout', function () {
             (new \SAE_PHP\controllers\Logout())->execute();
-        });
+        }, ['POST']);
 
         Route::add('/forgot_password', function () {
             (new \SAE_PHP\controllers\ForgotPassword())->execute();

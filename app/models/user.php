@@ -80,9 +80,9 @@ class UserRepository
     public function findRankingPage(int $limit, int $offset): array
     {
         $statement = $this->getPdo()->prepare(
-            'SELECT user_id, user_name, email, nb_points, progression
+            'SELECT user_id, user_name, email, total_points, progress
              FROM User_
-             ORDER BY nb_points DESC, progression DESC, user_name ASC
+             ORDER BY total_points DESC, progress DESC, user_name ASC
              LIMIT :limit OFFSET :offset'
         );
         // PARAM_INT obligatoire : sinon MySQL reçoit LIMIT '10' et refuse la requête
@@ -97,8 +97,8 @@ class UserRepository
                 $row['user_name'],
                 $row['email'],
                 null,
-                (int) $row['nb_points'],
-                (float) $row['progression']
+                (int) $row['total_points'],
+                (float) $row['progress']
             );
         }
 
@@ -124,8 +124,8 @@ class UserRepository
             $row['user_name'],
             $row['email'],
             $row['password_hash'],
-            (int) $row['nb_points'],
-            (float) $row['progression']
+            (int) $row['total_points'],
+            (float) $row['progress']
         );
     }
 
@@ -148,8 +148,8 @@ class UserRepository
             $row['user_name'],
             $row['email'],
             $row['password_hash'],
-            (int) $row['nb_points'],
-            (float) $row['progression']
+            (int) $row['total_points'],
+            (float) $row['progress']
         );
     }
 
@@ -172,8 +172,8 @@ class UserRepository
             $row['user_name'],
             $row['email'],
             $row['password_hash'],
-            (int) $row['nb_points'],
-            (float) $row['progression']
+            (int) $row['total_points'],
+            (float) $row['progress']
         );
     }
 
@@ -199,15 +199,15 @@ class UserRepository
             $row['user_name'],
             $row['email'],
             $row['password_hash'],
-            (int) $row['nb_points'],
-            (float) $row['progression']
+            (int) $row['total_points'],
+            (float) $row['progress']
         );
     }
 
     public function findUserByResetToken(string $tokenHash): ?User
     {
         $statement = $this->getPdo()->prepare(
-            'SELECT u.user_id, u.user_name, u.email, u.password_hash , u.nb_points, u.progression
+            'SELECT u.user_id, u.user_name, u.email, u.password_hash, u.total_points, u.progress
              FROM User_ u
              INNER JOIN PasswordReset_ pr ON u.user_id = pr.user_id
              WHERE pr.token_hash = :token_hash AND pr.expires_at > :current_time'
@@ -227,8 +227,8 @@ class UserRepository
             $row['user_name'],
             $row['email'],
             $row['password_hash'],
-            (int) $row['nb_points'],
-            (float) $row['progression']
+            (int) $row['total_points'],
+            (float) $row['progress']
         );
     }
 
